@@ -1,0 +1,73 @@
+
+./gclamp.c: ../mech//gclamp.mod
+	@printf " -> $(C_GREEN)NMODL$(C_RESET) $<\n"
+	(cd "../mech"; MODLUNIT=$(NRNUNITS) $(NOCMODL) gclamp.mod -o "/home/kuenzel/Dokumente/Python/SCNv2/x86_64")
+
+./gclamp.o: ./gclamp.c
+	@printf " -> $(C_GREEN)Compiling$(C_RESET) $<\n"
+	$(COMPILE) -I"../mech" $(INCLUDES) -fPIC -c $< -o $@
+
+./gfluct2.c: ../mech//gfluct2.mod
+	@printf " -> $(C_GREEN)NMODL$(C_RESET) $<\n"
+	(cd "../mech"; MODLUNIT=$(NRNUNITS) $(NOCMODL) gfluct2.mod -o "/home/kuenzel/Dokumente/Python/SCNv2/x86_64")
+
+./gfluct2.o: ./gfluct2.c
+	@printf " -> $(C_GREEN)Compiling$(C_RESET) $<\n"
+	$(COMPILE) -I"../mech" $(INCLUDES) -fPIC -c $< -o $@
+
+./kht.c: ../mech//kht.mod
+	@printf " -> $(C_GREEN)NMODL$(C_RESET) $<\n"
+	(cd "../mech"; MODLUNIT=$(NRNUNITS) $(NOCMODL) kht.mod -o "/home/kuenzel/Dokumente/Python/SCNv2/x86_64")
+
+./kht.o: ./kht.c
+	@printf " -> $(C_GREEN)Compiling$(C_RESET) $<\n"
+	$(COMPILE) -I"../mech" $(INCLUDES) -fPIC -c $< -o $@
+
+./klt.c: ../mech//klt.mod
+	@printf " -> $(C_GREEN)NMODL$(C_RESET) $<\n"
+	(cd "../mech"; MODLUNIT=$(NRNUNITS) $(NOCMODL) klt.mod -o "/home/kuenzel/Dokumente/Python/SCNv2/x86_64")
+
+./klt.o: ./klt.c
+	@printf " -> $(C_GREEN)Compiling$(C_RESET) $<\n"
+	$(COMPILE) -I"../mech" $(INCLUDES) -fPIC -c $< -o $@
+
+./leak.c: ../mech//leak.mod
+	@printf " -> $(C_GREEN)NMODL$(C_RESET) $<\n"
+	(cd "../mech"; MODLUNIT=$(NRNUNITS) $(NOCMODL) leak.mod -o "/home/kuenzel/Dokumente/Python/SCNv2/x86_64")
+
+./leak.o: ./leak.c
+	@printf " -> $(C_GREEN)Compiling$(C_RESET) $<\n"
+	$(COMPILE) -I"../mech" $(INCLUDES) -fPIC -c $< -o $@
+
+./na_fast.c: ../mech//na_fast.mod
+	@printf " -> $(C_GREEN)NMODL$(C_RESET) $<\n"
+	(cd "../mech"; MODLUNIT=$(NRNUNITS) $(NOCMODL) na_fast.mod -o "/home/kuenzel/Dokumente/Python/SCNv2/x86_64")
+
+./na_fast.o: ./na_fast.c
+	@printf " -> $(C_GREEN)Compiling$(C_RESET) $<\n"
+	$(COMPILE) -I"../mech" $(INCLUDES) -fPIC -c $< -o $@
+
+./na.c: ../mech//na.mod
+	@printf " -> $(C_GREEN)NMODL$(C_RESET) $<\n"
+	(cd "../mech"; MODLUNIT=$(NRNUNITS) $(NOCMODL) na.mod -o "/home/kuenzel/Dokumente/Python/SCNv2/x86_64")
+
+./na.o: ./na.c
+	@printf " -> $(C_GREEN)Compiling$(C_RESET) $<\n"
+	$(COMPILE) -I"../mech" $(INCLUDES) -fPIC -c $< -o $@
+
+./synstim.c: ../mech//synstim.mod
+	@printf " -> $(C_GREEN)NMODL$(C_RESET) $<\n"
+	(cd "../mech"; MODLUNIT=$(NRNUNITS) $(NOCMODL) synstim.mod -o "/home/kuenzel/Dokumente/Python/SCNv2/x86_64")
+
+./synstim.o: ./synstim.c
+	@printf " -> $(C_GREEN)Compiling$(C_RESET) $<\n"
+	$(COMPILE) -I"../mech" $(INCLUDES) -fPIC -c $< -o $@
+
+./vecevent.c: ../mech//vecevent.mod
+	@printf " -> $(C_GREEN)NMODL$(C_RESET) $<\n"
+	(cd "../mech"; MODLUNIT=$(NRNUNITS) $(NOCMODL) vecevent.mod -o "/home/kuenzel/Dokumente/Python/SCNv2/x86_64")
+
+./vecevent.o: ./vecevent.c
+	@printf " -> $(C_GREEN)Compiling$(C_RESET) $<\n"
+	$(COMPILE) -I"../mech" $(INCLUDES) -fPIC -c $< -o $@
+
