@@ -146,6 +146,7 @@ def runmodel(
         pelectrode=(0,10.0, 50.0, 0.2, 0.0),
         hasinputactivity=(True, True),
         pinputactivity=(0.0, 33.0, 0.0, 33.0),
+        inputstop=(500.0, 500.0),
         hasnmda=True,
         seed=32768,
         pNeurit_L=45,
@@ -336,15 +337,24 @@ def runmodel(
     risetaub = 1.2#estimated from 1/5 risetime
     decaytaua = 130.0#measured by SW
     decaytaub = 30.0#measured by SW
-    synw = 0.0086
+    synw = 0.0086#0.0086 is one side!
+    """
+    in order for the experiments about enhancement to properly work we need to
+    we able to set the input power. This can be controlled by input numbers (as
+    in the previous version) or total conductance etc. But it is probably most
+    biologically relevant to use the average input rate as a metric for the
+    power of an input.
+    In the "simulated slice experiment" we should use a percentage of the total
+    available conductance.
+    """
     if nsyna == 0:
         synwa = 0.0
     else:
-        synwa = synw / nsyna#we distribute the total input conductance over the synapses
+        synwa = synw / nsyna #we distribute the total input conductance over all synapses
     if nsynb == 0:
         synwb = 0.0
     else:
-        synwb = synw / nsynb#we distribute the total input conductance over the synapses
+        synwb = synw / nsynb #see above
     anc = []
     asyn = []
     astim = []
@@ -375,13 +385,12 @@ def runmodel(
             astim[iasyn].number = pstimulation[1]
             astim[iasyn].noise = 0.001#0 or 0.001
             astim[iasyn].interval = pstimulation[2]
-            nactivesynapsesa = (int(round((nsyna*pstimulation[3])))-1)
-            if iasyn > nactivesynapsesa:
-                anc[iasyn].weight[0] = 0.0
             astim[iasyn].seed(seed)
+            anc[iasyn].weight[0] = anc[iasyn].weight[0] * pstimulation[3]
         elif hasinputactivity[0]:
             #pinputactivity=(0.0, 20.0, 0.0, 20.0),
-            thisN = int(round((tstop-pinputactivity[0])/pinputactivity[1]))
+            #inputstop=(500.0, 500.0),
+            thisN = int(np.round((inputstop[0]-pinputactivity[0])/pinputactivity[1]))
             astim[iasyn].number = thisN
             astim[iasyn].start = pinputactivity[0] + pretime
             astim[iasyn].noise = noiseval
@@ -410,13 +419,12 @@ def runmodel(
             bstim[ibsyn].number = pstimulation[5]
             bstim[ibsyn].noise = 0.001#0 or 0.001
             bstim[ibsyn].interval = pstimulation[6]
-            nactivesynapsesb = (int(round((nsynb*pstimulation[7])))-1)
-            if ibsyn > nactivesynapsesb:
-                bnc[ibsyn].weight[0] = 0.0
+            bnc[ibsyn].weight[0] = bnc[ibsyn].weight[0] * pstimulation[7]
             bstim[ibsyn].seed(seed)
         elif hasinputactivity[1]:
             #pinputactivity=(0.0, 20.0, 0.0, 20.0),
-            thisN = int(round((tstop-pinputactivity[2])/pinputactivity[3]))
+            #inputstop=(500.0, 500.0),
+            thisN = int(np.round((inputstop[1]-pinputactivity[2])/pinputactivity[3]))
             bstim[ibsyn].number = thisN
             bstim[ibsyn].start = pinputactivity[2] + pretime
             bstim[ibsyn].noise = noiseval
@@ -432,17 +440,17 @@ def runmodel(
     if hasfbi:
         isyna = h.ExpSyn(aDend(0.5))
         isyna.tau = 30.0#5.0
-        isyna.e = -80
+        isyna.e = -85
         isynb = h.ExpSyn(bDend(0.5))
         isynb.tau = 30.0#5.0
-        isynb.e = -80
+        isynb.e = -85
         inc1 = h.NetCon(Node2(0.9)._ref_v, isyna, sec=Node2)
-        inc1.threshold = -20.0
-        inc1.weight[0] = 0.005#0.01
+        inc1.threshold = -35.0
+        inc1.weight[0] = 0.02#0.01
         inc1.delay = 5.0#[here was 2.0ms, Stefan prefers 5ms]
         inc2 = h.NetCon(Node2(0.9)._ref_v, isynb, sec=Node2)
-        inc2.threshold = -20.0
-        inc2.weight[0] = 0.005#0.01
+        inc2.threshold = -35.0
+        inc2.weight[0] = 0.02#0.01
         inc2.delay = 5.0
     #
     # INFRASTRUCTURE

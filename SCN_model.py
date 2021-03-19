@@ -9,6 +9,7 @@ Created: Tuesday 23rd Feb 2021
 @author: kuenzel
 """
 #
+from progress.bar import ChargingBar
 import matplotlib.pyplot as plt
 import numpy as np
 import SCNv2
