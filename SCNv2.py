@@ -157,8 +157,8 @@ def runmodel(
         soma_na=0.125,#0.12
         soma_k=0.027,#0.03
         soma_kht=0.013,#0.013
-        soma_l=0.0001,
-        dend_l=0.0001,
+        soma_l=0.0001,#0.0001
+        dend_l=0.0001,#0.0001
     ):
     """
     Creates and runs the second version of the SCN model.
@@ -337,7 +337,7 @@ def runmodel(
     risetaub = 1.2#estimated from 1/5 risetime
     decaytaua = 130.0#measured by SW
     decaytaub = 30.0#measured by SW
-    synw = 0.0086#0.0086 is one side!
+    synw = 0.01#0.0086 is one side!
     """
     in order for the experiments about enhancement to properly work we need to
     we able to set the input power. This can be controlled by input numbers (as
@@ -369,7 +369,7 @@ def runmodel(
         atv.append(h.Vector())
         if hasnmda:#apical EPSC are longer due to more NMDA component
             asyn[iasyn].tau = decaytaua
-        else:#NMDA "blocked" in this model run, now apical EPSC = basel EPSC
+        else:#NMDA "blocked" in this model run, now apical EPSC = basal EPSC
             asyn[iasyn].tau = decaytaub
         asyn[iasyn].e = 0
         anc.append(h.NetCon(astim[iasyn], asyn[iasyn]))
