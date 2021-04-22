@@ -22,7 +22,7 @@ import SCNv2
 def simulate_data(freq, nreps, tstop, dt):
     thr = -50
     baserate = 100.0
-    nv = 0.9
+    nv = 1.0#0.9
     bar = ChargingBar("Simulation running", max=nreps)
     vma = np.zeros((nreps+1, int(np.ceil(tstop / dt))))
     spa = []

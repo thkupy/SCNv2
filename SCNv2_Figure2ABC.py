@@ -173,7 +173,7 @@ def plotres(output, P, x, y, xlabs, ylabs):
         x,
         y,
         sprab_mean,
-        np.linspace(0.0, 150.0, 27),
+        #np.linspace(0.0, 150.0, 27),
         cmap="inferno",
     )  # repeated = y, tiled = x!!
     #plt.contour(x,y,Ienhance, (0.9,1.1,))
@@ -192,7 +192,7 @@ def plotres(output, P, x, y, xlabs, ylabs):
         x,
         y,
         sprabn_mean,
-        np.linspace(0.0, 150.0, 27),
+        #np.linspace(0.0, 150.0, 27),
         cmap="inferno",
     )  # repeated = y, tiled = x!!
     #plt.contour(x,y,Ienhancen, (0.9,1.1,))
@@ -211,7 +211,7 @@ def plotres(output, P, x, y, xlabs, ylabs):
         x,
         y,
         nmda_diff,
-        np.linspace(-50.0, 100.0, 27),
+        #np.linspace(-50.0, 100.0, 27),
         cmap="seismic",
         extend="both",
     )  # repeated = y, tiled = x!!
@@ -230,7 +230,7 @@ def plotres(output, P, x, y, xlabs, ylabs):
         x,
         y,
         sprb_mean,
-        np.linspace(0.0, 150.0, 27),
+        #np.linspace(0.0, 150.0, 27),
         cmap="inferno",
     )  # repeated = y, tiled = x!!
     ax4.set_title("basal vs spont-apical")
@@ -269,8 +269,8 @@ if __name__ == "__main__":
         apthr = -50.0
         dt = 0.025
         dur = 1000.0
-        aitv = 12.5#this is the fixed interval of the apical input
-        nv = 0.9
+        aitv = 14.5#this is the fixed interval of the apical input
+        nv = 1.0#
         output = []
         P = {}
         P["N"] = nconds

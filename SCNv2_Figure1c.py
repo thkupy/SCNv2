@@ -23,7 +23,7 @@ def simulate_data(nconds, tstop, dt):
     bar = ChargingBar("Simulation running", max=nconds)
     vmab = np.zeros((nconds+1, int(np.ceil(tstop / dt))))
     vmab[0,:] = np.linspace(0.0,tstop-dt,int(np.ceil(tstop / dt)))
-    variedparam = np.linspace(-2.5, 2.5, nconds)
+    variedparam = np.linspace(-4.0, 4.0, nconds)
     for thiscond in range(nconds):
         stimparams = (
             25.0 + variedparam[thiscond], 1, tstop-30.0, 0.33,
@@ -35,6 +35,7 @@ def simulate_data(nconds, tstop, dt):
             hasstimulation=(True, True),
             pstimulation=stimparams,
             hasinputactivity=(False, False),
+            hasfbi=False,
         )
         vmab[thiscond + 1,:] = thisRAB["AVm"]
         bar.next()
@@ -47,7 +48,7 @@ def make_plots(D):
         plotconds = np.arange(0, nconds, int(nconds/10))
     else:
         plotconds = range(nconds)
-    variedparam = np.linspace(-2.5, 2.5, nconds)
+    variedparam = np.linspace(-4.0, 4.0, nconds)
     fh = plt.figure()
     sh = fh.subplots(2)
     mxa = []

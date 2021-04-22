@@ -154,11 +154,11 @@ def runmodel(
         T=25.0,
         hasfbi=True,
         noiseval=0.5,
-        soma_na=0.125,#0.12
-        soma_k=0.027,#0.03
+        soma_na=0.2,#0.125
+        soma_k=0.04,#0.027
         soma_kht=0.013,#0.013
         soma_l=0.0001,#0.0001
-        dend_l=0.0001,#0.0001
+        dend_l=0.00001,#0.0001
     ):
     """
     Creates and runs the second version of the SCN model.

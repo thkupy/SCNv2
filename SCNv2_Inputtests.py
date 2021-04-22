@@ -387,7 +387,7 @@ if __name__ == "__main__":
         P["aitv"] = np.repeat(itv, P["N"])
         P["bfreq"] = np.repeat(np.round(freq), P["N"]) 
         P["bitv"] = np.repeat(itv, P["N"])
-        synnums = np.ceil(np.geomspace(3,120,nconds))
+        synnums = np.ceil(np.geomspace(2,64,nconds))
         P["nsyn"] = np.tile(synnums, P["N"])
         # make go!
         output.append(myMPhandler(P))

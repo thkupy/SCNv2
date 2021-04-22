@@ -14,7 +14,7 @@ import numpy as np
 import SCNv2
 
 def runmain():
-    weload = False
+    weload = True
     if weload:
         D = np.load("./fitres.npz")
         g1s = D["g1s"]

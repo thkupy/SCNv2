@@ -35,6 +35,7 @@ def simulate_data(nconds, tstop, dt):
             hasstimulation=(True, False),
             pstimulation=(0.0, 1, tstop, useperc[thiscond], 0.0, 1, tstop, 0.0),
             hasinputactivity=(False, False),
+            hasfbi=False,
         )
         vma[thiscond + 1,:] = thisRA["AVm"]
         #
@@ -44,6 +45,7 @@ def simulate_data(nconds, tstop, dt):
             hasstimulation=(False, True),
             pstimulation=(0.0, 1, tstop, 0.0, 0.0, 1, tstop, useperc[thiscond]),
             hasinputactivity=(False, False),
+            hasfbi=False,
         )
         vmb[thiscond + 1,:] = thisRB["AVm"]
         #
@@ -57,6 +59,7 @@ def simulate_data(nconds, tstop, dt):
             hasstimulation=(True, True),
             pstimulation=stimparams,
             hasinputactivity=(False, False),
+            hasfbi=False,
         )
         vmab[thiscond + 1,:] = thisRAB["AVm"]
         bar.next()
