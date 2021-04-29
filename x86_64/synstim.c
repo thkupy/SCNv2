@@ -223,7 +223,7 @@ extern void _cvode_abstol( Symbol**, double*, int);
   hoc_register_dparam_semantics(_mechtype, 0, "area");
   hoc_register_dparam_semantics(_mechtype, 1, "pntproc");
  	hoc_register_var(hoc_scdoub, hoc_vdoub, hoc_intfunc);
- 	ivoc_help("help ?1 SynStim /home/kuenzel/Dokumente/Python/SCNv2/mech/synstim.mod\n");
+ 	ivoc_help("help ?1 SynStim /home/tk/Python/SCNv2/mech/synstim.mod\n");
  hoc_register_limits(_mechtype, _hoc_parm_limits);
  hoc_register_units(_mechtype, _hoc_parm_units);
  }
@@ -383,7 +383,7 @@ _first = 0;
 #endif
 
 #if NMODL_TEXT
-static const char* nmodl_filename = "/home/kuenzel/Dokumente/Python/SCNv2/mech/synstim.mod";
+static const char* nmodl_filename = "/home/tk/Python/SCNv2/mech/synstim.mod";
 static const char* nmodl_file_text = 
   "TITLE Synapse Stimulator\n"
   "\n"
