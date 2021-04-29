@@ -2,7 +2,7 @@
 data/
 figures/
 old/
-
+mech/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
