@@ -17,15 +17,15 @@ void modl_reg(){
   if (!nrn_nobanner_) if (nrnmpi_myid < 1) {
     fprintf(stderr, "Additional mechanisms from files\n");
 
-    fprintf(stderr," \"./mech//gclamp.mod\"");
-    fprintf(stderr," \"./mech//gfluct2.mod\"");
-    fprintf(stderr," \"./mech//kht.mod\"");
-    fprintf(stderr," \"./mech//klt.mod\"");
-    fprintf(stderr," \"./mech//leak.mod\"");
-    fprintf(stderr," \"./mech//na_fast.mod\"");
-    fprintf(stderr," \"./mech//na.mod\"");
-    fprintf(stderr," \"./mech//synstim.mod\"");
-    fprintf(stderr," \"./mech//vecevent.mod\"");
+    fprintf(stderr," \"mech//gclamp.mod\"");
+    fprintf(stderr," \"mech//gfluct2.mod\"");
+    fprintf(stderr," \"mech//kht.mod\"");
+    fprintf(stderr," \"mech//klt.mod\"");
+    fprintf(stderr," \"mech//leak.mod\"");
+    fprintf(stderr," \"mech//na_fast.mod\"");
+    fprintf(stderr," \"mech//na.mod\"");
+    fprintf(stderr," \"mech//synstim.mod\"");
+    fprintf(stderr," \"mech//vecevent.mod\"");
     fprintf(stderr, "\n");
   }
   _gclamp_reg();

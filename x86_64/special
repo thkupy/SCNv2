@@ -1,13 +1,13 @@
 #!/bin/sh
 if test "x${NRNHOME}" = "x" ; then
-    NRNHOME="/home/kuenzel/Dokumente/Python/venvs/SCNv2/lib/python3.8/site-packages/neuron/.data"
+    NRNHOME="/home/kuenzel/Dokumente/Python/pyvenvs/SCNv2/lib/python3.8/site-packages/neuron/.data"
 fi
 if test "${NEURONHOME}" = "" ; then
     NEURONHOME=${NRNHOME}/share/nrn
     export NEURONHOME
 fi
 if test "x${NRNBIN}" = "x" ; then
-    NRNBIN="/home/kuenzel/Dokumente/Python/venvs/SCNv2/bin"
+    NRNBIN="/home/kuenzel/Dokumente/Python/pyvenvs/SCNv2/bin"
 fi
 if test "" = "yes" ; then
     NRNIV="${NRNBIN}/nrniv.app/Contents/MacOS/nrniv"

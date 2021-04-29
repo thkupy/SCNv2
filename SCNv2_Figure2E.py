@@ -3,13 +3,14 @@
 """
 Revised version of the SCN model (2021).
 
-This generates the subpanel D of the second model figure:
-Grid of many apical and basal rates vs. primary neurite length
+This generates the subpanel E of the second model figure:
+Grid of many primary neurite lenghts vs. basal delay at a given basal rate.
+Does the delay of greatest rate depend on the primary neurite length?
 
 The command line args are:
-    SCNv2_Figure2D.py weload ncores nconds nreps
+    SCNv2_Figure2E.py weload ncores nconds nreps
 
-Created: 2021-04-28, TK
+Created: 2021-04-29, TK
 Revised: 
 @author: kuenzel(at)bio2.rwth-aachen.de
 """
@@ -132,7 +133,7 @@ def plotres(output, P, x, y, xlabs, ylabs):
     sprabn_std = np.reshape(outsprabn_std, (P["N"], P["N"]))
     nmda_diff =  np.reshape(outsprab_mean - outsprabn_mean, (P["N"], P["N"]))
     #
-    filtsig = 1.75
+    filtsig = 1.0
     sprab_mean = ndimage.gaussian_filter(sprab_mean, sigma=filtsig, order=0)
     sprabn_mean = ndimage.gaussian_filter(sprabn_mean, sigma=filtsig, order=0)
     nmda_diff = ndimage.gaussian_filter(nmda_diff, sigma=filtsig, order=0)
@@ -200,7 +201,7 @@ def plotres(output, P, x, y, xlabs, ylabs):
 
 if __name__ == "__main__":
     #Parse command-line arguments
-    #SCNv2_Figure2D.py weload ncores nconds nreps
+    #SCNv2_Figure2E.py weload ncores nconds nreps
     inputargs = sys.argv[1:]
     myargs = [1, 4, 5, 3]
     for iarg, thisarg in enumerate(inputargs):
@@ -211,10 +212,10 @@ if __name__ == "__main__":
     nreps = int(myargs[3])
     #------------------
     #Run the show
-    if os.path.isfile("./data/Figure2D.npy") and weload:
-        print("Data for SCNv2 Figure2D found... loading!")
-        output = np.load("./data/Figure2D.npy", allow_pickle=True)
-        P = np.load("./data/Figure2D_P.npy", allow_pickle=True)
+    if os.path.isfile("./data/Figure2E.npy") and weload:
+        print("Data for SCNv2 Figure2E found... loading!")
+        output = np.load("./data/Figure2E.npy", allow_pickle=True)
+        P = np.load("./data/Figure2E_P.npy", allow_pickle=True)
         P = P.tolist()
     else:
         #Some fixes Parameters, could be exposed to user later
@@ -222,6 +223,7 @@ if __name__ == "__main__":
         dt = 0.025
         dur = 1000.0
         aitv = 14.5#this is the fixed interval of the apical input
+        bitv = 5.0#this was maximum in the Figure2ABC plot
         nv = 1.0#
         output = []
         P = {}
@@ -239,30 +241,29 @@ if __name__ == "__main__":
         P["nreps"] = np.repeat(nreps, P["TotalN"])
         P["aitv"] = np.repeat(aitv, P["TotalN"])
         P["noiseval"] = np.repeat(nv, P["TotalN"])
-        P["ab_delay"] = np.repeat(0.0, P["TotalN"])
+        P["bfreq"] = np.repeat(np.round(1000.0 / bitv), P["TotalN"]) 
+        P["bitv"] = np.repeat(bitv, P["TotalN"])
         ###########################################
         # Now define the two variable parameters. The repeated = y, the tiled = x!!
-        bfreq = np.geomspace(10.0, 200.0, P["N"])
-        bitv = np.round(1000.0 / bfreq)
+        alldelays = np.round(np.linspace(-250.0, 250.0, P["N"]))
         alllengths = np.round(np.linspace(1.0, 250.0, P["N"]))
-        P["bfreq"] = np.repeat(np.round(bfreq), P["N"]) 
-        P["bitv"] = np.repeat(bitv, P["N"])
-        P["pNeuriteL"] = np.tile(alllengths, P["N"])
+        P["pNeuriteL"] = np.repeat(alllengths, P["N"])
+        P["ab_delay"] = np.tile(alldelays, P["N"])
         # make go!
         output.append(myMPhandler(P))
         output = np.array(output)
-        np.save("./data/Figure2D.npy", output, allow_pickle=True)
-        np.save("./data/Figure2D_P.npy", P, allow_pickle=True)
+        np.save("./data/Figure2E.npy", output, allow_pickle=True)
+        np.save("./data/Figure2E_P.npy", P, allow_pickle=True)
     #
     fhandle = plotres(
         output=output,
         P=P,
-        x=np.unique(P["pNeuriteL"]),
-        y=np.unique(P["bfreq"]),
-        xlabs=u"Primary Neurite Length (µm)",
-        ylabs=u"Basal Mean Input Freq. (Hz)",
+        x=np.unique(P["ab_delay"]),
+        y=np.unique(P["pNeuriteL"]),
+        xlabs=u"Basal Delay (ms)",
+        ylabs=u"Primary Neurite Length (µm)",
     )
-    pp = PdfPages("./figures/Figure2D.pdf")
+    pp = PdfPages("./figures/Figure2E.pdf")
     pp.savefig()
     pp.close()
 
