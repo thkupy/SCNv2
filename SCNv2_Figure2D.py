@@ -55,7 +55,7 @@ def runonecondition(x, P):
             pinputactivity=(250.0, P["aitv"][x], 250.0+P["ab_delay"][x], P["bitv"][x]),
             inputstop=(750.0, 750.0 + P["ab_delay"][x]),
             hasnmda=True,
-            seed=thisseed,
+            seed=thisseed + irep,
             hasfbi=True,
             noiseval=P["noiseval"][x],
             pNeurit_L=P["pNeuriteL"][x],
@@ -67,7 +67,7 @@ def runonecondition(x, P):
             LM=-20,
             RM=10,
         )
-        sprab[irep] = len(Sab["PeakT"])
+        sprab[irep] = len(Sab["PeakT"]) * (1000.0 / P["dur"][x])
         #-
         thisRABN = SCNv2.runmodel(
             tstop=P["dur"][x],
@@ -79,19 +79,19 @@ def runonecondition(x, P):
             pinputactivity=(250.0, P["aitv"][x], 250.0+P["ab_delay"][x], P["bitv"][x]),
             inputstop=(750.0, 750.0 + P["ab_delay"][x]),
             hasnmda=False,
-            seed=thisseed,
+            seed=thisseed + irep,
             hasfbi=True,
             noiseval=P["noiseval"][x],
             pNeurit_L=P["pNeuriteL"][x],
         )
-        Sab = SCNv2.SimpleDetectAP(
+        Sabn = SCNv2.SimpleDetectAP(
             thisRABN["AVm"],
             thr=P["thr"][x],
             dt=P["dt"][x],
             LM=-20,
             RM=10,
         )
-        sprabn[irep] = len(Sab["PeakT"]) * (1000.0 / P["dur"][x])
+        sprabn[irep] = len(Sabn["PeakT"]) * (1000.0 / P["dur"][x])
         #-
     print((str(x)))
     return [

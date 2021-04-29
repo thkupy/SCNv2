@@ -3,13 +3,15 @@
 """
 Revised version of the SCN model (2021).
 
-This generates the subpanels A-C of the second model figure:
-Grid of many apical and basal rates vs. onset delays
+This is another approach to look at integration.
+Here, we always stimulate at a total frequency of 200Hz. However, the frequency is 
+summed between the a and b inputs to give this value. Different ratios (200/0 -> 0/200)
+are tested.
 
 The command line args are:
-    SCNv2_Figure2ABC.py weload ncores nconds nreps
+    SCNv2_RatioInput weload ncores nconds nreps
 
-Created: 2021-03-18
+Created: 2021-04-29, TK
 Revised: 
 @author: kuenzel(at)bio2.rwth-aachen.de
 """
@@ -37,16 +39,66 @@ plt.rc("axes", labelsize="small")
 #plt.rcParams.update(new_rc_params)
 
 def runonecondition(x, P):
-    baserate = np.max(np.unique(P["bitv"]))
     ####GENERATE SPIKE INPUTS (the spiketimes are always the same to improve comparability)
+    amin = np.max(P["aitv"])
+    bmin = np.max(P["bitv"])
+    #
     if P["AdvSeed"]:
         thisseed = P["Seed"] + (x * 50)
     else:
         thisseed = P["Seed"]
+    spra = np.zeros(P["nreps"][x])
+    spran = np.zeros(P["nreps"][x])
     sprb = np.zeros(P["nreps"][x])
     sprab = np.zeros(P["nreps"][x])
     sprabn = np.zeros(P["nreps"][x])
     for irep in range(P["nreps"][x]):
+        thisRA = SCNv2.runmodel(
+            tstop=P["dur"][x],
+            dt=P["dt"][x],
+            nsyna=10,
+            nsynb=10,
+            hasstimulation=(False, False),
+            hasinputactivity=(True, True),
+            pinputactivity=(250.0, P["aitv"][x], 250.0+P["ab_delay"][x], bmin),
+            inputstop=(750.0, 750.0 + P["ab_delay"][x]),
+            hasnmda=True,
+            seed=thisseed + irep,
+            hasfbi=True,
+            noiseval=P["noiseval"][x],
+        )
+        Sa = SCNv2.SimpleDetectAP(
+            thisRA["AVm"],
+            thr=P["thr"][x],
+            dt=P["dt"][x],
+            LM=-20,
+            RM=10,
+        )
+        spra[irep] = len(Sa["PeakT"]) * (1000.0 / P["dur"][x])
+        #
+        thisRAN = SCNv2.runmodel(
+            tstop=P["dur"][x],
+            dt=P["dt"][x],
+            nsyna=10,
+            nsynb=10,
+            hasstimulation=(False, False),
+            hasinputactivity=(True, True),
+            pinputactivity=(250.0, P["aitv"][x], 250.0+P["ab_delay"][x], bmin),
+            inputstop=(750.0, 750.0 + P["ab_delay"][x]),
+            hasnmda=False,
+            seed=thisseed + irep,
+            hasfbi=True,
+            noiseval=P["noiseval"][x],
+        )
+        San = SCNv2.SimpleDetectAP(
+            thisRAN["AVm"],
+            thr=P["thr"][x],
+            dt=P["dt"][x],
+            LM=-20,
+            RM=10,
+        )
+        spran[irep] = len(Sa["PeakT"]) * (1000.0 / P["dur"][x])
+        #
         thisRB = SCNv2.runmodel(
             tstop=P["dur"][x],
             dt=P["dt"][x],
@@ -54,7 +106,7 @@ def runonecondition(x, P):
             nsynb=10,
             hasstimulation=(False, False),
             hasinputactivity=(True, True),
-            pinputactivity=(250.0, baserate, 250.0+P["ab_delay"][x], P["bitv"][x]),
+            pinputactivity=(250.0, amin, 250.0+P["ab_delay"][x], P["bitv"][x]),
             inputstop=(750.0, 750.0 + P["ab_delay"][x]),
             hasnmda=True,
             seed=thisseed + irep,
@@ -91,7 +143,7 @@ def runonecondition(x, P):
             LM=-20,
             RM=10,
         )
-        sprab[irep] = len(Sab["PeakT"])  * (1000.0 / P["dur"][x])
+        sprab[irep] = len(Sab["PeakT"]) * (1000.0 / P["dur"][x])
         #-
         thisRABN = SCNv2.runmodel(
             tstop=P["dur"][x],
@@ -118,12 +170,16 @@ def runonecondition(x, P):
         #-
     print((str(x)))
     return [
+        np.mean(spra),
+        np.std(spra),
+        np.mean(spran),
+        np.std(spran),
+        np.mean(sprb),
+        np.std(sprb),
         np.mean(sprab),
         np.std(sprab),
         np.mean(sprabn),
         np.std(sprabn),
-        np.mean(sprb),
-        np.std(sprb),
     ]
 
 
@@ -137,127 +193,57 @@ def myMPhandler(P):
     return r
 
 
-def plotres(output, P, x, y, xlabs, ylabs):
-    from matplotlib.ticker import ScalarFormatter, AutoMinorLocator, MaxNLocator
-    import scipy.ndimage as ndimage
-    from scipy import stats
-    #
+def plotres(output, P, x, xlabs, ylabs):
     mycmap = "bone"
     nticks = 5
-    fwidth = 6  # cm
-    fhandle = plt.figure(figsize=(fwidth / 2.54, (fwidth * 3.0) / 2.54), dpi=600)
+    fwidth = 8 # cm
+    fhandle = plt.figure(figsize=(fwidth / 2.54, (2 * fwidth) / 2.54), dpi=600)
     #
-    outsprab_mean = output[0][:, 0]
-    outsprab_std = output[0][:, 1]
-    outsprabn_mean = output[0][:, 2]
-    outsprabn_std = output[0][:, 3]
+    outspra_mean = output[0][:, 0]
+    outspra_std = output[0][:, 1]
+    outspran_mean = output[0][:, 2]
+    outspran_std = output[0][:, 3]
     outsprb_mean = output[0][:, 4]
     outsprb_std = output[0][:, 5]
-    sprab_mean = np.reshape(outsprab_mean, (P["N"], P["N"]))
-    sprab_std = np.reshape(outsprab_std, (P["N"], P["N"]))
-    sprabn_mean = np.reshape(outsprabn_mean, (P["N"], P["N"]))
-    sprabn_std = np.reshape(outsprabn_std, (P["N"], P["N"]))
-    sprb_mean = np.reshape(outsprb_mean, (P["N"], P["N"]))
-    sprb_std = np.reshape(outsprb_std, (P["N"], P["N"]))
-    nmda_diff =  np.reshape(outsprab_mean - outsprabn_mean, (P["N"], P["N"]))
-
-    aplusb = np.reshape(np.tile(sprab_mean[0],P["N"]), (P["N"],P["N"]))
-    aplusbn = np.reshape(np.tile(sprabn_mean[0],P["N"]), (P["N"],P["N"]))
-    Ienhance = sprab_mean > aplusb
-    Ienhance = Ienhance.astype(int)
-    Ienhancen = sprabn_mean > aplusbn
-    Ienhancen = Ienhancen.astype(int)
+    outsprab_mean = output[0][:, 6]
+    outsprab_std = output[0][:, 7]
+    outsprabn_mean = output[0][:, 8]
+    outsprabn_std = output[0][:, 9]
     #
-    filtsig = 1.0
-    sprab_mean = ndimage.gaussian_filter(sprab_mean, sigma=filtsig, order=0)
-    sprabn_mean = ndimage.gaussian_filter(sprabn_mean, sigma=filtsig, order=0)
-    sprb_mean = ndimage.gaussian_filter(sprb_mean, sigma=filtsig, order=0)
-    nmda_diff = ndimage.gaussian_filter(nmda_diff, sigma=filtsig, order=0)
+    midindex = int(np.floor(P["N"] / 2))
+    theoretical_combined = outspra_mean[midindex] + outsprb_mean[midindex]
+    theoretical_combined_n = outspran_mean[midindex] + outsprb_mean[midindex]
     #
-    ncontours = 17
-    #
-    ax1 = plt.subplot(411)
-    CS1 = plt.contourf(
-        x,
-        y,
-        sprab_mean,
-        np.linspace(0.0, 150.0, ncontours),
-        cmap="inferno",
-    )  # repeated = y, tiled = x!!
-    #plt.contour(x,y,Ienhance, (0.9,1.1,))
-    ax1.set_title("NMDA")
-    ax1.set_xlabel(xlabs)
+    ax1 = plt.subplot(211)
+    ax1.plot(105.0, theoretical_combined, "gx")
+    ax1.plot(105.0, theoretical_combined, "mx")
+    ax1.errorbar(P["afreq"], outspra_mean, yerr=outspra_std, color="b")
+    ax1.errorbar(P["afreq"], outspran_mean, yerr=outspran_std, color="b", linestyle="--")
+    ax1.errorbar(P["bfreq"], outsprb_mean, yerr=outsprb_std, color="r")
+    #ax1.errorbar(x, outsprab_mean, yerr=outsprab_std, color="k")
+    ax1.set_xlabel("Mean input rate (Hz)")
     ax1.set_ylabel(ylabs)
+    plt.legend(("apical", "basal", "apical+basal"))
     #
-    cbar1 = plt.colorbar(CS1, use_gridspec=True)
-    cbar1.ax.set_ylabel(u"Rate (Hz)")
-    tl = MaxNLocator(nbins=5)
-    cbar1.locator = tl
-    cbar1.update_ticks()
-    #
-    ax2 = plt.subplot(412)
-    CS2 = plt.contourf(
-        x,
-        y,
-        sprabn_mean,
-        np.linspace(0.0, 150.0, ncontours),
-        cmap="inferno",
-    )  # repeated = y, tiled = x!!
-    #plt.contour(x,y,Ienhancen, (0.9,1.1,))
-    ax2.set_title("no NMDA")
+    ax2 = plt.subplot(212)
+    ax2.plot((-200, 200), (theoretical_combined, theoretical_combined), "g-")
+    ax2.plot((-200, 200), (theoretical_combined_
+n, theoretical_combined_n), "g", linestyle="--")
+    ax2.errorbar(x, outsprab_mean, yerr=outsprab_std, color="k")
+    ax2.errorbar(x, outsprabn_mean, yerr=outsprabn_std, color="m")
     ax2.set_xlabel(xlabs)
     ax2.set_ylabel(ylabs)
-    #
-    cbar2 = plt.colorbar(CS2, use_gridspec=True)
-    cbar2.ax.set_ylabel(u"Rate (Hz)")
-    tl = MaxNLocator(nbins=5)
-    cbar2.locator = tl
-    cbar2.update_ticks()
-    #
-    ax3 = plt.subplot(413)
-    CS3 = plt.contourf(
-        x,
-        y,
-        nmda_diff,
-        np.linspace(0.0, 150.0, ncontours),
-        cmap="inferno",
-    )  # repeated = y, tiled = x!!
-    ax3.set_title("diff")
-    ax3.set_xlabel(xlabs)
-    ax3.set_ylabel(ylabs)
-    #
-    cbar3 = plt.colorbar(CS3, use_gridspec=True)
-    cbar3.ax.set_ylabel(r"$\Delta Rate (Hz)$")
-    tl = MaxNLocator(nbins=5)
-    cbar3.locator = tl
-    cbar3.update_ticks()
-    #
-    ax4 = plt.subplot(414)
-    CS4 = plt.contourf(
-        x,
-        y,
-        sprb_mean,
-        np.linspace(0.0, 150.0, ncontours),
-        cmap="inferno",
-    )  # repeated = y, tiled = x!!
-    ax4.set_title("basal vs spont-apical")
-    ax4.set_xlabel(xlabs)
-    ax4.set_ylabel(ylabs)
-    #
-    cbar4 = plt.colorbar(CS4, use_gridspec=True)
-    cbar4.ax.set_ylabel(u"Rate (Hz)")
-    tl = MaxNLocator(nbins=5)
-    cbar4.locator = tl
-    cbar4.update_ticks()
+    plt.legend(("w/ NMDA", "w/o NMDA"))
     #
     plt.tight_layout()
-    return fhandle
+    return(fhandle)
+
 
 if __name__ == "__main__":
     #Parse command-line arguments
-    #SCNv2_Figure2ABC.py weload ncores nconds nreps
+    #SCNv2_RatioInputs.py weload ncores nconds nreps
     inputargs = sys.argv[1:]
-    myargs = [1, 4, 5, 3]
+    myargs = [1, 4, 7, 3]
     for iarg, thisarg in enumerate(inputargs):
         myargs[iarg] = float(thisarg)
     weload = bool(myargs[0])
@@ -266,74 +252,53 @@ if __name__ == "__main__":
     nreps = int(myargs[3])
     #------------------
     #Run the show
-    if os.path.isfile("./data/Figure2ABC.npy") and weload:
-        print("Data for SCNv2 Figure2ABC found... loading!")
-        output = np.load("./data/Figure2ABC.npy", allow_pickle=True)
-        P = np.load("./data/Figure2ABC_P.npy", allow_pickle=True)
+    if os.path.isfile("./data/RatioInputs.npy") and weload:
+        print("Data for SCNv2_RatioInputs found... loading!")
+        output = np.load("./data/RatioInputs.npy", allow_pickle=True)
+        P = np.load("./data/RatioInputs_P.npy", allow_pickle=True)
         P = P.tolist()
     else:
         #Some fixes Parameters, could be exposed to user later
         apthr = -50.0
         dt = 0.025
         dur = 1000.0
-        aitv = 14.5#this is the fixed interval of the apical input
         nv = 1.0#
+        delay = 0.0
         output = []
         P = {}
         P["N"] = nconds
         P["cores"] = ncores
-        P["TotalN"] = int(P["N"] ** 2)
+        P["TotalN"] = int(P["N"])#this is a 1d Experiment!
         P["Number"] = list(range(P["TotalN"]))
         P["mp"] = True
-        P["Seed"] = 322453
+        P["Seed"] = 3234388
         P["AdvSeed"] = True
         #########################################
         P["thr"]  = np.repeat(apthr, P["TotalN"]) 
         P["dur"] = np.repeat(dur, P["TotalN"])
         P["dt"] = np.repeat(dt, P["TotalN"])
         P["nreps"] = np.repeat(nreps, P["TotalN"])
-        P["aitv"] = np.repeat(aitv, P["TotalN"])
         P["noiseval"] = np.repeat(nv, P["TotalN"])
+        P["ab_delay"] = np.repeat(delay, P["TotalN"])
         ###########################################
-        # Now define the two variable parameters. The repeated = y, the tiled = x!!
-        bfreq = np.geomspace(10.0, 200.0, P["N"])
-        bitv = np.round(1000.0 / bfreq)
-        alldelays = np.round(np.linspace(-250.0, 250.0, P["N"]))
-        P["bfreq"] = np.repeat(np.round(bfreq), P["N"]) 
-        P["bitv"] = np.repeat(bitv, P["N"])
-        P["ab_delay"] = np.tile(alldelays, P["N"])
+        P["afreq"] = np.linspace(10.0, 200.0, P["TotalN"])
+        P["bfreq"] = np.linspace(200.0, 10.0, P["TotalN"])
+        P["aitv"] = np.round(1000.0 / P["afreq"], 1)
+        P["bitv"] = np.round(1000.0 / P["bfreq"], 1)
+        #
         # make go!
         output.append(myMPhandler(P))
         output = np.array(output)
-        np.save("./data/Figure2ABC.npy", output, allow_pickle=True)
-        np.save("./data/Figure2ABC_P.npy", P, allow_pickle=True)
+        np.save("./data/RatioInputs.npy", output, allow_pickle=True)
+        np.save("./data/RatioInputs_P.npy", P, allow_pickle=True)
     #
     fhandle = plotres(
         output=output,
         P=P,
-        x=np.unique(P["ab_delay"]),
-        y=np.unique(P["bfreq"]),
-        xlabs=u"Basal Delay (ms)",
-        ylabs=u"Basal Mean Input Freq. (Hz)",
+        x=P["afreq"]-P["bfreq"],
+        xlabs=u"Apical-Basal Frequency Diff. (Hz)",
+        ylabs=u"AP Rate (Hz)",
     )
-    pp = PdfPages("./figures/Figure2ABC.pdf")
+    pp = PdfPages("./figures/RatioInputs.pdf")
     pp.savefig()
     pp.close()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
