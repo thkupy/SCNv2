@@ -85,7 +85,7 @@ def runonecondition(x, P):
             noiseval=P["noiseval"][x],
             pNeurit_L=P["pNeuriteL"][x],
         )
-        Sab = SCNv2.SimpleDetectAP(
+        Sabn = SCNv2.SimpleDetectAP(
             thisRABN["AVm"],
             thr=P["thr"][x],
             dt=P["dt"][x],
