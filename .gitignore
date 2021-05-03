@@ -3,6 +3,7 @@ data/
 figures/
 old/
 x86_64/
+nohup*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -7,11 +7,11 @@ This is another approach to look at integration.
 Here, we always stimulate at a total frequency of 200Hz. However, the frequency is 
 summed between the a and b inputs to give this value. Different ratios (200/0 -> 0/200)
 are tested.
-
+Long version.
 The command line args are:
     SCNv2_RatioInput weload ncores nconds nreps
 
-Created: 2021-04-29, TK
+Created: 2021-05-03, TK
 Revised: 
 @author: kuenzel(at)bio2.rwth-aachen.de
 """
@@ -281,7 +281,7 @@ if __name__ == "__main__":
         P["ab_delay"] = np.repeat(delay, P["TotalN"])
         ###########################################
         P["afreq"] = np.arange(4,200)+1
-        P["bfreq"] = np.flipud(x)
+        P["bfreq"] = np.flipud(P["afreq"])
         P["aitv"] = np.round(1000.0 / P["afreq"], 2)
         P["bitv"] = np.round(1000.0 / P["bfreq"], 2)
         #
