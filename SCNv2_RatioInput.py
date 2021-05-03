@@ -232,7 +232,7 @@ def plotres(output, P, x, xlabs, ylabs):
     ax2.errorbar(x, outsprabn_mean, yerr=outsprabn_std, color="m")
     ax2.set_xlabel(xlabs)
     ax2.set_ylabel(ylabs)
-    plt.legend(("w/ NMDA", "w/o NMDA"))
+    plt.legend(("sum unimodal", "sum unimodal, no NMDA", "apical+basal", "apical+basal w/o NMDA"))
     #
     plt.tight_layout()
     return(fhandle)
