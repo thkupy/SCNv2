@@ -223,7 +223,7 @@ def plotres(output, P, x, xlabs, ylabs):
     #ax1.errorbar(x, outsprab_mean, yerr=outsprab_std, color="k")
     ax1.set_xlabel("Mean input rate (Hz)")
     ax1.set_ylabel(ylabs)
-    plt.legend(("sum unimodal", "sum unimodal, no NMDA", "apical", "basal", "apical+basal"))
+    plt.legend(("sum unimodal", "sum unimodal, no NMDA", "apical", "apical, no NMDA", "basal"))
     #
     ax2 = plt.subplot(212)
     ax2.plot((-200, 200), (theoretical_combined, theoretical_combined), "g-")
