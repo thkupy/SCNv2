@@ -97,7 +97,7 @@ def runonecondition(x, P):
             LM=-20,
             RM=10,
         )
-        spran[irep] = len(Sa["PeakT"]) * (1000.0 / P["dur"][x])
+        spran[irep] = len(San["PeakT"]) * (1000.0 / P["dur"][x])
         #
         thisRB = SCNv2.runmodel(
             tstop=P["dur"][x],
@@ -216,19 +216,18 @@ def plotres(output, P, x, xlabs, ylabs):
     #
     ax1 = plt.subplot(211)
     ax1.plot(105.0, theoretical_combined, "gx")
-    ax1.plot(105.0, theoretical_combined, "mx")
+    ax1.plot(105.0, theoretical_combined_n, "mx")
     ax1.errorbar(P["afreq"], outspra_mean, yerr=outspra_std, color="b")
     ax1.errorbar(P["afreq"], outspran_mean, yerr=outspran_std, color="b", linestyle="--")
     ax1.errorbar(P["bfreq"], outsprb_mean, yerr=outsprb_std, color="r")
     #ax1.errorbar(x, outsprab_mean, yerr=outsprab_std, color="k")
     ax1.set_xlabel("Mean input rate (Hz)")
     ax1.set_ylabel(ylabs)
-    plt.legend(("apical", "basal", "apical+basal"))
+    plt.legend(("sum unimodal", "sum unimodal, no NMDA", "apical", "basal", "apical+basal"))
     #
     ax2 = plt.subplot(212)
     ax2.plot((-200, 200), (theoretical_combined, theoretical_combined), "g-")
-    ax2.plot((-200, 200), (theoretical_combined_
-n, theoretical_combined_n), "g", linestyle="--")
+    ax2.plot((-200, 200), (theoretical_combined_n, theoretical_combined_n), "g", linestyle="--")
     ax2.errorbar(x, outsprab_mean, yerr=outsprab_std, color="k")
     ax2.errorbar(x, outsprabn_mean, yerr=outsprabn_std, color="m")
     ax2.set_xlabel(xlabs)
