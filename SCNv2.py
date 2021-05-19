@@ -149,10 +149,12 @@ def runmodel(
         inputstop=(500.0, 500.0),
         hasnmda=True,
         seed=32768,
-        pNeurit_L=45,
+        pNeurit_L=60.0,
         pretime=100.0,
         T=25.0,
-        hasfbi=True,
+        hasfbi=False,
+        hasffi=True,
+        inhw=0.002,
         noiseval=0.5,
         soma_na=0.2,#0.125
         soma_k=0.04,#0.027
@@ -190,7 +192,7 @@ def runmodel(
     Soma.diam = 20#assumed'5d
     Soma.nseg = 7
     #
-    pNeurit.L = pNeurit_L#from table (45 is the default)
+    pNeurit.L = pNeurit_L#from table (45 is the old default, 60 the new)
     pNeurit.diam = 3#assumed
     pNeurit.nseg = 7
     #
@@ -446,12 +448,53 @@ def runmodel(
         isynb.e = -85
         inc1 = h.NetCon(Node2(0.9)._ref_v, isyna, sec=Node2)
         inc1.threshold = -35.0
-        inc1.weight[0] = 0.02#0.01
+        inc1.weight[0] = 0.005#0.02#0.01
         inc1.delay = 5.0#[here was 2.0ms, Stefan prefers 5ms]
         inc2 = h.NetCon(Node2(0.9)._ref_v, isynb, sec=Node2)
         inc2.threshold = -35.0
-        inc2.weight[0] = 0.02#0.01
+        inc2.weight[0] = 0.005#0.02#0.01
         inc2.delay = 5.0
+    if hasffi:
+        if hasinputactivity[0]:
+            isynca = h.ExpSyn(aDend(0.01))
+            isynca.tau = 50.0#5.0
+            isynca.e = -85
+            isyncb = h.ExpSyn(bDend(0.01))
+            isyncb.tau = 50.0#5.0
+            isyncb.e = -85
+            inhstimc = h.NetStim()
+            thisN = int(np.round((inputstop[0]-pinputactivity[0])/pinputactivity[1]))
+            inhstimc.number = thisN
+            inhstimc.start = pinputactivity[0] + pretime
+            inhstimc.noise = 1.0
+            inhstimc.interval = pinputactivity[1]
+            inhstimc.seed(seed + 2944)
+            inhconca = h.NetCon(inhstimc, isynca)
+            inhconcb = h.NetCon(inhstimc, isyncb)
+            inhconca.delay = 0.5
+            inhconcb.delay = 0.5
+            inhconca.weight[0] = inhw
+            inhconcb.weight[0] = inhw
+        if hasinputactivity[1]:
+            isynda = h.ExpSyn(aDend(0.4))
+            isynda.tau = 50.0#5.0
+            isynda.e = -85
+            isyndb = h.ExpSyn(bDend(0.4))
+            isyndb.tau = 50.0#5.0
+            isyndb.e = -85
+            inhstimd = h.NetStim()
+            thisN = int(np.round((inputstop[1]-pinputactivity[2])/pinputactivity[3]))
+            inhstimd.number = thisN
+            inhstimd.start = pinputactivity[2] + pretime
+            inhstimd.noise = 1.0
+            inhstimd.interval = pinputactivity[3]
+            inhstimd.seed(seed + 3245)
+            inhconda = h.NetCon(inhstimd, isynda)
+            inhcondb = h.NetCon(inhstimd, isyndb)
+            inhconda.delay = 0.5
+            inhcondb.delay = 0.5
+            inhconda.weight[0] = inhw
+            inhcondb.weight[0] = inhw
     #
     # INFRASTRUCTURE
     SCN_SVm = h.Vector()
