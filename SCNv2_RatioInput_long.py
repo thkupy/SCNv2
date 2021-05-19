@@ -194,45 +194,101 @@ def myMPhandler(P):
 
 
 def plotres(output, P, x, xlabs, ylabs):
+    from scipy.ndimage import gaussian_filter1d
+    sigma = 2.0
+    
     mycmap = "bone"
     nticks = 5
     fwidth = 8 # cm
     fhandle = plt.figure(figsize=(fwidth / 2.54, (2 * fwidth) / 2.54), dpi=600)
     #
-    outspra_mean = output[0][:, 0]
-    outspra_std = output[0][:, 1]
-    outspran_mean = output[0][:, 2]
-    outspran_std = output[0][:, 3]
-    outsprb_mean = output[0][:, 4]
-    outsprb_std = output[0][:, 5]
-    outsprab_mean = output[0][:, 6]
-    outsprab_std = output[0][:, 7]
-    outsprabn_mean = output[0][:, 8]
-    outsprabn_std = output[0][:, 9]
+    outspra_mean = gaussian_filter1d(output[0][:, 0], sigma)
+    outspra_std = gaussian_filter1d(output[0][:, 1], sigma)
+    outspran_mean = gaussian_filter1d(output[0][:, 2], sigma)
+    outspran_std = gaussian_filter1d(output[0][:, 3], sigma)
+    outsprb_mean = gaussian_filter1d(output[0][:, 4], sigma)
+    outsprb_std = gaussian_filter1d(output[0][:, 5], sigma)
+    outsprab_mean = gaussian_filter1d(output[0][:, 6], sigma)
+    outsprab_std = gaussian_filter1d(output[0][:, 7], sigma)
+    outsprabn_mean = gaussian_filter1d(output[0][:, 8], sigma)
+    outsprabn_std = gaussian_filter1d(output[0][:, 9], sigma)
     #
-    midindex = int(np.floor(P["N"] / 2))
-    theoretical_combined = outspra_mean[midindex] + outsprb_mean[midindex]
-    theoretical_combined_n = outspran_mean[midindex] + outsprb_mean[midindex]
+    outsum_mean = outspra_mean + outsprb_mean
+    outsum_std = outspra_std + outsprb_std
+    outsum_n_mean = outspran_mean + outsprb_mean
+    outsum_n_std = outspran_std + outsprb_std
     #
-    ax1 = plt.subplot(211)
-    ax1.plot(105.0, theoretical_combined, "gx")
-    ax1.plot(105.0, theoretical_combined_n, "mx")
-    ax1.errorbar(P["afreq"], outspra_mean, yerr=outspra_std, color="b")
-    ax1.errorbar(P["afreq"], outspran_mean, yerr=outspran_std, color="b", linestyle="--")
-    ax1.errorbar(P["bfreq"], outsprb_mean, yerr=outsprb_std, color="r")
-    #ax1.errorbar(x, outsprab_mean, yerr=outsprab_std, color="k")
-    ax1.set_xlabel("Mean input rate (Hz)")
-    ax1.set_ylabel(ylabs)
-    plt.legend(("sum unimodal", "sum unimodal, no NMDA", "apical", "apical, no NMDA", "basal"))
-    #
-    ax2 = plt.subplot(212)
-    ax2.plot((-200, 200), (theoretical_combined, theoretical_combined), "g-")
-    ax2.plot((-200, 200), (theoretical_combined_n, theoretical_combined_n), "g", linestyle="--")
-    ax2.errorbar(x, outsprab_mean, yerr=outsprab_std, color="k")
-    ax2.errorbar(x, outsprabn_mean, yerr=outsprabn_std, color="m")
-    ax2.set_xlabel(xlabs)
-    ax2.set_ylabel(ylabs)
-    plt.legend(("sum unimodal", "sum unimodal, no NMDA", "apical+basal", "apical+basal w/o NMDA"))
+    ax1 = plt.subplot(311)
+    ax1.fill_between(
+        P["afreq"],outspra_mean+outspra_std, outspra_mean-outspra_std,
+        color="b", alpha=0.5,
+    )
+    ax1.plot(P["afreq"], outspra_mean, color="b")
+    ax1.fill_between(
+        P["bfreq"],outsprb_mean+outsprb_std, outsprb_mean-outsprb_std,
+        color="r", alpha=0.5,
+    )
+    ax1.plot(P["bfreq"], outsprb_mean, color="r")
+    ax1.fill_between(
+        P["afreq"],outspran_mean+outspran_std, outspran_mean-outspran_std,
+        color="m", alpha=0.5,
+    )
+    ax1.plot(P["afreq"], outspran_mean, color="m")
+    ax1.set_ylabel("AP mean output rate (Hz)")
+    ax1.set_xlabel("Mean input rate per input (Hz)")
+    ax1.set_title("Unimodal")
+    ax1.legend(("Apical", "Basal","Apical, no NMDA"), fontsize=6)
+    
+    ax2 = plt.subplot(312)
+    ax2.fill_between(
+        P["afreq"]-P["bfreq"],outsprab_mean+outsprab_std, outsprab_mean-outsprab_std,
+        color="k", alpha=0.5,
+    )
+    ax2.plot(P["afreq"]-P["bfreq"], outsprab_mean, color="k")
+    ax2.fill_between(
+        P["afreq"]-P["bfreq"],outsum_mean+outsum_std, outsum_mean-outsum_std,
+        color="g", alpha=0.5,
+    )
+    ax2.plot(P["afreq"]-P["bfreq"], outsum_mean, color="g")
+    ax2.set_ylabel("AP mean output rate (Hz)")
+    ax2.set_xlabel("Apical - Basal input rate (Hz), sum = 205 Hz")
+    ax2.set_title("Bimodal, NMDA")
+    ax2.legend(("bimodal", "sum of unimodal"), fontsize=6)
+    
+    ax3 = plt.subplot(313)
+    ax3.fill_between(
+        P["afreq"]-P["bfreq"],outsprabn_mean+outsprabn_std, outsprabn_mean-outsprabn_std,
+        color="k", alpha=0.5,
+    )
+    ax3.plot(P["afreq"]-P["bfreq"], outsprabn_mean, color="k")
+    ax3.fill_between(
+        P["afreq"]-P["bfreq"],outsum_n_mean+outsum_n_std, outsum_n_mean-outsum_n_std,
+        color="g", alpha=0.5,
+    )
+    ax3.plot(P["afreq"]-P["bfreq"], outsum_n_mean, color="g")
+    ax3.set_ylabel("AP mean output rate (Hz)")
+    ax3.set_xlabel("Apical - Basal input rate (Hz), sum = 205 Hz")
+    ax3.set_title("Bimodal, no NMDA")
+    ax3.legend(("bimodal", "sumssh of unimodal"), fontsize=6)
+#    ax1 = plt.subplot(211)
+#    ax1.plot(105.0, theoretical_combined, "gx")
+#    ax1.plot(105.0, theoretical_combined_n, "mx")
+#    ax1.errorbar(P["afreq"], outspra_mean, yerr=outspra_std, color="b")
+#    ax1.errorbar(P["afreq"], outspran_mean, yerr=outspran_std, color="b", linestyle="--")
+#    ax1.errorbar(P["bfreq"], outsprb_mean, yerr=outsprb_std, color="r")
+#    #ax1.errorbar(x, outsprab_mean, yerr=outsprab_std, color="k")
+#    ax1.set_xlabel("Mean input rate (Hz)")
+#    ax1.set_ylabel(ylabs)
+#    plt.legend(("sum unimodal", "sum unimodal, no NMDA", "apical", "apical, no NMDA", "basal"))
+#    #
+#    ax2 = plt.subplot(212)
+#    ax2.plot((-200, 200), (theoretical_combined, theoretical_combined), "g-")
+#    ax2.plot((-200, 200), (theoretical_combined_n, theoretical_combined_n), "g", linestyle="--")
+#    ax2.errorbar(x, outsprab_mean, yerr=outsprab_std, color="k")
+#    ax2.errorbar(x, outsprabn_mean, yerr=outsprabn_std, color="m")
+#    ax2.set_xlabel(xlabs)
+#    ax2.set_ylabel(ylabs)
+#    plt.legend(("sum unimodal", "sum unimodal, no NMDA", "apical+basal", "apical+basal w/o NMDA"))
     #
     plt.tight_layout()
     return(fhandle)
