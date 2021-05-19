@@ -1612,3 +1612,2721 @@ Warning: no DISPLAY environment variable.
 613
 614
 615
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+48
+49
+50
+51
+52
+53
+54
+55
+288
+289
+290
+291
+292
+293
+294
+295
+464
+465
+466
+467
+468
+469
+470
+471
+152
+153
+154
+155
+156
+157
+158
+159
+184
+185
+186
+187
+188
+189
+190
+191
+320
+321
+322
+323
+324
+325
+326
+327
+480
+481
+482
+483
+484
+485
+486
+487
+104
+105
+106
+107
+108
+109
+110
+111
+296
+297
+298
+299
+300
+301
+302
+303
+472
+473
+474
+475
+476
+477
+478
+479
+624
+24
+25
+26
+27
+28
+29
+30
+31
+200
+201
+202
+203
+204
+205
+206
+207
+352
+353
+354
+355
+356
+357
+358
+359
+504
+505
+506
+507
+508
+509
+510
+511
+112
+113
+114
+115
+116
+117
+118
+119
+160
+161
+162
+163
+164
+165
+166
+167
+336
+337
+338
+339
+340
+341
+342
+343
+512
+513
+514
+515
+516
+517
+518
+519
+96
+97
+98
+99
+100
+101
+102
+103
+192
+193
+194
+195
+196
+197
+198
+199
+328
+329
+330
+331
+332
+333
+334
+335
+488
+489
+490
+491
+492
+493
+494
+495
+0
+1
+2
+3
+4
+5
+6
+7
+208
+209
+210
+211
+212
+213
+214
+215
+360
+361
+362
+363
+364
+365
+366
+367
+520
+521
+522
+523
+524
+525
+526
+527
+16
+17
+18
+19
+20
+21
+22
+23
+256
+257
+258
+259
+260
+261
+262
+263
+376
+377
+378
+379
+380
+381
+382
+383
+544
+545
+546
+547
+548
+549
+550
+551
+72
+73
+74
+75
+76
+77
+78
+79
+176
+177
+178
+179
+180
+181
+182
+183
+368
+369
+370
+371
+372
+373
+374
+375
+528
+529
+530
+531
+532
+533
+534
+535
+136
+137
+138
+139
+140
+141
+142
+143
+224
+225
+226
+227
+228
+229
+230
+231
+384
+385
+386
+387
+388
+389
+390
+391
+560
+561
+562
+563
+564
+565
+566
+567
+88
+89
+90
+91
+92
+93
+94
+95
+168
+169
+170
+171
+172
+173
+174
+175
+344
+345
+346
+347
+348
+349
+350
+351
+496
+497
+498
+499
+500
+501
+502
+503
+56
+57
+58
+59
+60
+61
+62
+63
+312
+313
+314
+315
+316
+317
+318
+319
+432
+433
+434
+435
+436
+437
+438
+439
+568
+569
+570
+571
+572
+573
+574
+575
+128
+129
+130
+131
+132
+133
+134
+135
+232
+233
+234
+235
+236
+237
+238
+239
+392
+393
+394
+395
+396
+397
+398
+399
+536
+537
+538
+539
+540
+541
+542
+543
+144
+145
+146
+147
+148
+149
+150
+151
+280
+281
+282
+283
+284
+285
+286
+287
+408
+409
+410
+411
+412
+413
+414
+415
+552
+553
+554
+555
+556
+557
+558
+559
+64
+65
+66
+67
+68
+69
+70
+71
+216
+217
+218
+219
+220
+221
+222
+223
+400
+401
+402
+403
+404
+405
+406
+407
+576
+577
+578
+579
+580
+581
+582
+583
+32
+33
+34
+35
+36
+37
+38
+39
+248
+249
+250
+251
+252
+253
+254
+255
+448
+449
+450
+451
+452
+453
+454
+455
+592
+593
+594
+595
+596
+597
+598
+599
+120
+121
+122
+123
+124
+125
+126
+127
+264
+265
+266
+267
+268
+269
+270
+271
+440
+441
+442
+443
+444
+445
+446
+447
+584
+585
+586
+587
+588
+589
+590
+591
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+36
+37
+42
+43
+82
+83
+34
+35
+44
+45
+84
+85
+22
+23
+50
+51
+86
+87
+2
+3
+64
+65
+106
+107
+28
+29
+58
+59
+104
+105
+20
+21
+66
+67
+102
+103
+18
+19
+60
+61
+100
+101
+14
+15
+72
+73
+110
+111
+26
+27
+46
+47
+88
+89
+10
+11
+56
+57
+92
+93
+4
+5
+70
+71
+108
+109
+8
+9
+68
+69
+114
+115
+12
+13
+74
+75
+112
+113
+24
+25
+54
+55
+98
+99
+32
+33
+62
+63
+96
+97
+30
+31
+52
+53
+90
+91
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+16
+17
+18
+19
+20
+21
+22
+23
+312
+313
+314
+315
+316
+317
+318
+319
+472
+473
+474
+475
+476
+477
+478
+479
+152
+153
+154
+155
+156
+157
+158
+159
+168
+169
+170
+171
+172
+173
+174
+175
+352
+353
+354
+355
+356
+357
+358
+359
+504
+505
+506
+507
+508
+509
+510
+511
+0
+1
+2
+3
+4
+5
+6
+7
+304
+305
+306
+307
+308
+309
+310
+311
+464
+465
+466
+467
+468
+469
+470
+471
+624
+128
+129
+130
+131
+132
+133
+134
+135
+192
+193
+194
+195
+196
+197
+198
+199
+344
+345
+346
+347
+348
+349
+350
+351
+496
+497
+498
+499
+500
+501
+502
+503
+136
+137
+138
+139
+140
+141
+142
+143
+184
+185
+186
+187
+188
+189
+190
+191
+336
+337
+338
+339
+340
+341
+342
+343
+488
+489
+490
+491
+492
+493
+494
+495
+96
+97
+98
+99
+100
+101
+102
+103
+176
+177
+178
+179
+180
+181
+182
+183
+320
+321
+322
+323
+324
+325
+326
+327
+480
+481
+482
+483
+484
+485
+486
+487
+88
+89
+90
+91
+92
+93
+94
+95
+216
+217
+218
+219
+220
+221
+222
+223
+368
+369
+370
+371
+372
+373
+374
+375
+528
+529
+530
+531
+532
+533
+534
+535
+112
+113
+114
+115
+116
+117
+118
+119
+256
+257
+258
+259
+260
+261
+262
+263
+432
+433
+434
+435
+436
+437
+438
+439
+584
+585
+586
+587
+588
+589
+590
+591
+64
+65
+66
+67
+68
+69
+70
+71
+248
+249
+250
+251
+252
+253
+254
+255
+384
+385
+386
+387
+388
+389
+390
+391
+576
+577
+578
+579
+580
+581
+582
+583
+40
+41
+42
+43
+44
+45
+46
+47
+224
+225
+226
+227
+228
+229
+230
+231
+416
+417
+418
+419
+420
+421
+422
+423
+592
+593
+594
+595
+596
+597
+598
+599
+120
+121
+122
+123
+124
+125
+126
+127
+208
+209
+210
+211
+212
+213
+214
+215
+360
+361
+362
+363
+364
+365
+366
+367
+520
+521
+522
+523
+524
+525
+526
+527
+104
+105
+106
+107
+108
+109
+110
+111
+272
+273
+274
+275
+276
+277
+278
+279
+424
+425
+426
+427
+428
+429
+430
+431
+568
+569
+570
+571
+572
+573
+574
+575
+56
+57
+58
+59
+60
+61
+62
+63
+280
+281
+282
+283
+284
+285
+286
+287
+408
+409
+410
+411
+412
+413
+414
+415
+536
+537
+538
+539
+540
+541
+542
+543
+8
+9
+10
+11
+12
+13
+14
+15
+232
+233
+234
+235
+236
+237
+238
+239
+392
+393
+394
+395
+396
+397
+398
+399
+560
+561
+562
+563
+564
+565
+566
+567
+32
+33
+34
+35
+36
+37
+38
+39
+288
+289
+290
+291
+292
+293
+294
+295
+440
+441
+442
+443
+444
+445
+446
+447
+600
+601
+602
+603
+604
+605
+606
+607
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+64
+65
+66
+67
+68
+69
+70
+71
+304
+305
+306
+307
+308
+309
+310
+311
+472
+473
+474
+475
+476
+477
+478
+479
+104
+105
+106
+107
+108
+109
+110
+111
+248
+249
+250
+251
+252
+253
+254
+255
+424
+425
+426
+427
+428
+429
+430
+431
+624
+136
+137
+138
+139
+140
+141
+142
+143
+184
+185
+186
+187
+188
+189
+190
+191
+336
+337
+338
+339
+340
+341
+342
+343
+496
+497
+498
+499
+500
+501
+502
+503
+112
+113
+114
+115
+116
+117
+118
+119
+272
+273
+274
+275
+276
+277
+278
+279
+400
+401
+402
+403
+404
+405
+406
+407
+520
+521
+522
+523
+524
+525
+526
+527
+152
+153
+154
+155
+156
+157
+158
+159
+192
+193
+194
+195
+196
+197
+198
+199
+344
+345
+346
+347
+348
+349
+350
+351
+488
+489
+490
+491
+492
+493
+494
+495
+80
+81
+82
+83
+84
+85
+86
+87
+296
+297
+298
+299
+300
+301
+302
+303
+432
+433
+434
+435
+436
+437
+438
+439
+528
+529
+530
+531
+532
+533
+534
+535
+32
+33
+34
+35
+36
+37
+38
+39
+160
+161
+162
+163
+164
+165
+166
+167
+320
+321
+322
+323
+324
+325
+326
+327
+480
+481
+482
+483
+484
+485
+486
+487
+144
+145
+146
+147
+148
+149
+150
+151
+168
+169
+170
+171
+172
+173
+174
+175
+328
+329
+330
+331
+332
+333
+334
+335
+576
+577
+578
+579
+580
+581
+582
+583
+16
+17
+18
+19
+20
+21
+22
+23
+200
+201
+202
+203
+204
+205
+206
+207
+368
+369
+370
+371
+372
+373
+374
+375
+512
+513
+514
+515
+516
+517
+518
+519
+0
+1
+2
+3
+4
+5
+6
+7
+240
+241
+242
+243
+244
+245
+246
+247
+376
+377
+378
+379
+380
+381
+382
+383
+536
+537
+538
+539
+540
+541
+542
+543
+48
+49
+50
+51
+52
+53
+54
+55
+208
+209
+210
+211
+212
+213
+214
+215
+440
+441
+442
+443
+444
+445
+446
+447
+584
+585
+586
+587
+588
+589
+590
+591
+24
+25
+26
+27
+28
+29
+30
+31
+216
+217
+218
+219
+220
+221
+222
+223
+352
+353
+354
+355
+356
+357
+358
+359
+504
+505
+506
+507
+508
+509
+510
+511
+56
+57
+58
+59
+60
+61
+62
+63
+288
+289
+290
+291
+292
+293
+294
+295
+464
+465
+466
+467
+468
+469
+470
+471
+544
+545
+546
+547
+548
+549
+550
+551
+88
+89
+90
+91
+92
+93
+94
+95
+176
+177
+178
+179
+180
+181
+182
+183
+360
+361
+362
+363
+364
+365
+366
+367
+568
+569
+570
+571
+572
+573
+574
+575
+96
+97
+98
+99
+100
+101
+102
+103
+264
+265
+266
+267
+268
+269
+270
+271
+384
+385
+386
+387
+388
+389
+390
+391
+616
+617
+618
+619
+620
+621
+622
+623
+128
+129
+130
+131
+132
+133
+134
+135
+232
+233
+234
+235
+236
+237
+238
+239
+416
+417
+418
+419
+420
+421
+422
+423
+592
+593
+594
+595
+596
+597
+598
+599
+8
+9
+10
+11
+12
+13
+14
+15
+312
+313
+314
+315
+316
+317
+318
+319
+448
+449
+450
+451
+452
+453
+454
+455
+560
+561
+562
+563
+564
+565
+566
+567
+72
+73
+74
+75
+76
+77
+78
+79
+256
+257
+258
+259
+260
+261
+262
+263
+456
+457
+458
+459
+460
+461
+462
+463
+608
+609
+610
+611
+612
+613
+614
+615
+40
+41
+42
+43
+44
+45
+46
+47
+280
+281
+282
+283
+284
+285
+286
+287
+408
+409
+410
+411
+412
+413
+414
+415
+552
+553
+554
+555
+556
+557
+558
+559
+120
+121
+122
+123
+124
+125
+126
+127
+224
+225
+226
+227
+228
+229
+230
+231
+392
+393
+394
+395
+396
+397
+398
+399
+600
+601
+602
+603
+604
+605
+606
+607
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+multiprocessing.pool.RemoteTraceback: 
+"""
+Traceback (most recent call last):
+  File "/usr/lib/python3.6/multiprocessing/pool.py", line 119, in worker
+    result = (True, func(*args, **kwds))
+  File "/usr/lib/python3.6/multiprocessing/pool.py", line 44, in mapstar
+    return list(map(*args))
+  File "SCNv2_Figure2E.py", line 95, in runonecondition
+    sprabn[irep] = len(Sabn["PeakT"]) * (1000.0 / P["dur"][x])
+NameError: name 'Sabn' is not defined
+"""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "SCNv2_Figure2E.py", line 253, in <module>
+    output.append(myMPhandler(P))
+  File "SCNv2_Figure2E.py", line 110, in myMPhandler
+    r = p.map(poolmess, P["Number"])
+  File "/usr/lib/python3.6/multiprocessing/pool.py", line 266, in map
+    return self._map_async(func, iterable, mapstar, chunksize).get()
+  File "/usr/lib/python3.6/multiprocessing/pool.py", line 644, in get
+    raise self._value
+NameError: name 'Sabn' is not defined
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+multiprocessing.pool.RemoteTraceback: 
+"""
+Traceback (most recent call last):
+  File "/usr/lib/python3.6/multiprocessing/pool.py", line 119, in worker
+    result = (True, func(*args, **kwds))
+  File "/usr/lib/python3.6/multiprocessing/pool.py", line 44, in mapstar
+    return list(map(*args))
+  File "SCNv2_Figure2E.py", line 95, in runonecondition
+    sprabn[irep] = len(Sabn["PeakT"]) * (1000.0 / P["dur"][x])
+NameError: name 'Sabn' is not defined
+"""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "SCNv2_Figure2E.py", line 253, in <module>
+    output.append(myMPhandler(P))
+  File "SCNv2_Figure2E.py", line 110, in myMPhandler
+    r = p.map(poolmess, P["Number"])
+  File "/usr/lib/python3.6/multiprocessing/pool.py", line 266, in map
+    return self._map_async(func, iterable, mapstar, chunksize).get()
+  File "/usr/lib/python3.6/multiprocessing/pool.py", line 644, in get
+    raise self._value
+NameError: name 'Sabn' is not defined
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+8
+9
+10
+11
+12
+13
+14
+15
+288
+289
+290
+291
+292
+293
+294
+295
+464
+465
+466
+467
+468
+469
+470
+471
+624
+112
+113
+114
+115
+116
+117
+118
+119
+184
+185
+186
+187
+188
+189
+190
+191
+376
+377
+378
+379
+380
+381
+382
+383
+504
+505
+506
+507
+508
+509
+510
+511
+16
+17
+18
+19
+20
+21
+22
+23
+312
+313
+314
+315
+316
+317
+318
+319
+472
+473
+474
+475
+476
+477
+478
+479
+96
+97
+98
+99
+100
+101
+102
+103
+176
+177
+178
+179
+180
+181
+182
+183
+336
+337
+338
+339
+340
+341
+342
+343
+488
+489
+490
+491
+492
+493
+494
+495
+144
+145
+146
+147
+148
+149
+150
+151
+192
+193
+194
+195
+196
+197
+198
+199
+344
+345
+346
+347
+348
+349
+350
+351
+520
+521
+522
+523
+524
+525
+526
+527
+48
+49
+50
+51
+52
+53
+54
+55
+248
+249
+250
+251
+252
+253
+254
+255
+448
+449
+450
+451
+452
+453
+454
+455
+576
+577
+578
+579
+580
+581
+582
+583
+24
+25
+26
+27
+28
+29
+30
+31
+232
+233
+234
+235
+236
+237
+238
+239
+424
+425
+426
+427
+428
+429
+430
+431
+616
+617
+618
+619
+620
+621
+622
+623
+128
+129
+130
+131
+132
+133
+134
+135
+240
+241
+242
+243
+244
+245
+246
+247
+392
+393
+394
+395
+396
+397
+398
+399
+528
+529
+530
+531
+532
+533
+534
+535
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+findfont: Font family ['serif'] not found. Falling back to DejaVu Sans.
+11
+5
+7
+9
+15
+16
+8
+3
+6
+18
+12
+2
+4
+1
+19
+21
+10
+24
+0
+14
+20
+13
+23
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Traceback (most recent call last):
+  File "SCNv2_RatioInput_long.py", line 284, in <module>
+    P["bfreq"] = np.flipud(x)
+NameError: name 'x' is not defined
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Process ForkPoolWorker-10:
+Traceback (most recent call last):
+  File "/usr/lib/python3.6/multiprocessing/process.py", line 258, in _bootstrap
+    self.run()
+  File "/usr/lib/python3.6/multiprocessing/process.py", line 93, in run
+    self._target(*self._args, **self._kwargs)
+  File "/usr/lib/python3.6/multiprocessing/pool.py", line 119, in worker
+    result = (True, func(*args, **kwds))
+  File "/usr/lib/python3.6/multiprocessing/pool.py", line 44, in mapstar
+    return list(map(*args))
+  File "SCNv2_RatioInput_long.py", line 68, in runonecondition
+    noiseval=P["noiseval"][x],
+  File "/home/tk/Python/SCNv2/SCNv2.py", line 463, in runmodel
+    nrngo(tstop+pretime,-66.5)
+  File "/home/tk/Python/SCNv2/SCNv2.py", line 97, in nrngo
+    h.fadvance()
+KeyboardInterrupt
+Process ForkPoolWorker-4:
+Traceback (most recent call last):
+  File "/usr/lib/python3.6/multiprocessing/process.py", line 258, in _bootstrap
+    self.run()
+  File "/usr/lib/python3.6/multiprocessing/process.py", line 93, in run
+    self._target(*self._args, **self._kwargs)
+  File "/usr/lib/python3.6/multiprocessing/pool.py", line 119, in worker
+    result = (True, func(*args, **kwds))
+  File "/usr/lib/python3.6/multiprocessing/pool.py", line 44, in mapstar
+    return list(map(*args))
+  File "SCNv2_RatioInput_long.py", line 68, in runonecondition
+    noiseval=P["noiseval"][x],
+  File "/home/tk/Python/SCNv2/SCNv2.py", line 463, in runmodel
+    nrngo(tstop+pretime,-66.5)
+  File "/home/tk/Python/SCNv2/SCNv2.py", line 97, in nrngo
+    h.fadvance()
+KeyboardInterrupt
+Process ForkPoolWorker-16:
+Traceback (most recent call last):
+  File "/usr/lib/python3.6/multiprocessing/process.py", line 258, in _bootstrap
+    self.run()
+  File "/usr/lib/python3.6/multiprocessing/process.py", line 93, in run
+    self._target(*self._args, **self._kwargs)
+  File "/usr/lib/python3.6/multiprocessing/pool.py", line 119, in worker
+    result = (True, func(*args, **kwds))
+  File "/usr/lib/python3.6/multiprocessing/pool.py", line 44, in mapstar
+    return list(map(*args))
+  File "SCNv2_RatioInput_long.py", line 68, in runonecondition
+    noiseval=P["noiseval"][x],
+  File "/home/tk/Python/SCNv2/SCNv2.py", line 463, in runmodel
+    nrngo(tstop+pretime,-66.5)
+  File "/home/tk/Python/SCNv2/SCNv2.py", line 97, in nrngo
+    h.fadvance()
+KeyboardInterrupt
+Process ForkPoolWorker-20:
+Traceback (most recent call last):
+  File "/usr/lib/python3.6/multiprocessing/process.py", line 258, in _bootstrap
+    self.run()
+  File "/usr/lib/python3.6/multiprocessing/process.py", line 93, in run
+    self._target(*self._args, **self._kwargs)
+  File "/usr/lib/python3.6/multiprocessing/pool.py", line 119, in worker
+    result = (True, func(*args, **kwds))
+  File "/usr/lib/python3.6/multiprocessing/pool.py", line 44, in mapstar
+    return list(map(*args))
+  File "SCNv2_RatioInput_long.py", line 68, in runonecondition
+    noiseval=P["noiseval"][x],
+  File "/home/tk/Python/SCNv2/SCNv2.py", line 463, in runmodel
+    nrngo(tstop+pretime,-66.5)
+  File "/home/tk/Python/SCNv2/SCNv2.py", line 97, in nrngo
+    h.fadvance()
+KeyboardInterrupt
+Process ForkPoolWorker-14:
+Traceback (most recent call last):
+  File "/usr/lib/python3.6/multiprocessing/process.py", line 258, in _bootstrap
+    self.run()
+  File "/usr/lib/python3.6/multiprocessing/process.py", line 93, in run
+    self._target(*self._args, **self._kwargs)
+  File "/usr/lib/python3.6/multiprocessing/pool.py", line 119, in worker
+    result = (True, func(*args, **kwds))
+  File "/usr/lib/python3.6/multiprocessing/pool.py", line 44, in mapstar
+    return list(map(*args))
+  File "SCNv2_RatioInput_long.py", line 68, in runonecondition
+    noiseval=P["noiseval"][x],
+  File "/home/tk/Python/SCNv2/SCNv2.py", line 463, in runmodel
+    nrngo(tstop+pretime,-66.5)
+  File "/home/tk/Python/SCNv2/SCNv2.py", line 97, in nrngo
+    h.fadvance()
+KeyboardInterrupt
+Process ForkPoolWorker-7:
+Traceback (most recent call last):
+  File "/usr/lib/python3.6/multiprocessing/process.py", line 258, in _bootstrap
+    self.run()
+  File "/usr/lib/python3.6/multiprocessing/process.py", line 93, in run
+    self._target(*self._args, **self._kwargs)
+  File "/usr/lib/python3.6/multiprocessing/pool.py", line 119, in worker
+    result = (True, func(*args, **kwds))
+  File "/usr/lib/python3.6/multiprocessing/pool.py", line 44, in mapstar
+    return list(map(*args))
+  File "SCNv2_RatioInput_long.py", line 68, in runonecondition
+    noiseval=P["noiseval"][x],
+  File "/home/tk/Python/SCNv2/SCNv2.py", line 463, in runmodel
+    nrngo(tstop+pretime,-66.5)
+  File "/home/tk/Python/SCNv2/SCNv2.py", line 97, in nrngo
+    h.fadvance()
+KeyboardInterrupt
+Process ForkPoolWorker-12:
+Traceback (most recent call last):
+  File "/usr/lib/python3.6/multiprocessing/process.py", line 258, in _bootstrap
+    self.run()
+  File "/usr/lib/python3.6/multiprocessing/process.py", line 93, in run
+    self._target(*self._args, **self._kwargs)
+  File "/usr/lib/python3.6/multiprocessing/pool.py", line 119, in worker
+    result = (True, func(*args, **kwds))
+  File "/usr/lib/python3.6/multiprocessing/pool.py", line 44, in mapstar
+    return list(map(*args))
+  File "SCNv2_RatioInput_long.py", line 68, in runonecondition
+    noiseval=P["noiseval"][x],
+  File "/home/tk/Python/SCNv2/SCNv2.py", line 463, in runmodel
+    nrngo(tstop+pretime,-66.5)
+  File "/home/tk/Python/SCNv2/SCNv2.py", line 97, in nrngo
+    h.fadvance()
+KeyboardInterrupt
+Process ForkPoolWorker-18:
+Traceback (most recent call last):
+  File "/usr/lib/python3.6/multiprocessing/process.py", line 258, in _bootstrap
+    self.run()
+  File "/usr/lib/python3.6/multiprocessing/process.py", line 93, in run
+    self._target(*self._args, **self._kwargs)
+  File "/usr/lib/python3.6/multiprocessing/pool.py", line 119, in worker
+    result = (True, func(*args, **kwds))
+  File "/usr/lib/python3.6/multiprocessing/pool.py", line 44, in mapstar
+    return list(map(*args))
+  File "SCNv2_RatioInput_long.py", line 68, in runonecondition
+    noiseval=P["noiseval"][x],
+  File "/home/tk/Python/SCNv2/SCNv2.py", line 463, in runmodel
+    nrngo(tstop+pretime,-66.5)
+  File "/home/tk/Python/SCNv2/SCNv2.py", line 96, in nrngo
+    while h.t<tstop:
+KeyboardInterrupt
+Process ForkPoolWorker-1:
+Traceback (most recent call last):
+  File "/usr/lib/python3.6/multiprocessing/process.py", line 258, in _bootstrap
+    self.run()
+  File "/usr/lib/python3.6/multiprocessing/process.py", line 93, in run
+    self._target(*self._args, **self._kwargs)
+  File "/usr/lib/python3.6/multiprocessing/pool.py", line 119, in worker
+    result = (True, func(*args, **kwds))
+  File "/usr/lib/python3.6/multiprocessing/pool.py", line 44, in mapstar
+    return list(map(*args))
+  File "SCNv2_RatioInput_long.py", line 68, in runonecondition
+    noiseval=P["noiseval"][x],
+  File "/home/tk/Python/SCNv2/SCNv2.py", line 463, in runmodel
+    nrngo(tstop+pretime,-66.5)
+  File "/home/tk/Python/SCNv2/SCNv2.py", line 97, in nrngo
+    h.fadvance()
+KeyboardInterrupt
+Process ForkPoolWorker-8:
+Traceback (most recent call last):
+  File "/usr/lib/python3.6/multiprocessing/process.py", line 258, in _bootstrap
+    self.run()
+  File "/usr/lib/python3.6/multiprocessing/process.py", line 93, in run
+    self._target(*self._args, **self._kwargs)
+  File "/usr/lib/python3.6/multiprocessing/pool.py", line 119, in worker
+    result = (True, func(*args, **kwds))
+  File "/usr/lib/python3.6/multiprocessing/pool.py", line 44, in mapstar
+    return list(map(*args))
+  File "SCNv2_RatioInput_long.py", line 68, in runonecondition
+    noiseval=P["noiseval"][x],
+  File "/home/tk/Python/SCNv2/SCNv2.py", line 463, in runmodel
+    nrngo(tstop+pretime,-66.5)
+  File "/home/tk/Python/SCNv2/SCNv2.py", line 97, in nrngo
+    h.fadvance()
+KeyboardInterrupt
+Process ForkPoolWorker-11:
+Traceback (most recent call last):
+  File "/usr/lib/python3.6/multiprocessing/process.py", line 258, in _bootstrap
+    self.run()
+  File "/usr/lib/python3.6/multiprocessing/process.py", line 93, in run
+    self._target(*self._args, **self._kwargs)
+  File "/usr/lib/python3.6/multiprocessing/pool.py", line 119, in worker
+    result = (True, func(*args, **kwds))
+  File "/usr/lib/python3.6/multiprocessing/pool.py", line 44, in mapstar
+    return list(map(*args))
+  File "SCNv2_RatioInput_long.py", line 68, in runonecondition
+    noiseval=P["noiseval"][x],
+  File "/home/tk/Python/SCNv2/SCNv2.py", line 463, in runmodel
+    nrngo(tstop+pretime,-66.5)
+  File "/home/tk/Python/SCNv2/SCNv2.py", line 97, in nrngo
+    h.fadvance()
+KeyboardInterrupt
+Process ForkPoolWorker-2:
+Traceback (most recent call last):
+  File "/usr/lib/python3.6/multiprocessing/process.py", line 258, in _bootstrap
+    self.run()
+  File "/usr/lib/python3.6/multiprocessing/process.py", line 93, in run
+    self._target(*self._args, **self._kwargs)
+  File "/usr/lib/python3.6/multiprocessing/pool.py", line 119, in worker
+    result = (True, func(*args, **kwds))
+  File "/usr/lib/python3.6/multiprocessing/pool.py", line 44, in mapstar
+    return list(map(*args))
+  File "SCNv2_RatioInput_long.py", line 68, in runonecondition
+    noiseval=P["noiseval"][x],
+  File "/home/tk/Python/SCNv2/SCNv2.py", line 463, in runmodel
+    nrngo(tstop+pretime,-66.5)
+  File "/home/tk/Python/SCNv2/SCNv2.py", line 97, in nrngo
+    h.fadvance()
+KeyboardInterrupt
+Process ForkPoolWorker-13:
+Traceback (most recent call last):
+  File "/usr/lib/python3.6/multiprocessing/process.py", line 258, in _bootstrap
+    self.run()
+  File "/usr/lib/python3.6/multiprocessing/process.py", line 93, in run
+    self._target(*self._args, **self._kwargs)
+  File "/usr/lib/python3.6/multiprocessing/pool.py", line 119, in worker
+    result = (True, func(*args, **kwds))
+  File "/usr/lib/python3.6/multiprocessing/pool.py", line 44, in mapstar
+    return list(map(*args))
+  File "SCNv2_RatioInput_long.py", line 68, in runonecondition
+    noiseval=P["noiseval"][x],
+  File "/home/tk/Python/SCNv2/SCNv2.py", line 463, in runmodel
+    nrngo(tstop+pretime,-66.5)
+  File "/home/tk/Python/SCNv2/SCNv2.py", line 97, in nrngo
+    h.fadvance()
+KeyboardInterrupt
+Process ForkPoolWorker-15:
+Traceback (most recent call last):
+  File "/usr/lib/python3.6/multiprocessing/process.py", line 258, in _bootstrap
+    self.run()
+  File "/usr/lib/python3.6/multiprocessing/process.py", line 93, in run
+    self._target(*self._args, **self._kwargs)
+  File "/usr/lib/python3.6/multiprocessing/pool.py", line 119, in worker
+    result = (True, func(*args, **kwds))
+  File "/usr/lib/python3.6/multiprocessing/pool.py", line 44, in mapstar
+    return list(map(*args))
+  File "SCNv2_RatioInput_long.py", line 68, in runonecondition
+    noiseval=P["noiseval"][x],
+  File "/home/tk/Python/SCNv2/SCNv2.py", line 463, in runmodel
+    nrngo(tstop+pretime,-66.5)
+  File "/home/tk/Python/SCNv2/SCNv2.py", line 97, in nrngo
+    h.fadvance()
+KeyboardInterrupt
+Process ForkPoolWorker-3:
+Traceback (most recent call last):
+  File "/usr/lib/python3.6/multiprocessing/process.py", line 258, in _bootstrap
+    self.run()
+  File "/usr/lib/python3.6/multiprocessing/process.py", line 93, in run
+    self._target(*self._args, **self._kwargs)
+  File "/usr/lib/python3.6/multiprocessing/pool.py", line 119, in worker
+    result = (True, func(*args, **kwds))
+  File "/usr/lib/python3.6/multiprocessing/pool.py", line 44, in mapstar
+    return list(map(*args))
+  File "SCNv2_RatioInput_long.py", line 68, in runonecondition
+    noiseval=P["noiseval"][x],
+  File "/home/tk/Python/SCNv2/SCNv2.py", line 463, in runmodel
+    nrngo(tstop+pretime,-66.5)
+  File "/home/tk/Python/SCNv2/SCNv2.py", line 97, in nrngo
+    h.fadvance()
+KeyboardInterrupt
+Process ForkPoolWorker-9:
+Traceback (most recent call last):
+  File "/usr/lib/python3.6/multiprocessing/process.py", line 258, in _bootstrap
+    self.run()
+  File "/usr/lib/python3.6/multiprocessing/process.py", line 93, in run
+    self._target(*self._args, **self._kwargs)
+  File "/usr/lib/python3.6/multiprocessing/pool.py", line 119, in worker
+    result = (True, func(*args, **kwds))
+  File "/usr/lib/python3.6/multiprocessing/pool.py", line 44, in mapstar
+    return list(map(*args))
+  File "SCNv2_RatioInput_long.py", line 68, in runonecondition
+    noiseval=P["noiseval"][x],
+  File "/home/tk/Python/SCNv2/SCNv2.py", line 463, in runmodel
+    nrngo(tstop+pretime,-66.5)
+  File "/home/tk/Python/SCNv2/SCNv2.py", line 97, in nrngo
+    h.fadvance()
+KeyboardInterrupt
+Process ForkPoolWorker-6:
+Traceback (most recent call last):
+  File "/usr/lib/python3.6/multiprocessing/process.py", line 258, in _bootstrap
+    self.run()
+  File "/usr/lib/python3.6/multiprocessing/process.py", line 93, in run
+    self._target(*self._args, **self._kwargs)
+  File "/usr/lib/python3.6/multiprocessing/pool.py", line 119, in worker
+    result = (True, func(*args, **kwds))
+  File "/usr/lib/python3.6/multiprocessing/pool.py", line 44, in mapstar
+    return list(map(*args))
+  File "SCNv2_RatioInput_long.py", line 68, in runonecondition
+    noiseval=P["noiseval"][x],
+  File "/home/tk/Python/SCNv2/SCNv2.py", line 463, in runmodel
+    nrngo(tstop+pretime,-66.5)
+  File "/home/tk/Python/SCNv2/SCNv2.py", line 97, in nrngo
+    h.fadvance()
+KeyboardInterrupt
+Process ForkPoolWorker-17:
+Traceback (most recent call last):
+  File "/usr/lib/python3.6/multiprocessing/process.py", line 258, in _bootstrap
+    self.run()
+  File "/usr/lib/python3.6/multiprocessing/process.py", line 93, in run
+    self._target(*self._args, **self._kwargs)
+  File "/usr/lib/python3.6/multiprocessing/pool.py", line 119, in worker
+    result = (True, func(*args, **kwds))
+  File "/usr/lib/python3.6/multiprocessing/pool.py", line 44, in mapstar
+    return list(map(*args))
+  File "SCNv2_RatioInput_long.py", line 68, in runonecondition
+    noiseval=P["noiseval"][x],
+  File "/home/tk/Python/SCNv2/SCNv2.py", line 463, in runmodel
+    nrngo(tstop+pretime,-66.5)
+  File "/home/tk/Python/SCNv2/SCNv2.py", line 97, in nrngo
+    h.fadvance()
+KeyboardInterrupt
+Process ForkPoolWorker-5:
+Traceback (most recent call last):
+  File "/usr/lib/python3.6/multiprocessing/process.py", line 258, in _bootstrap
+    self.run()
+  File "/usr/lib/python3.6/multiprocessing/process.py", line 93, in run
+    self._target(*self._args, **self._kwargs)
+  File "/usr/lib/python3.6/multiprocessing/pool.py", line 119, in worker
+    result = (True, func(*args, **kwds))
+  File "/usr/lib/python3.6/multiprocessing/pool.py", line 44, in mapstar
+    return list(map(*args))
+  File "SCNv2_RatioInput_long.py", line 68, in runonecondition
+    noiseval=P["noiseval"][x],
+  File "/home/tk/Python/SCNv2/SCNv2.py", line 463, in runmodel
+    nrngo(tstop+pretime,-66.5)
+  File "/home/tk/Python/SCNv2/SCNv2.py", line 97, in nrngo
+    h.fadvance()
+KeyboardInterrupt
+Process ForkPoolWorker-19:
+Traceback (most recent call last):
+  File "/usr/lib/python3.6/multiprocessing/process.py", line 258, in _bootstrap
+    self.run()
+  File "/usr/lib/python3.6/multiprocessing/process.py", line 93, in run
+    self._target(*self._args, **self._kwargs)
+  File "/usr/lib/python3.6/multiprocessing/pool.py", line 119, in worker
+    result = (True, func(*args, **kwds))
+  File "/usr/lib/python3.6/multiprocessing/pool.py", line 44, in mapstar
+    return list(map(*args))
+  File "SCNv2_RatioInput_long.py", line 68, in runonecondition
+    noiseval=P["noiseval"][x],
+  File "/home/tk/Python/SCNv2/SCNv2.py", line 463, in runmodel
+    nrngo(tstop+pretime,-66.5)
+  File "/home/tk/Python/SCNv2/SCNv2.py", line 97, in nrngo
+    h.fadvance()
+KeyboardInterrupt
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+Warning: no DISPLAY environment variable.
+--No graphics will be displayed.
+findfont: Font family ['serif'] not found. Falling back to DejaVu Sans.
+9
+10
+11
+84
+85
+86
+138
+139
+140
+42
+43
+44
+96
+97
+98
+147
+148
+149
+12
+13
+14
+81
+82
+83
+144
+145
+146
+27
+28
+29
+72
+73
+74
+141
+142
+143
+33
+34
+35
+93
+94
+95
+150
+151
+152
+15
+16
+17
+108
+109
+110
+162
+163
+164
+54
+55
+56
+87
+88
+89
+156
+157
+158
+24
+25
+26
+105
+106
+107
+153
+154
+155
+18
+19
+20
+90
+91
+92
+168
+169
+170
+3
+4
+5
+102
+103
+104
+159
+160
+161
+36
+37
+38
+99
+100
+101
+165
+166
+167
+6
+7
+8
+114
+115
+116
+171
+172
+173
+21
+22
+23
+111
+112
+113
+174
+175
+176
+51
+52
+53
+63
+64
+65
+123
+124
+125
+195
+0
+1
+2
+117
+118
+119
+177
+178
+179
+30
+31
+32
+78
+79
+80
+126
+127
+128
+186
+187
+188
+findfont: Font family ['serif'] not found. Falling back to DejaVu Sans.
+57
+58
+59
+78
+79
+80
+132
+133
+134
+24
+25
+26
+114
+115
+116
+162
+163
+164
+39
+40
+41
+75
+76
+77
+141
+142
+143
+9
+10
+11
+66
+67
+68
+135
+136
+137
+45
+46
+47
+99
+100
+101
+153
+154
+155
+33
+34
+35
+84
+85
+86
+147
+148
+149
+30
+31
+32
+81
+82
+83
+144
+145
+146
+42
+43
+44
+102
+103
+104
+174
+175
+176
+27
+28
+29
+93
+94
+95
+171
+172
+173
+0
+1
+2
+96
+97
+98
+150
+151
+152
+195
+18
+19
+20
+105
+106
+107
+168
+169
+170
+15
+16
+17
+90
+91
+92
+138
+139
+140
+192
+193
+194
+21
+22
+23
+87
+88
+89
+156
+157
+158
+3
+4
+5
+69
+70
+71
+123
+124
+125
+186
+187
+188
+6
+7
+8
+108
+109
+110
+159
+160
+161
+36
+37
+38
+117
+118
+119
+165
+166
+167
+51
+52
+53
+60
+61
+62
+129
+130
+131
+189
+190
+191
+12
+13
+14
+111
+112
+113
+177
+178
+179

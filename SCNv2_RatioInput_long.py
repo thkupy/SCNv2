@@ -273,7 +273,7 @@ if __name__ == "__main__":
         P["Seed"] = 367558
         P["AdvSeed"] = True
         #########################################
-        P["thr"]  = np.repeat(apthr, P["TotalN"]) 
+        P["thr"]  = np.repeat(apthr, P["TotalN"])
         P["dur"] = np.repeat(dur, P["TotalN"])
         P["dt"] = np.repeat(dt, P["TotalN"])
         P["nreps"] = np.repeat(nreps, P["TotalN"])
