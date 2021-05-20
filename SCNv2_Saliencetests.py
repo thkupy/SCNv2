@@ -1,0 +1,300 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Revised version of the SCN model (2021).
+
+This program tries to find ranges of inputs that cause similar amounts of uni-
+modal outputspikes. The range of input rates between no and ~150Hz output spikes
+is then used as 0-1 unimodal salience.
+This is an effort to ask more biologically relevant questions to the model.
+
+The command line args are:
+    SCNv2_Figure2ABC.py weload ncores nconds
+
+Created: 2021-03-18
+Revised: 
+@author: kuenzel(at)bio2.rwth-aachen.de
+"""
+
+import sys
+import os
+import matplotlib
+#matplotlib.use("Agg")
+from matplotlib.backends.backend_pdf import PdfPages
+import matplotlib.pyplot as plt
+import numpy as np
+import multiprocessing
+from functools import partial
+import SCNv2
+
+# some global plot settings
+plt.ioff()
+plt.rc("font", family="serif", serif="Linux Libertine O")
+#plt.rcParams["pdf.fonttype"] = 42
+plt.rc("text", usetex=True)
+plt.rc("xtick", labelsize="x-small")
+plt.rc("ytick", labelsize="x-small")
+plt.rc("axes", labelsize="small")
+#new_rc_params = {"text.usetex": False, "svg.fonttype": "none"}
+#plt.rcParams.update(new_rc_params)
+
+def runonecondition(x, P):
+    ####GENERATE SPIKE INPUTS (the spiketimes are always the same to improve comparability)
+    if P["AdvSeed"]:
+        thisseed = P["Seed"] + (x * 50)
+    else:
+        thisseed = P["Seed"]
+    spc = np.zeros(P["nreps"][x])
+    spcn = np.zeros(P["nreps"][x])
+    for irep in range(P["nreps"][x]):
+        thisR = SCNv2.runmodel(
+            tstop=P["dur"][x],
+            dt=P["dt"][x],
+            nsyna=int(P["nsyna"][x]),
+            nsynb=int(P["nsynb"][x]),
+            hasstimulation=(False, False),
+            hasinputactivity=P["hasinputactivity"],
+            pinputactivity=(P["astart"][x], P["aitv"][x], P["bstart"][x], P["bitv"][x]),
+            inputstop=(P["astart"][x] + P["adur"][x], P["bstart"][x] + P["bdur"][x]),
+            hasnmda=True,
+            seed=thisseed+irep,
+            hasfbi=False,
+            hasffi=True,
+            noiseval=P["noiseval"][x],
+        )
+        S = SCNv2.SimpleDetectAP(
+            thisR["AVm"],
+            thr=P["thr"][x],
+            dt=P["dt"][x],
+            LM=-20,
+            RM=10,
+        )
+        spc[irep] = len(S["PeakT"])
+        #
+        #
+        thisRN = SCNv2.runmodel(
+            tstop=P["dur"][x],
+            dt=P["dt"][x],
+            nsyna=int(P["nsyna"][x]),
+            nsynb=int(P["nsynb"][x]),
+            hasstimulation=(False, False),
+            hasinputactivity=P["hasinputactivity"],
+            pinputactivity=(P["astart"][x], P["aitv"][x], P["bstart"][x], P["bitv"][x]),
+            inputstop=(P["astart"][x] + P["adur"][x], P["bstart"][x] + P["bdur"][x]),
+            hasnmda=False,
+            seed=thisseed+irep,
+            hasfbi=False,
+            hasffi=True,
+            noiseval=P["noiseval"][x],
+        )
+        SN = SCNv2.SimpleDetectAP(
+            thisRN["AVm"],
+            thr=P["thr"][x],
+            dt=P["dt"][x],
+            LM=-20,
+            RM=10,
+        )
+        spcn[irep] = len(SN["PeakT"])
+        #
+        #
+    print("x: " + str(x))
+    return [
+        np.mean(spc),
+        np.std(spc),
+        np.mean(spcn),
+        np.std(spcn),
+    ]
+
+
+def myMPhandler(P):
+    p = multiprocessing.Pool(P["cores"])
+    poolmess = partial(runonecondition, P=P)
+    if P["mp"]:
+        r = p.map(poolmess, P["Number"])
+    else:  # for debug
+        r = list(map(poolmess, P["Number"]))  # for debug
+    return r
+
+
+def plotres(outputA, outputB, PA, PB):
+    from matplotlib.ticker import ScalarFormatter, AutoMinorLocator, MaxNLocator
+    import scipy.ndimage as ndimage
+    from scipy import stats
+    #
+    fheight = 15  # cm
+    fwidth = 20
+    #contourlims = (1.0,333.0)
+    #ncontours = 27
+    fhandle = plt.figure(figsize=(fwidth / 2.54, fheight / 2.54))#, dpi=600)
+    a_m = outputA[0][:, 0]
+    a_s = outputA[0][:, 1]
+    an_m = outputA[0][:, 2]
+    an_s = outputA[0][:, 3]
+    b_m = outputB[0][:, 0]
+    b_s = outputB[0][:, 1]
+    bn_m = outputB[0][:, 2]
+    bn_s = outputB[0][:, 3]
+    #
+    plt.subplot(2,1,1)
+    plt.errorbar(PA["afreq"], a_m, yerr=a_s)
+    plt.errorbar(PA["afreq"], an_m, yerr=an_s)
+    plt.subplot(2,1,2)
+    plt.errorbar(PB["bfreq"], b_m, yerr=b_s)
+    plt.errorbar(PB["bfreq"], bn_m, yerr=bn_s)
+    #
+    plt.tight_layout()
+    return fhandle
+
+def getparams(
+            ncores = 4,
+            nconds = 7,
+            nreps = 3,
+            aon=True,
+            astart=0.0, 
+            adur=200.0, 
+            afreqs=(10.0,20.0), 
+            bon=False, 
+            bstart=0.0, 
+            bdur=200.0, 
+            bfreqs=(40.0,333.0),
+        ):
+        #Some fixed Parameters, could be exposed to user later
+        apthr = -50.0
+        dt = 0.025
+        dur = 500.0
+        nv = 0.9
+        #ParametersA
+        P = {}
+        P["N"] = nconds
+        P["cores"] = ncores
+        P["TotalN"] = int(P["N"])#1d Experiment
+        P["Number"] = np.arange(P["TotalN"],dtype=int)
+        P["mp"] = True
+        P["Seed"] = 36453
+        P["AdvSeed"] = True
+        P["thr"]  = np.repeat(apthr, P["TotalN"]) 
+        P["dur"] = np.repeat(dur, P["TotalN"])
+        P["dt"] = np.repeat(dt, P["TotalN"])
+        P["nreps"] = np.repeat(nreps, P["TotalN"])
+        P["noiseval"] = np.repeat(nv, P["TotalN"])
+        ###########################################
+        P["hasinputactivity"] = (aon, bon)
+        # Now define the variable parameters. The repeated = y, the tiled = x!!
+        if aon:
+            afreq = np.geomspace(afreqs[0], afreqs[1], nconds)
+            aitv = np.round(1000.0 / afreq, 1)
+        else:
+            afreq = np.zeros(nconds)
+            aitv =  np.zeros(nconds)
+        if bon:
+            bfreq = np.geomspace(bfreqs[0], bfreqs[1], nconds)
+            bitv = np.round(1000.0 / bfreq, 1)
+        else:
+            bfreq = np.zeros(nconds)
+            bitv =  np.zeros(nconds)
+        P["nsyna"] = np.repeat(10, nconds)
+        P["astart"] = np.repeat(astart, nconds)
+        P["adur"] = np.repeat(adur, nconds)
+        P["afreq"] = afreq
+        P["aitv"] = aitv
+        P["nsynb"] = np.repeat(10, nconds)
+        P["bstart"] = np.repeat(bstart, nconds)
+        P["bdur"] = np.repeat(bdur, nconds)
+        P["bfreq"] = bfreq
+        P["bitv"] = bitv
+        #
+        return P
+
+
+if __name__ == "__main__":
+    #Parse command-line arguments
+    #SCNv2_Saliencetests.py weload ncores nconds nreps
+    inputargs = sys.argv[1:]
+    myargs = [1, 4, 7, 3]
+    for iarg, thisarg in enumerate(inputargs):
+        myargs[iarg] = float(thisarg)
+    weload = bool(myargs[0])
+    ncores = int(myargs[1])
+    nconds = int(myargs[2])
+    nreps = int(myargs[3])
+    #------------------
+    #Run the show
+    if os.path.isfile("./data/SCNv2_SaliencetestsA.npy") and weload:
+        print("Loading Data!")
+        outputA = np.load("./data/SCNv2_SaliencetestsA.npy", allow_pickle=True)
+        outputB = np.load("./data/SCNv2_SaliencetestsB.npy", allow_pickle=True)
+        PA = np.load("./data/SCNv2_Saliencetests_PA.npy", allow_pickle=True)
+        PA = PA.tolist()
+        PB = np.load("./data/SCNv2_Saliencetests_PB.npy", allow_pickle=True)
+        PB = PB.tolist()
+    else:
+        PA = getparams(
+            ncores = ncores,
+            nconds = nconds,
+            nreps = nreps,
+            aon=True,
+            astart=0.0, 
+            adur=200.0, 
+            afreqs=(10.0,50.0), 
+            bon=False, 
+            bstart=0.0, 
+            bdur=200.0, 
+            bfreqs=(50.0,333.0),
+        )
+        PB = getparams(
+            ncores = ncores,
+            nconds = nconds,
+            nreps = nreps,
+            aon=False,
+            astart=0.0, 
+            adur=200.0, 
+            afreqs=(10.0,50.0), 
+            bon=True, 
+            bstart=0.0, 
+            bdur=200.0, 
+            bfreqs=(50.0,333.0),
+        )
+        # make go!
+        outputA = []
+        outputA.append(myMPhandler(PA))
+        outputA = np.array(outputA)
+        np.save("./data/SCNv2_SaliencetestsA.npy", outputA, allow_pickle=True)
+        np.save("./data/SCNv2_Saliencetests_PA.npy", PA, allow_pickle=True)
+        outputB = []
+        outputB.append(myMPhandler(PB))
+        outputB = np.array(outputB)
+        np.save("./data/SCNv2_SaliencetestsB.npy", outputB, allow_pickle=True)
+        np.save("./data/SCNv2_Saliencetests_PB.npy", PB, allow_pickle=True)
+    #
+    print("done")
+    plotres(outputA, outputB, PA, PB)
+    plt.show()
+#    fhandle = plotres(
+#        output=output,
+#        P=P,
+#        x=np.unique(P["nsyn"]),
+#        y=np.unique(P["afreq"]),
+#        xlabs=u"N Synapses",
+#        ylabs=u"Mean Input Freq. (Hz)",
+#    )
+#    pp = PdfPages("./figures/SCNv2_Inputtests.pdf")
+#    pp.savefig()
+#    pp.close()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

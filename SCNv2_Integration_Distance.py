@@ -66,7 +66,6 @@ def runonecondition(x, P):
             hasfbi=False,
             hasffi=True,
             inhw=P["inhw"][x],
-            inhtau=P["inhtau"][x],
         )
         Sa = SCNv2.SimpleDetectAP(
             thisRA["AVm"],
@@ -89,7 +88,6 @@ def runonecondition(x, P):
             hasfbi=False,
             hasffi=True,
             inhw=P["inhw"][x],
-            inhtau=P["inhtau"][x],
         )
         Sb = SCNv2.SimpleDetectAP(
             thisRB["AVm"],
@@ -112,7 +110,6 @@ def runonecondition(x, P):
             hasfbi=False,
             hasffi=True,
             inhw=P["inhw"][x],
-            inhtau=P["inhtau"][x],
         )
         Sab = SCNv2.SimpleDetectAP(
             thisRAB["AVm"],
@@ -135,7 +132,6 @@ def runonecondition(x, P):
             hasfbi=False,
             hasffi=True,
             inhw=P["inhw"][x],
-            inhtau=P["inhtau"][x],
         )
         San = SCNv2.SimpleDetectAP(
             thisRAN["AVm"],
@@ -158,7 +154,6 @@ def runonecondition(x, P):
             hasfbi=False,
             hasffi=True,
             inhw=P["inhw"][x],
-            inhtau=P["inhtau"][x],
         )
         Sabn = SCNv2.SimpleDetectAP(
             thisRABN["AVm"],
@@ -183,7 +178,6 @@ def runonecondition(x, P):
         np.std(sprabn),
         P["afreq"][x],
         P["inhw"][x],
-        P["inhtau"][x],
     ]
 
 
@@ -197,7 +191,7 @@ def myMPhandler(P):
     return r
 
 
-def plotres(output, P, exp):
+def plotres(output, P):
     from matplotlib.ticker import ScalarFormatter, AutoMinorLocator, MaxNLocator
     import scipy.ndimage as ndimage
     from scipy import stats
@@ -218,175 +212,87 @@ def plotres(output, P, exp):
     rabn_s = output[0][:, 9]
     freqs = output[0][:, 10]
     inhw = output[0][:, 11]
-    inhtau = output[0][:, 12]
     myweights = np.unique(inhw)
-    mytaus = np.unique(inhtau)
     #
-    if exp == 1:
-        plt.subplot(3,2,1)
-        plt.xscale("log")
-        for iw in range(myweights.size):
-            plt.errorbar(
-                freqs[inhw==myweights[iw]],
-                ra_m[inhw==myweights[iw]],
-                yerr=ra_s[inhw==myweights[iw]],
-                linewidth=0.5,
-                marker='.',
-                markersize=3,
-            )
-        plt.legend(np.round(myweights*1000.0, 2))
-        plt.xlabel("Mean Input Frequency (Hz)")
-        plt.ylabel("AP Output Rate (Hz)")
-        plt.title("Apical only")
-        #
-        plt.subplot(3,2,2)
-        plt.xscale("log")
-        for iw in range(myweights.size):
-            plt.errorbar(
-                freqs[inhw==myweights[iw]],
-                rb_m[inhw==myweights[iw]],
-                yerr=rb_s[inhw==myweights[iw]],
-                linewidth=0.5,
-                marker='.',
-                markersize=3,
-            )
-        plt.legend(np.round(myweights*1000.0, 2))
-        plt.xlabel("Mean Input Frequency (Hz)")
-        plt.ylabel("AP Output Rate (Hz)")
-        plt.title("Basal only")
-        #
-        plt.subplot(3,2,3)
-        plt.xscale("log")
-        for iw in range(myweights.size):
-            plt.errorbar(
-                freqs[inhw==myweights[iw]],
-                rab_m[inhw==myweights[iw]],
-                yerr=rab_s[inhw==myweights[iw]],
-                linewidth=0.5,
-                marker='.',
-                markersize=3,
-            )
-        plt.legend(np.round(myweights*1000.0, 2))
-        plt.xlabel("Mean Input Frequency (Hz)")
-        plt.ylabel("AP Output Rate (Hz)")
-        plt.title("Apical + Basal")
-        #
-        plt.subplot(3,2,5)
-        plt.xscale("log")
-        for iw in range(myweights.size):
-            plt.errorbar(
-                freqs[inhw==myweights[iw]],
-                ran_m[inhw==myweights[iw]],
-                yerr=ran_s[inhw==myweights[iw]],
-                linewidth=0.5,
-                marker='.',
-                markersize=3,
-            )
-        plt.legend(np.round(myweights*1000.0, 2))
-        plt.xlabel("Mean Input Frequency (Hz)")
-        plt.ylabel("AP Output Rate (Hz)")
-        plt.title("Apical only, no NMDA")
-        #
-        plt.subplot(3,2,6)
-        plt.xscale("log")
-        for iw in range(myweights.size):
-            plt.errorbar(
-                freqs[inhw==myweights[iw]],
-                rabn_m[inhw==myweights[iw]],
-                yerr=rabn_s[inhw==myweights[iw]],
-                linewidth=0.5,
-                marker='.',
-                markersize=3,
-            )
-        plt.legend(np.round(myweights*1000.0, 2))
-        plt.xlabel("Mean Input Frequency (Hz)")
-        plt.ylabel("AP Output Rate (Hz)")
-        plt.title("Apical + Basal, no NMDA")
-    else:
-        plt.subplot(3,2,1)
-        plt.xscale("log")
-        for it in range(mytaus.size):
-            II = inhtau == mytaus[it]
-            plt.errorbar(
-                freqs[II],
-                ra_m[II],
-                yerr=ra_s[II],
-                linewidth=0.5,
-                marker='.',
-                markersize=3,
-            )
-        plt.legend(np.round(mytaus, 2))
-        plt.xlabel("Mean Input Frequency (Hz)")
-        plt.ylabel("AP Output Rate (Hz)")
-        plt.title("Apical only")
-        #
-        plt.subplot(3,2,2)
-        plt.xscale("log")
-        for it in range(mytaus.size):
-            II = inhtau == mytaus[it]
-            plt.errorbar(
-                freqs[II],
-                rb_m[II],
-                yerr=rb_s[II],
-                linewidth=0.5,
-                marker='.',
-                markersize=3,
-            )
-        plt.legend(np.round(mytaus, 2))
-        plt.xlabel("Mean Input Frequency (Hz)")
-        plt.ylabel("AP Output Rate (Hz)")
-        plt.title("Basal only")
-        #
-        plt.subplot(3,2,3)
-        plt.xscale("log")
-        for it in range(mytaus.size):
-            II = inhtau == mytaus[it]
-            plt.errorbar(
-                freqs[II],
-                rab_m[II],
-                yerr=rab_s[II],
-                linewidth=0.5,
-                marker='.',
-                markersize=3,
-            )
-        plt.legend(np.round(mytaus, 2))
-        plt.xlabel("Mean Input Frequency (Hz)")
-        plt.ylabel("AP Output Rate (Hz)")
-        plt.title("Apical + Basal")
-        #
-        plt.subplot(3,2,5)
-        plt.xscale("log")
-        for it in range(mytaus.size):
-            II = inhtau == mytaus[it]
-            plt.errorbar(
-                freqs[II],
-                ran_m[II],
-                yerr=ran_s[II],
-                linewidth=0.5,
-                marker='.',
-                markersize=3,
-            )
-        plt.legend(np.round(mytaus, 2))
-        plt.xlabel("Mean Input Frequency (Hz)")
-        plt.ylabel("AP Output Rate (Hz)")
-        plt.title("Apical only, no NMDA")
-        #
-        plt.subplot(3,2,6)
-        plt.xscale("log")
-        for it in range(mytaus.size):
-            II = inhtau == mytaus[it]
-            plt.errorbar(
-                freqs[II],
-                rabn_m[II],
-                yerr=rabn_s[II],
-                linewidth=0.5,
-                marker='.',
-                markersize=3,
-            )
-        plt.legend(np.round(mytaus, 2))
-        plt.xlabel("Mean Input Frequency (Hz)")
-        plt.ylabel("AP Output Rate (Hz)")
-        plt.title("Apical + Basal, no NMDA")
+    plt.subplot(3,2,1)
+    plt.xscale("log")
+    for iw in range(myweights.size):
+        plt.errorbar(
+            freqs[inhw==myweights[iw]],
+            ra_m[inhw==myweights[iw]],
+            yerr=ra_s[inhw==myweights[iw]],
+            linewidth=0.5,
+            marker='.',
+            markersize=3,
+        )
+    plt.legend(np.round(myweights*1000.0, 2))
+    plt.xlabel("Mean Input Frequency (Hz)")
+    plt.ylabel("AP Output Rate (Hz)")
+    plt.title("Apical only")
+    #
+    plt.subplot(3,2,2)
+    plt.xscale("log")
+    for iw in range(myweights.size):
+        plt.errorbar(
+            freqs[inhw==myweights[iw]],
+            rb_m[inhw==myweights[iw]],
+            yerr=rb_s[inhw==myweights[iw]],
+            linewidth=0.5,
+            marker='.',
+            markersize=3,
+        )
+    plt.legend(np.round(myweights*1000.0, 2))
+    plt.xlabel("Mean Input Frequency (Hz)")
+    plt.ylabel("AP Output Rate (Hz)")
+    plt.title("Basal only")
+    #
+    plt.subplot(3,2,3)
+    plt.xscale("log")
+    for iw in range(myweights.size):
+        plt.errorbar(
+            freqs[inhw==myweights[iw]],
+            rab_m[inhw==myweights[iw]],
+            yerr=rab_s[inhw==myweights[iw]],
+            linewidth=0.5,
+            marker='.',
+            markersize=3,
+        )
+    plt.legend(np.round(myweights*1000.0, 2))
+    plt.xlabel("Mean Input Frequency (Hz)")
+    plt.ylabel("AP Output Rate (Hz)")
+    plt.title("Apical + Basal")
+    #
+    plt.subplot(3,2,5)
+    plt.xscale("log")
+    for iw in range(myweights.size):
+        plt.errorbar(
+            freqs[inhw==myweights[iw]],
+            ran_m[inhw==myweights[iw]],
+            yerr=ran_s[inhw==myweights[iw]],
+            linewidth=0.5,
+            marker='.',
+            markersize=3,
+        )
+    plt.legend(np.round(myweights*1000.0, 2))
+    plt.xlabel("Mean Input Frequency (Hz)")
+    plt.ylabel("AP Output Rate (Hz)")
+    plt.title("Apical only, no NMDA")
+    #
+    plt.subplot(3,2,6)
+    plt.xscale("log")
+    for iw in range(myweights.size):
+        plt.errorbar(
+            freqs[inhw==myweights[iw]],
+            rabn_m[inhw==myweights[iw]],
+            yerr=rabn_s[inhw==myweights[iw]],
+            linewidth=0.5,
+            marker='.',
+            markersize=3,
+        )
+    plt.legend(np.round(myweights*1000.0, 2))
+    plt.xlabel("Mean Input Frequency (Hz)")
+    plt.ylabel("AP Output Rate (Hz)")
+    plt.title("Apical + Basal, no NMDA")
     #
     plt.tight_layout()
     #plt.show()#debug
@@ -404,7 +310,7 @@ if __name__ == "__main__":
     ninhib = int(myargs[2])
     nreps = int(myargs[3])
     #------------------
-    #Run the show1 --- inhibitory conductance (@50ms tau)
+    #Run the show
     if os.path.isfile("./data/SCNv2_Inhibtests.npy") and weload:
         print("Data for SCNv2_Inhibtests found... loading!")
         output = np.load("./data/SCNv2_Inhibtests.npy", allow_pickle=True)
@@ -432,7 +338,6 @@ if __name__ == "__main__":
         P["nreps"] = np.repeat(nreps, P["TotalN"])
         P["noiseval"] = np.repeat(nv, P["TotalN"])
         P["ab_delay"] = np.repeat(0.0, P["TotalN"])
-        P["inhtau"] = np.repeat(50.0, P["TotalN"])
         ###########################################
         # Now define the two variable parameters. The repeated = y, the tiled = x!!
         freq = np.array((10, 20, 35, 50, 75, 100, 150, 200, 333))
@@ -449,60 +354,12 @@ if __name__ == "__main__":
         np.save("./data/SCNv2_Inhibtests.npy", output, allow_pickle=True)
         np.save("./data/SCNv2_Inhibtests_P.npy", P, allow_pickle=True)
     #
-    fhandle = plotres(output=output, P=P, exp=1)
+    fhandle = plotres(output=output, P=P)
     pp = PdfPages("./figures/SCNv2_Inhibtests.pdf")
     pp.savefig()
     pp.close()
-    #------------------
-    #Run the show2---inhibtory tau (@2nS conductance)
-    if os.path.isfile("./data/SCNv2_Inhibtests2.npy") and weload:
-        print("Data for SCNv2_Inhibtests2 found... loading!")
-        output2 = np.load("./data/SCNv2_Inhibtests2.npy", allow_pickle=True)
-        P2 = np.load("./data/SCNv2_Inhibtests2_P.npy", allow_pickle=True)
-        P2 = P.tolist()
-    else:
-        #Some fixes Parameters, could be exposed to user later
-        apthr = -50.0
-        dt = 0.025
-        dur = 1000.0
-        nv = 0.9
-        output2 = []
-        P2 = {}
-        nfreqs = 9
-        P2["cores"] = ncores
-        P2["TotalN"] = int(nfreqs * ninhib)
-        P2["Number"] = np.arange(P2["TotalN"],dtype=int)
-        P2["mp"] = True
-        P2["Seed"] = 322453
-        P2["AdvSeed"] = True
-        #########################################
-        P2["thr"]  = np.repeat(apthr, P2["TotalN"]) 
-        P2["dur"] = np.repeat(dur, P2["TotalN"])
-        P2["dt"] = np.repeat(dt, P2["TotalN"])
-        P2["nreps"] = np.repeat(nreps, P2["TotalN"])
-        P2["noiseval"] = np.repeat(nv, P2["TotalN"])
-        P2["inhw"] = np.repeat(0.002, P2["TotalN"])
-        ###########################################
-        # Now define the two variable parameters. The repeated = y, the tiled = x!!
-        freq = np.array((10, 20, 35, 50, 75, 100, 150, 200, 333))
-        itv = np.round(1000.0 / freq)
-        P2["afreq"] = np.repeat(np.round(freq), ninhib) 
-        P2["aitv"] = np.repeat(itv, ninhib)
-        P2["bfreq"] = np.repeat(np.round(freq), ninhib) 
-        P2["bitv"] = np.repeat(itv, ninhib)
-        taus = np.linspace(5.0, 75.0, ninhib)
-        P2["inhtau"] = np.tile(taus, nfreqs)
-        print(P2["inhtau"])
-        # make go!
-        output2.append(myMPhandler(P2))
-        output2 = np.array(output2)
-        np.save("./data/SCNv2_Inhibtests2.npy", output, allow_pickle=True)
-        np.save("./data/SCNv2_Inhibtests2_P.npy", P2, allow_pickle=True)
-    #
-    fhandle = plotres(output=output2, P=P2, exp=2)
-    pp = PdfPages("./figures/SCNv2_Inhibtests2.pdf")
-    pp.savefig()
-    pp.close()
+
+
 
 
 

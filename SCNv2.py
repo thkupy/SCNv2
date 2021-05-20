@@ -155,7 +155,8 @@ def runmodel(
         hasfbi=False,
         hasffi=True,
         inhw=0.002,
-        noiseval=0.5,
+        inhtau=50.0,
+        noiseval=0.9,#0.5
         soma_na=0.2,#0.125
         soma_k=0.04,#0.027
         soma_kht=0.013,#0.013
@@ -441,10 +442,10 @@ def runmodel(
             bnc[ibsyn].weight[0] = 0.0
     if hasfbi:
         isyna = h.ExpSyn(aDend(0.5))
-        isyna.tau = 30.0#5.0
+        isyna.tau = inhtau#30.0#5.0
         isyna.e = -85
         isynb = h.ExpSyn(bDend(0.5))
-        isynb.tau = 30.0#5.0
+        isynb.tau = inhtau#30.0#5.0
         isynb.e = -85
         inc1 = h.NetCon(Node2(0.9)._ref_v, isyna, sec=Node2)
         inc1.threshold = -35.0
@@ -457,10 +458,10 @@ def runmodel(
     if hasffi:
         if hasinputactivity[0]:
             isynca = h.ExpSyn(aDend(0.01))
-            isynca.tau = 50.0#5.0
+            isynca.tau = inhtau#50.0#5.0
             isynca.e = -85
             isyncb = h.ExpSyn(bDend(0.01))
-            isyncb.tau = 50.0#5.0
+            isyncb.tau = inhtau#50.0#5.0
             isyncb.e = -85
             inhstimc = h.NetStim()
             thisN = int(np.round((inputstop[0]-pinputactivity[0])/pinputactivity[1]))
@@ -477,10 +478,10 @@ def runmodel(
             inhconcb.weight[0] = inhw
         if hasinputactivity[1]:
             isynda = h.ExpSyn(aDend(0.4))
-            isynda.tau = 50.0#5.0
+            isynda.tau = inhtau#50.0#5.0
             isynda.e = -85
             isyndb = h.ExpSyn(bDend(0.4))
-            isyndb.tau = 50.0#5.0
+            isyndb.tau = inhtau#50.0#5.0
             isyndb.e = -85
             inhstimd = h.NetStim()
             thisN = int(np.round((inputstop[1]-pinputactivity[2])/pinputactivity[3]))
