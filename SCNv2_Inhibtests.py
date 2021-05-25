@@ -459,7 +459,7 @@ if __name__ == "__main__":
         print("Data for SCNv2_Inhibtests2 found... loading!")
         output2 = np.load("./data/SCNv2_Inhibtests2.npy", allow_pickle=True)
         P2 = np.load("./data/SCNv2_Inhibtests2_P.npy", allow_pickle=True)
-        P2 = P.tolist()
+        P2 = P2.tolist()
     else:
         #Some fixes Parameters, could be exposed to user later
         apthr = -50.0
@@ -496,7 +496,7 @@ if __name__ == "__main__":
         # make go!
         output2.append(myMPhandler(P2))
         output2 = np.array(output2)
-        np.save("./data/SCNv2_Inhibtests2.npy", output, allow_pickle=True)
+        np.save("./data/SCNv2_Inhibtests2.npy", output2, allow_pickle=True)
         np.save("./data/SCNv2_Inhibtests2_P.npy", P2, allow_pickle=True)
     #
     fhandle = plotres(output=output2, P=P2, exp=2)
