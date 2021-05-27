@@ -44,8 +44,8 @@ def runonecondition(x, P):
         thisseed = P["Seed"] + (x * 50)
     else:
         thisseed = P["Seed"]
+    s = []
     spc = np.zeros(P["nreps"][x])
-    spcn = np.zeros(P["nreps"][x])
     for irep in range(P["nreps"][x]):
         thisR = SCNv2.runmodel(
             tstop=P["dur"][x],
@@ -60,6 +60,9 @@ def runonecondition(x, P):
             seed=thisseed+irep,
             hasfbi=False,
             hasffi=True,
+            inhw=0.001,
+            inhtau=100.0,##just for testing... maybe we can get rid of the stupid persistent act
+            inhdelay=5.0,
             noiseval=P["noiseval"][x],
         )
         S = SCNv2.SimpleDetectAP(
@@ -69,40 +72,14 @@ def runonecondition(x, P):
             LM=-20,
             RM=10,
         )
+        s.append(S["PeakT"])
         spc[irep] = len(S["PeakT"])
-        #
-        #
-        thisRN = SCNv2.runmodel(
-            tstop=P["dur"][x],
-            dt=P["dt"][x],
-            nsyna=int(P["nsyna"][x]),
-            nsynb=int(P["nsynb"][x]),
-            hasstimulation=(False, False),
-            hasinputactivity=P["hasinputactivity"],
-            pinputactivity=(P["astart"][x], P["aitv"][x], P["bstart"][x], P["bitv"][x]),
-            inputstop=(P["astart"][x] + P["adur"][x], P["bstart"][x] + P["bdur"][x]),
-            hasnmda=False,
-            seed=thisseed+irep,
-            hasfbi=False,
-            hasffi=True,
-            noiseval=P["noiseval"][x],
-        )
-        SN = SCNv2.SimpleDetectAP(
-            thisRN["AVm"],
-            thr=P["thr"][x],
-            dt=P["dt"][x],
-            LM=-20,
-            RM=10,
-        )
-        spcn[irep] = len(SN["PeakT"])
-        #
         #
     print("x: " + str(x))
     return [
         np.mean(spc),
         np.std(spc),
-        np.mean(spcn),
-        np.std(spcn),
+        s,
     ]
 
 
@@ -128,20 +105,35 @@ def plotres(outputA, outputB, PA, PB):
     fhandle = plt.figure(figsize=(fwidth / 2.54, fheight / 2.54))#, dpi=600)
     a_m = outputA[0][:, 0]
     a_s = outputA[0][:, 1]
-    an_m = outputA[0][:, 2]
-    an_s = outputA[0][:, 3]
+    a_t = outputA[0][:, 2]
     b_m = outputB[0][:, 0]
     b_s = outputB[0][:, 1]
-    bn_m = outputB[0][:, 2]
-    bn_s = outputB[0][:, 3]
+    b_t = outputB[0][:, 2]
     #
-    plt.subplot(2,1,1)
+    plt.subplot(2,2,1)
     plt.errorbar(PA["afreq"], a_m, yerr=a_s)
-    plt.errorbar(PA["afreq"], an_m, yerr=an_s)
-    plt.subplot(2,1,2)
+    plt.subplot(2,2,2)
     plt.errorbar(PB["bfreq"], b_m, yerr=b_s)
-    plt.errorbar(PB["bfreq"], bn_m, yerr=bn_s)
     #
+    plt.subplot(2,2,3)
+    plt.xlim((0,PA["dur"][0]))
+    plt.plot((PA["astart"][0], PA["astart"][0] + PA["adur"][0]), (-1, -1), "g-")
+    for icond in range(PA["N"]):
+        for irep in range(PA["nreps"][0]):
+            ypos = icond + (irep / (2 * PA["nreps"][0]))
+            xvals = np.array(a_t[icond][irep])
+            yvals = np.ones(xvals.size) * ypos
+            plt.plot(xvals, yvals, color="b", marker=".", markersize=3, linestyle=" ")
+    #
+    plt.subplot(2,2,4)
+    plt.xlim((0,PB["dur"][0]))
+    plt.plot((PB["bstart"][0], PB["bstart"][0] + PB["bdur"][0]), (-1, -1), "g-")
+    for icond in range(PB["N"]):
+        for irep in range(PB["nreps"][0]):
+            ypos = icond + (irep / (2 * PB["nreps"][0]))
+            xvals = np.array(b_t[icond][irep])
+            yvals = np.ones(xvals.size) * ypos
+            plt.plot(xvals, yvals, color="b", marker=".", markersize=3, linestyle=" ")
     plt.tight_layout()
     return fhandle
 
@@ -151,12 +143,12 @@ def getparams(
             nreps = 3,
             aon=True,
             astart=0.0, 
-            adur=200.0, 
-            afreqs=(10.0,20.0), 
+            adur=125.0, 
+            afreqs=(30.0,65.0), 
             bon=False, 
             bstart=0.0, 
-            bdur=200.0, 
-            bfreqs=(40.0,333.0),
+            bdur=125.0, 
+            bfreqs=(75.0,400.0),
         ):
         #Some fixed Parameters, could be exposed to user later
         apthr = -50.0
@@ -233,36 +225,24 @@ if __name__ == "__main__":
             nconds = nconds,
             nreps = nreps,
             aon=True,
-            astart=0.0, 
-            adur=200.0, 
-            afreqs=(10.0,50.0), 
-            bon=False, 
-            bstart=0.0, 
-            bdur=200.0, 
-            bfreqs=(50.0,333.0),
+            bon=False,
         )
         PB = getparams(
             ncores = ncores,
             nconds = nconds,
             nreps = nreps,
             aon=False,
-            astart=0.0, 
-            adur=200.0, 
-            afreqs=(10.0,50.0), 
-            bon=True, 
-            bstart=0.0, 
-            bdur=200.0, 
-            bfreqs=(50.0,333.0),
+            bon=True,
         )
         # make go!
         outputA = []
         outputA.append(myMPhandler(PA))
-        outputA = np.array(outputA)
+        outputA = np.array(outputA, dtype=object)
         np.save("./data/SCNv2_SaliencetestsA.npy", outputA, allow_pickle=True)
         np.save("./data/SCNv2_Saliencetests_PA.npy", PA, allow_pickle=True)
         outputB = []
         outputB.append(myMPhandler(PB))
-        outputB = np.array(outputB)
+        outputB = np.array(outputB, dtype=object)
         np.save("./data/SCNv2_SaliencetestsB.npy", outputB, allow_pickle=True)
         np.save("./data/SCNv2_Saliencetests_PB.npy", PB, allow_pickle=True)
     #

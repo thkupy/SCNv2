@@ -10,6 +10,9 @@ Created: Tuesday 23rd Feb 2021
 #-----IMPORTS--------
 from neuron import h
 import numpy as np
+#
+pNeuritdefault = 60.0#µm
+#
 
 def runonce(x, P):
     ####hard coded settings, rarely change these:
@@ -149,13 +152,14 @@ def runmodel(
         inputstop=(500.0, 500.0),
         hasnmda=True,
         seed=32768,
-        pNeurit_L=60.0,
+        pNeurit_L=pNeuritdefault,
         pretime=100.0,
         T=25.0,
         hasfbi=False,
         hasffi=True,
-        inhw=0.002,
-        inhtau=50.0,
+        inhw=0.001,
+        inhtau=100.0,
+        inhdelay=5.0,
         noiseval=0.9,#0.5
         soma_na=0.2,#0.125
         soma_k=0.04,#0.027
@@ -214,7 +218,7 @@ def runmodel(
     Node2.diam = 2
     Node2.nseg = 3
     #
-    aDend.L = 230#from table
+    aDend.L = 230 + (pNeuritdefault - pNeurit_L)#from table
     aDend.diam = 2
     aDend.nseg = 21
     #
@@ -388,7 +392,7 @@ def runmodel(
             astim[iasyn].number = pstimulation[1]
             astim[iasyn].noise = 0.001#0 or 0.001
             astim[iasyn].interval = pstimulation[2]
-            astim[iasyn].seed(seed)
+            astim[iasyn].seed(seed + (iasyn * 54))
             anc[iasyn].weight[0] = anc[iasyn].weight[0] * pstimulation[3]
         elif hasinputactivity[0]:
             #pinputactivity=(0.0, 20.0, 0.0, 20.0),
@@ -398,13 +402,13 @@ def runmodel(
             astim[iasyn].start = pinputactivity[0] + pretime
             astim[iasyn].noise = noiseval
             astim[iasyn].interval = pinputactivity[1]
-            astim[iasyn].seed(seed)
+            astim[iasyn].seed(seed + (iasyn * 54))
         else:
             astim[iasyn].number = 0
             astim[iasyn].start = 0.0
             astim[iasyn].noise = 0
             astim[iasyn].interval = 1.0
-            astim[iasyn].seed(seed)
+            astim[iasyn].seed(seed + (iasyn * 54))
             anc[iasyn].weight[0] = 0.0 
     for ibsyn in range(nsynb):
         bstim.append(h.NetStim())
@@ -423,7 +427,7 @@ def runmodel(
             bstim[ibsyn].noise = 0.001#0 or 0.001
             bstim[ibsyn].interval = pstimulation[6]
             bnc[ibsyn].weight[0] = bnc[ibsyn].weight[0] * pstimulation[7]
-            bstim[ibsyn].seed(seed)
+            bstim[ibsyn].seed(seed + (ibsyn * 74))
         elif hasinputactivity[1]:
             #pinputactivity=(0.0, 20.0, 0.0, 20.0),
             #inputstop=(500.0, 500.0),
@@ -432,13 +436,13 @@ def runmodel(
             bstim[ibsyn].start = pinputactivity[2] + pretime
             bstim[ibsyn].noise = noiseval
             bstim[ibsyn].interval = pinputactivity[3]
-            bstim[ibsyn].seed(seed)
+            bstim[ibsyn].seed(seed + (ibsyn * 74))
         else:
             bstim[ibsyn].number = 0
             bstim[ibsyn].start = 0.0
             bstim[ibsyn].noise = 0
             bstim[ibsyn].interval = 1.0
-            bstim[ibsyn].seed(seed)
+            bstim[ibsyn].seed(seed + (ibsyn * 74))
             bnc[ibsyn].weight[0] = 0.0
     if hasfbi:
         isyna = h.ExpSyn(aDend(0.5))
@@ -472,8 +476,8 @@ def runmodel(
             inhstimc.seed(seed + 2944)
             inhconca = h.NetCon(inhstimc, isynca)
             inhconcb = h.NetCon(inhstimc, isyncb)
-            inhconca.delay = 0.5
-            inhconcb.delay = 0.5
+            inhconca.delay = inhdelay
+            inhconcb.delay = inhdelay
             inhconca.weight[0] = inhw
             inhconcb.weight[0] = inhw
         if hasinputactivity[1]:
@@ -492,8 +496,8 @@ def runmodel(
             inhstimd.seed(seed + 3245)
             inhconda = h.NetCon(inhstimd, isynda)
             inhcondb = h.NetCon(inhstimd, isyndb)
-            inhconda.delay = 0.5
-            inhcondb.delay = 0.5
+            inhconda.delay = inhdelay
+            inhcondb.delay = inhdelay
             inhconda.weight[0] = inhw
             inhcondb.weight[0] = inhw
     #
