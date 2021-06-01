@@ -92,10 +92,12 @@ def myMPhandler(P):
     return r
 
 
-def plotres(outputA, outputB, PA, PB):
+def plotres(outputA, outputB, outputC, PA, PB, PC):
     from matplotlib.ticker import ScalarFormatter, AutoMinorLocator, MaxNLocator
     import scipy.ndimage as ndimage
     from scipy import stats
+    #
+    responsethreshold = 2
     #
     fheight = 15  # cm
     fwidth = 20
@@ -108,31 +110,129 @@ def plotres(outputA, outputB, PA, PB):
     b_m = outputB[0][:, 0]
     b_s = outputB[0][:, 1]
     b_t = outputB[0][:, 2]
+    c_m = outputC[0][:, 0]
+    c_s = outputC[0][:, 1]
+    c_t = outputC[0][:, 2]
     #
-    plt.subplot(2,2,1)
-    plt.errorbar(PA["afreq"], a_m, yerr=a_s / PA["nreps"][0])
-    plt.subplot(2,2,2)
-    plt.errorbar(PB["bfreq"], b_m, yerr=b_s / PB["nreps"][0])
+    plt.subplot(4,3,1)
+    plt.errorbar(PA["afreq"], a_m, yerr=a_s / np.sqrt(PA["nreps"][0]-1))
+    plt.xlabel("Mean Input Frequency (Hz)")
+    plt.ylabel("Mean Output APs (Count)")
+    plt.title("Apical only")
     #
-    plt.subplot(2,2,3)
+    plt.subplot(4,3,2)
+    plt.errorbar(PB["bfreq"], b_m, yerr=b_s / np.sqrt(PB["nreps"][0]-1))
+    plt.xlabel("Mean Input Frequency (Hz)")
+    plt.ylabel("Mean Output APs (Count)")
+    plt.title("Basal only")
+    #
+    plt.subplot(4,3,3)
+    plt.plot(np.linspace(0,100,PC["N"]), a_m + b_m, "k-")
+    enh = np.vstack((a_m, b_m))
+    plt.plot(np.linspace(0,100,PC["N"]), np.max(enh, 0), "m-")
+    plt.errorbar(np.linspace(0,100,PC["N"]), c_m, yerr=c_s / np.sqrt(PC["nreps"][0]-1))
+    plt.xlabel("Input Salience %")
+    plt.ylabel("Mean Output APs (Count)")
+    plt.title("Apical+Basal")
+    #
+    dotcol = ((.1, .1, .1), (.5, .5, .5))
+    msize = 2
+    #
+    sp3 = plt.subplot(4,3,(4,7))
     plt.xlim((0,PA["dur"][0]))
     plt.plot((PA["astart"][0], PA["astart"][0] + PA["adur"][0]), (-1, -1), "g-")
+    a_allspt = []
+    a_ttr = []
     for icond in range(PA["N"]):
+        spt = []
+        for elem in a_t[icond]:
+            spt.extend(elem)
+        spt = np.array(spt)
+        a_allspt.append(elem)
+        vals, edges = np.histogram(spt, np.linspace(0, PA["dur"][0],int(PA["dur"][0]+1)))
+        I = np.where(vals > responsethreshold)[0]
+        if I.size > 0:
+            a_ttr.append(I[0])
+        else:
+            a_ttr.append(np.nan)
+        plt.plot([0, 500], [icond, icond], "k--", linewidth=0.5)
         for irep in range(PA["nreps"][0]):
-            ypos = icond + (irep / (2 * PA["nreps"][0]))
+            ypos = icond + (irep / (PA["nreps"][0]))
             xvals = np.array(a_t[icond][irep])
             yvals = np.ones(xvals.size) * ypos
-            plt.plot(xvals, yvals, color="b", marker=".", markersize=3, linestyle=" ")
+            plt.plot(xvals, yvals, color=dotcol[icond%2], marker=".", markersize=msize, linestyle=" ")
+    sp3.set_yticks(np.arange(PA["N"])+0.5)
+    sp3.set_yticklabels(np.round(PA["afreq"],1))
+    plt.xlabel("Time (ms)")
+    plt.ylabel("Mean Input Frequency (Hz)")
     #
-    plt.subplot(2,2,4)
+    sp4 = plt.subplot(4,3,(5,8))
     plt.xlim((0,PB["dur"][0]))
     plt.plot((PB["bstart"][0], PB["bstart"][0] + PB["bdur"][0]), (-1, -1), "g-")
+    b_allspt = []
+    b_ttr = []
     for icond in range(PB["N"]):
+        spt = []
+        for elem in b_t[icond]:
+            spt.extend(elem)
+        spt = np.array(spt)
+        b_allspt.append(elem)
+        vals, edges = np.histogram(spt, np.linspace(0, PB["dur"][0],int(PB["dur"][0]+1)))
+        I = np.where(vals > responsethreshold)[0]
+        if I.size > 0:
+            b_ttr.append(I[0])
+        else:
+            b_ttr.append(np.nan)
+        plt.plot([0, 500], [icond,icond], "k--", linewidth=0.5)
         for irep in range(PB["nreps"][0]):
-            ypos = icond + (irep / (2 * PB["nreps"][0]))
+            ypos = icond + (irep / (PB["nreps"][0]))
             xvals = np.array(b_t[icond][irep])
             yvals = np.ones(xvals.size) * ypos
-            plt.plot(xvals, yvals, color="b", marker=".", markersize=3, linestyle=" ")
+            plt.plot(xvals, yvals, color=dotcol[icond%2], marker=".", markersize=msize, linestyle=" ")
+    sp4.set_yticks(np.arange(PB["N"])+0.5)
+    sp4.set_yticklabels(np.round(PB["bfreq"],1))
+    plt.xlabel("Time (ms)")
+    plt.ylabel("Mean Input Frequency (Hz)")
+    #
+    sp5 = plt.subplot(4,3,(6,9))
+    plt.xlim((0,PC["dur"][0]))
+    plt.plot((PC["bstart"][0], PC["bstart"][0] + PC["bdur"][0]), (-1, -1), "g-")
+    c_allspt = []
+    c_ttr = []
+    for icond in range(PC["N"]):
+        spt = []
+        for elem in c_t[icond]:
+            spt.extend(elem)
+        spt = np.array(spt)
+        c_allspt.append(elem)
+        vals, edges = np.histogram(spt, np.linspace(0, PC["dur"][0],int(PC["dur"][0]+1)))
+        I = np.where(vals > responsethreshold)[0]
+        if I.size > 0:
+            c_ttr.append(I[0])
+        else:
+            c_ttr.append(np.nan)
+        plt.plot([0, 500], [icond,icond], "k--", linewidth=0.5)
+        for irep in range(PC["nreps"][0]):
+            ypos = icond + (irep / (PC["nreps"][0]))
+            xvals = np.array(c_t[icond][irep])
+            yvals = np.ones(xvals.size) * ypos
+            plt.plot(xvals, yvals, color=dotcol[icond%2], marker=".", markersize=msize, linestyle=" ")
+    sp5.set_yticks(np.arange(PC["N"])+0.5)
+    sp5.set_yticklabels(np.linspace(0,100,PC["N"]))
+    plt.xlabel("Time (ms)")
+    plt.ylabel("Salience %")
+    
+    
+    #
+    plt.subplot(4,3,10)
+    plt.plot(PA["afreq"], a_ttr,"bo-", markerfacecolor="w")
+    
+    plt.subplot(4,3,11)
+    plt.plot(PB["bfreq"], b_ttr,"bo-", markerfacecolor="w")
+    
+    plt.subplot(4,3,12)
+    plt.plot(np.linspace(0,100,PC["N"]), c_ttr,"bo-", markerfacecolor="w")    
+    
     plt.tight_layout()
     return fhandle
 
@@ -143,7 +243,7 @@ def getparams(
             aon=True,
             astart=0.0, 
             adur=125.0, 
-            afreqs=(35.0,65.0), 
+            afreqs=(35.0,70.0), #35/65
             bon=False, 
             bstart=0.0, 
             bdur=125.0, 
@@ -220,10 +320,13 @@ if __name__ == "__main__":
         print("Loading Data!")
         outputA = np.load("./data/SCNv2_SaliencetestsA.npy", allow_pickle=True)
         outputB = np.load("./data/SCNv2_SaliencetestsB.npy", allow_pickle=True)
+        outputC = np.load("./data/SCNv2_SaliencetestsC.npy", allow_pickle=True)
         PA = np.load("./data/SCNv2_Saliencetests_PA.npy", allow_pickle=True)
         PA = PA.tolist()
         PB = np.load("./data/SCNv2_Saliencetests_PB.npy", allow_pickle=True)
         PB = PB.tolist()
+        PC = np.load("./data/SCNv2_Saliencetests_PC.npy", allow_pickle=True)
+        PC = PC.tolist()
     else:
         PA = getparams(
             ncores = ncores,
@@ -239,6 +342,13 @@ if __name__ == "__main__":
             aon=False,
             bon=True,
         )
+        PC = getparams(
+            ncores = ncores,
+            nconds = nconds,
+            nreps = nreps,
+            aon=True,
+            bon=True,
+        )
         # make go!
         outputA = []
         outputA.append(myMPhandler(PA))
@@ -250,9 +360,14 @@ if __name__ == "__main__":
         outputB = np.array(outputB, dtype=object)
         np.save("./data/SCNv2_SaliencetestsB.npy", outputB, allow_pickle=True)
         np.save("./data/SCNv2_Saliencetests_PB.npy", PB, allow_pickle=True)
+        outputC = []
+        outputC.append(myMPhandler(PC))
+        outputC = np.array(outputC, dtype=object)
+        np.save("./data/SCNv2_SaliencetestsC.npy", outputC, allow_pickle=True)
+        np.save("./data/SCNv2_Saliencetests_PC.npy", PC, allow_pickle=True)
     #
     print("done")
-    plotres(outputA, outputB, PA, PB)
+    plotres(outputA, outputB, outputC, PA, PB, PC)
     plt.show()
 #    fhandle = plotres(
 #        output=output,
