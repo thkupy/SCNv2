@@ -62,6 +62,7 @@ def runonecondition(x, P):
             inhtau=P["inhtau"][x],
             inhdelay=P["inhdelay"][x],
             noiseval=P["noiseval"][x],
+            reallatency=P["reallatency"][x],
         )
         S = SCNv2.SimpleDetectAP(
             thisR["AVm"],
@@ -142,7 +143,7 @@ def getparams(
             aon=True,
             astart=0.0, 
             adur=125.0, 
-            afreqs=(35.0,70.0), 
+            afreqs=(35.0,65.0), 
             bon=False, 
             bstart=0.0, 
             bdur=125.0, 
