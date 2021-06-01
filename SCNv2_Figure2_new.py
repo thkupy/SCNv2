@@ -114,53 +114,83 @@ def plotres(outputA, outputB, outputC, PA, PB, PC):
     c_s = outputC[0][:, 1]
     c_t = outputC[0][:, 2]
     #
-    plt.subplot(4,3,1)
-    plt.errorbar(PA["afreq"], a_m, yerr=a_s / np.sqrt(PA["nreps"][0]-1))
+    sp1 = plt.subplot(4,3,1)
+    sp1.set_xscale("log")
+    sp1.set_xticks((40, 50, 60, 70))
+    sp1.set_xticklabels((40, 50, 60, 70))
+    plt.errorbar(
+        PA["afreq"],
+        a_m,
+        yerr=a_s, 
+        #yerr=a_s / np.sqrt(PA["nreps"][0]-1),
+        marker="o",
+        markersize=4,
+        markerfacecolor="w",
+        color="k",
+    )
     plt.xlabel("Mean Input Frequency (Hz)")
     plt.ylabel("Mean Output APs (Count)")
     plt.title("Apical only")
+    
     #
-    plt.subplot(4,3,2)
-    plt.errorbar(PB["bfreq"], b_m, yerr=b_s / np.sqrt(PB["nreps"][0]-1))
+    sp2 = plt.subplot(4,3,2, sharey=sp1)
+    sp2.set_xscale("log")
+    sp2.set_xticks((100, 200, 300, 400))
+    sp2.set_xticklabels((100, 200, 300, 400))
+    plt.errorbar(
+        PB["bfreq"],
+        b_m,
+        yerr=b_s, 
+        #yerr=b_s / np.sqrt(PB["nreps"][0]-1),
+        marker="o",
+        markersize=4,
+        markerfacecolor="w",
+        color="k",
+    )
     plt.xlabel("Mean Input Frequency (Hz)")
     plt.ylabel("Mean Output APs (Count)")
     plt.title("Basal only")
     #
-    plt.subplot(4,3,3)
-    plt.plot(np.linspace(0,100,PC["N"]), a_m + b_m, "k-")
+    plt.subplot(4,3,3, sharey=sp1)
+    plt.plot(np.linspace(0,100,PC["N"]), a_m + b_m, "g-")
     enh = np.vstack((a_m, b_m))
-    plt.plot(np.linspace(0,100,PC["N"]), np.max(enh, 0), "m-")
-    plt.errorbar(np.linspace(0,100,PC["N"]), c_m, yerr=c_s / np.sqrt(PC["nreps"][0]-1))
+    plt.plot(np.linspace(0,100,PC["N"]), np.max(enh, 0), "r-")
+    plt.errorbar(
+        np.linspace(0,100,PC["N"]), 
+        c_m, 
+        yerr=c_s,
+        #yerr=c_s / np.sqrt(PC["nreps"][0]-1)),
+        marker="o",
+        markersize=4,
+        markerfacecolor="w",
+        color="k",
+    )
     plt.xlabel("Input Salience %")
     plt.ylabel("Mean Output APs (Count)")
     plt.title("Apical+Basal")
     #
     dotcol = ((.1, .1, .1), (.5, .5, .5))
     msize = 2
+    dottype = ","
     #
     sp3 = plt.subplot(4,3,(4,7))
     plt.xlim((0,PA["dur"][0]))
     plt.plot((PA["astart"][0], PA["astart"][0] + PA["adur"][0]), (-1, -1), "g-")
-    a_allspt = []
-    a_ttr = []
+    a_ttfsp = np.zeros((PA["N"],2))
     for icond in range(PA["N"]):
-        spt = []
-        for elem in a_t[icond]:
-            spt.extend(elem)
-        spt = np.array(spt)
-        a_allspt.append(elem)
-        vals, edges = np.histogram(spt, np.linspace(0, PA["dur"][0],int(PA["dur"][0]+1)))
-        I = np.where(vals > responsethreshold)[0]
-        if I.size > 0:
-            a_ttr.append(I[0])
-        else:
-            a_ttr.append(np.nan)
         plt.plot([0, 500], [icond, icond], "k--", linewidth=0.5)
+        ttfsp = np.ones(PA["nreps"][0])
         for irep in range(PA["nreps"][0]):
             ypos = icond + (irep / (PA["nreps"][0]))
             xvals = np.array(a_t[icond][irep])
             yvals = np.ones(xvals.size) * ypos
-            plt.plot(xvals, yvals, color=dotcol[icond%2], marker=".", markersize=msize, linestyle=" ")
+            plt.plot(xvals, yvals, color=dotcol[icond%2], marker=dottype, markersize=msize, linestyle=" ")
+            if xvals.size > 0:
+                ttfsp[irep] = np.min(xvals)#no spontaneous activity!
+            else:
+                ttfsp[irep] = np.nan
+        a_ttfsp[icond,0]=np.nanmean(ttfsp)
+        a_ttfsp[icond,1]=np.nanstd(ttfsp)
     sp3.set_yticks(np.arange(PA["N"])+0.5)
     sp3.set_yticklabels(np.round(PA["afreq"],1))
     plt.xlabel("Time (ms)")
@@ -169,26 +199,21 @@ def plotres(outputA, outputB, outputC, PA, PB, PC):
     sp4 = plt.subplot(4,3,(5,8))
     plt.xlim((0,PB["dur"][0]))
     plt.plot((PB["bstart"][0], PB["bstart"][0] + PB["bdur"][0]), (-1, -1), "g-")
-    b_allspt = []
-    b_ttr = []
+    b_ttfsp = np.zeros((PB["N"],2))
     for icond in range(PB["N"]):
-        spt = []
-        for elem in b_t[icond]:
-            spt.extend(elem)
-        spt = np.array(spt)
-        b_allspt.append(elem)
-        vals, edges = np.histogram(spt, np.linspace(0, PB["dur"][0],int(PB["dur"][0]+1)))
-        I = np.where(vals > responsethreshold)[0]
-        if I.size > 0:
-            b_ttr.append(I[0])
-        else:
-            b_ttr.append(np.nan)
+        ttfsp = np.ones(PB["nreps"][0])
         plt.plot([0, 500], [icond,icond], "k--", linewidth=0.5)
         for irep in range(PB["nreps"][0]):
             ypos = icond + (irep / (PB["nreps"][0]))
             xvals = np.array(b_t[icond][irep])
             yvals = np.ones(xvals.size) * ypos
-            plt.plot(xvals, yvals, color=dotcol[icond%2], marker=".", markersize=msize, linestyle=" ")
+            plt.plot(xvals, yvals, color=dotcol[icond%2], marker=dottype, markersize=msize, linestyle=" ")
+            if xvals.size > 0:
+                ttfsp[irep] = np.min(xvals)#no spontaneous activity!
+            else:
+                ttfsp[irep] = np.nan
+        b_ttfsp[icond,0] = np.nanmean(ttfsp)
+        b_ttfsp[icond,1] = np.nanstd(ttfsp)
     sp4.set_yticks(np.arange(PB["N"])+0.5)
     sp4.set_yticklabels(np.round(PB["bfreq"],1))
     plt.xlabel("Time (ms)")
@@ -197,26 +222,21 @@ def plotres(outputA, outputB, outputC, PA, PB, PC):
     sp5 = plt.subplot(4,3,(6,9))
     plt.xlim((0,PC["dur"][0]))
     plt.plot((PC["bstart"][0], PC["bstart"][0] + PC["bdur"][0]), (-1, -1), "g-")
-    c_allspt = []
-    c_ttr = []
+    c_ttfsp = np.zeros((PC["N"],2))
     for icond in range(PC["N"]):
-        spt = []
-        for elem in c_t[icond]:
-            spt.extend(elem)
-        spt = np.array(spt)
-        c_allspt.append(elem)
-        vals, edges = np.histogram(spt, np.linspace(0, PC["dur"][0],int(PC["dur"][0]+1)))
-        I = np.where(vals > responsethreshold)[0]
-        if I.size > 0:
-            c_ttr.append(I[0])
-        else:
-            c_ttr.append(np.nan)
+        ttfsp = np.ones(PC["nreps"][0])
         plt.plot([0, 500], [icond,icond], "k--", linewidth=0.5)
         for irep in range(PC["nreps"][0]):
             ypos = icond + (irep / (PC["nreps"][0]))
             xvals = np.array(c_t[icond][irep])
             yvals = np.ones(xvals.size) * ypos
-            plt.plot(xvals, yvals, color=dotcol[icond%2], marker=".", markersize=msize, linestyle=" ")
+            plt.plot(xvals, yvals, color=dotcol[icond%2], marker=dottype, markersize=msize, linestyle=" ")
+            if xvals.size > 0:
+                ttfsp[irep] = np.min(xvals)#no spontaneous activity!
+            else:
+                ttfsp[irep] = np.nan
+        c_ttfsp[icond,0]=np.nanmean(ttfsp)
+        c_ttfsp[icond,1]=np.nanstd(ttfsp)
     sp5.set_yticks(np.arange(PC["N"])+0.5)
     sp5.set_yticklabels(np.linspace(0,100,PC["N"]))
     plt.xlabel("Time (ms)")
@@ -224,15 +244,44 @@ def plotres(outputA, outputB, outputC, PA, PB, PC):
     
     
     #
-    plt.subplot(4,3,10)
-    plt.plot(PA["afreq"], a_ttr,"bo-", markerfacecolor="w")
-    
-    plt.subplot(4,3,11)
-    plt.plot(PB["bfreq"], b_ttr,"bo-", markerfacecolor="w")
-    
-    plt.subplot(4,3,12)
-    plt.plot(np.linspace(0,100,PC["N"]), c_ttr,"bo-", markerfacecolor="w")    
-    
+    sp10 = plt.subplot(4,3,10)
+    plt.errorbar(
+        PA["afreq"],
+        a_ttfsp[:,0], 
+        yerr=a_ttfsp[:,1],
+        marker="o",
+        markersize=4,
+        markerfacecolor="w",
+        color="k",
+        )
+    sp10.set_xscale("log")
+    sp10.set_xticks((40, 50, 60, 70))
+    sp10.set_xticklabels((40, 50, 60, 70))
+    #
+    sp11 = plt.subplot(4,3,11, sharey=sp10)
+    plt.errorbar(
+        PB["bfreq"],
+        b_ttfsp[:,0], 
+        yerr=b_ttfsp[:,1],
+        marker="o",
+        markersize=4,
+        markerfacecolor="w",
+        color="k",
+        )
+    sp11.set_xscale("log")
+    sp11.set_xticks((100, 200, 300, 400))
+    sp11.set_xticklabels((100, 200, 300, 400))
+    #
+    sp12 = plt.subplot(4,3,12, sharey=sp10)
+    plt.errorbar(
+        np.linspace(0,100,PC["N"]),
+        c_ttfsp[:,0], 
+        yerr=c_ttfsp[:,1],
+        marker="o",
+        markersize=4,
+        markerfacecolor="w",
+        color="k",
+        )
     plt.tight_layout()
     return fhandle
 
