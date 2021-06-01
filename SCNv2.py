@@ -166,6 +166,7 @@ def runmodel(
         soma_kht=0.013,#0.013
         soma_l=0.0001,#0.0001
         dend_l=0.00001,#0.0001
+        reallatency=False,
     ):
     """
     Creates and runs the second version of the SCN model.
@@ -339,6 +340,13 @@ def runmodel(
     risetime 19.2 vs 6.0
     decay 130 vs 30
     ampl 600 zu 600 --> 8.6nS --> w=0.0086
+
+
+    Real latency (21.05.21)
+    ------------
+    Stefans conclusion from literature search is:
+    minimal latency apical/visual = 50ms
+    minimal latency basal/auditory = 20ms
     """
     risetaua = 3.84#estimated from 1/5 risetime
     risetaub = 1.2#estimated from 1/5 risetime
@@ -381,7 +389,10 @@ def runmodel(
         asyn[iasyn].e = 0
         anc.append(h.NetCon(astim[iasyn], asyn[iasyn]))
         anc[iasyn].record(atv[iasyn])
-        anc[iasyn].delay = 0.5
+        if reallatency:
+            anc[iasyn].delay = 50.0
+        else:
+            anc[iasyn].delay = 0.5
         if hasnmda:
             anc[iasyn].weight[0] = synwa
         else:
@@ -418,7 +429,10 @@ def runmodel(
         bsyn[ibsyn].e = 0
         bnc.append(h.NetCon(bstim[ibsyn], bsyn[ibsyn]))
         bnc[ibsyn].record(btv[ibsyn])
-        bnc[ibsyn].delay = 0.5
+        if reallatency:
+            bnc[ibsyn].delay = 20.0
+        else:
+            bnc[ibsyn].delay = 0.5
         bnc[ibsyn].weight[0] = synwb
         if hasstimulation[1]:
             #pstimulation=(0.0, 2, 50.0, 1.0, 0.0, 2, 50.0, 1.0),
@@ -476,8 +490,12 @@ def runmodel(
             inhstimc.seed(seed + 2944)
             inhconca = h.NetCon(inhstimc, isynca)
             inhconcb = h.NetCon(inhstimc, isyncb)
-            inhconca.delay = inhdelay
-            inhconcb.delay = inhdelay
+            if reallatency:
+                inhconca.delay = inhdelay + 50.0
+                inhconcb.delay = inhdelay + 50.0
+            else:
+                inhconca.delay = inhdelay
+                inhconcb.delay = inhdelay
             inhconca.weight[0] = inhw
             inhconcb.weight[0] = inhw
         if hasinputactivity[1]:
@@ -496,8 +514,12 @@ def runmodel(
             inhstimd.seed(seed + 3245)
             inhconda = h.NetCon(inhstimd, isynda)
             inhcondb = h.NetCon(inhstimd, isyndb)
-            inhconda.delay = inhdelay
-            inhcondb.delay = inhdelay
+            if reallatency:
+                inhconda.delay = inhdelay + 20.0
+                inhcondb.delay = inhdelay + 20.0
+            else:
+                inhconda.delay = inhdelay
+                inhcondb.delay = inhdelay
             inhconda.weight[0] = inhw
             inhcondb.weight[0] = inhw
     #
