@@ -340,7 +340,12 @@ def runmodel(
     risetime 19.2 vs 6.0
     decay 130 vs 30
     ampl 600 zu 600 --> 8.6nS --> w=0.0086
-
+    
+    Even later re-correction by Stefan (Email 28.05.21)
+     Die bewegen sich jetzt für die apikale Stimulation im Bereich von ~90 bis 
+     110 ms (decay; würde einfach 100 nehmen ) und ~15 ms für rise time. 
+     Bei der basalen Stimulation liegen die Werte jetzt bei ~20ms decay tau 
+     und 6 ms rise time.
 
     Real latency (21.05.21)
     ------------
@@ -348,10 +353,10 @@ def runmodel(
     minimal latency apical/visual = 50ms
     minimal latency basal/auditory = 20ms
     """
-    risetaua = 3.84#estimated from 1/5 risetime
+    risetaua = 3#3.84#estimated from 1/5 risetime
     risetaub = 1.2#estimated from 1/5 risetime
-    decaytaua = 130.0#measured by SW
-    decaytaub = 30.0#measured by SW
+    decaytaua = 100.0#130.0#measured by SW
+    decaytaub = 20#30.0#measured by SW
     synw = 0.01#0.0086 is one side!
     """
     in order for the experiments about enhancement to properly work we need to

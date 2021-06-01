@@ -57,10 +57,10 @@ def runonecondition(x, P):
             hasnmda=True,
             seed=thisseed+irep,
             hasfbi=False,
-            hasffi=True,
-            inhw=0.001,
-            inhtau=100.0,##just for testing... maybe we can get rid of the stupid persistent act
-            inhdelay=5.0,
+            hasffi=P["hasffi"][x],
+            inhw=P["inhw"][x],
+            inhtau=P["inhtau"][x],
+            inhdelay=P["inhdelay"][x],
             noiseval=P["noiseval"][x],
         )
         S = SCNv2.SimpleDetectAP(
@@ -109,9 +109,9 @@ def plotres(outputA, outputB, PA, PB):
     b_t = outputB[0][:, 2]
     #
     plt.subplot(2,2,1)
-    plt.errorbar(PA["afreq"], a_m, yerr=a_s)
+    plt.errorbar(PA["afreq"], a_m, yerr=a_s / PA["nreps"][0])
     plt.subplot(2,2,2)
-    plt.errorbar(PB["bfreq"], b_m, yerr=b_s)
+    plt.errorbar(PB["bfreq"], b_m, yerr=b_s / PB["nreps"][0])
     #
     plt.subplot(2,2,3)
     plt.xlim((0,PA["dur"][0]))
@@ -142,11 +142,12 @@ def getparams(
             aon=True,
             astart=0.0, 
             adur=125.0, 
-            afreqs=(30.0,65.0), 
+            afreqs=(35.0,70.0), 
             bon=False, 
             bstart=0.0, 
             bdur=125.0, 
             bfreqs=(75.0,400.0),
+            reallatency=True,
         ):
         #Some fixed Parameters, could be exposed to user later
         apthr = -50.0
@@ -193,6 +194,11 @@ def getparams(
         P["bfreq"] = bfreq
         P["bitv"] = bitv
         #
+        P["hasffi"] = np.repeat(True, nconds)
+        P["inhw"] = np.repeat(0.00075, nconds)
+        P["inhtau"] = np.repeat(120.0, nconds)
+        P["inhdelay"] = np.repeat(5.0, nconds)
+        P["reallatency"] = np.repeat(reallatency, nconds)
         return P
 
 
