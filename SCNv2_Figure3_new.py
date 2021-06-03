@@ -215,7 +215,7 @@ def plotres(outputA, PA):
             if xvals_b.size > 0:
                 ttfspb[irep] = np.min(xvals_b)#no spontaneous activity!
             else:
-                ttfspa[irep] = np.nan
+                ttfspb[irep] = np.nan
         a_ttfsp[icond,0]=np.nanmean(ttfspa)
         a_ttfsp[icond,1]=np.nanstd(ttfspa)
         b_ttfsp[icond,0]=np.nanmean(ttfspb)
@@ -273,6 +273,8 @@ def plotres(outputA, PA):
     )
     plt.plot(PA["bstart"],a_m + b_m,"g-")
     sp5.set_xlim(0, PA["dur"][0])
+    plt.xlabel("Onset Time (ms)")
+    plt.ylabel("Mean Output (APs)")
     #
     sp6 = plt.subplot(4,2,6, sharex=sp5, sharey=sp5)
     plt.errorbar(
@@ -285,9 +287,46 @@ def plotres(outputA, PA):
         markersize=4,
     )
     plt.plot(PA["bstart"],a_m + b_m,"g-")
-    sp5.set_xlim(0, PA["dur"][0])
+    sp6.set_xlim(0, PA["dur"][0])
+    plt.legend(("sum of unimodal","multimodal"), fontsize=5)
+    plt.xlabel("Onset Time (ms)")
+    plt.ylabel("Mean Output (APs)")
     #
-    
+    sp7 = plt.subplot(4,2,7)
+    plt.errorbar(
+        PA["bstart"],
+        a_ttfsp[:,0]-PA["astart"],
+        yerr=a_ttfsp[:,1],
+        marker="o",
+        color="b",
+        markerfacecolor="w",
+        markersize=4,
+    )
+    plt.errorbar(
+        PA["bstart"],
+        b_ttfsp[:,0]-PA["bstart"],
+        yerr=b_ttfsp[:,1],
+        marker="o",
+        color="r",
+        markerfacecolor="w",
+        markersize=4,
+    )
+    plt.xlabel("Onset Time (ms)")
+    plt.ylabel("Mean FSL (ms)")
+    #
+    sp8 = plt.subplot(4,2,8)
+    plt.errorbar(
+        PA["bstart"],
+        ab_ttfsp[:,0]-PA["astart"],
+        yerr=ab_ttfsp[:,1],
+        marker="o",
+        color="k",
+        markerfacecolor="w",
+        markersize=4,
+    )
+    plt.xlabel("Onset Time (ms)")
+    plt.ylabel("Mean FSL (ms)")
+    #
     plt.tight_layout()
     return fhandle
 
@@ -299,9 +338,9 @@ def getparams1d(
             astart=250.0, 
             adur=125.0, 
             b_varies=True,
-            bstart=(125.0, 750.0), 
+            bstart=(200.0, 625.0), 
             bdur=125.0, 
-            salience = 25.0,
+            salience = 40.0,
             reallatency=True,
         ):
         #Some fixed Parameters, could be exposed to user later
