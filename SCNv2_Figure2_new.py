@@ -99,8 +99,8 @@ def plotres(outputA, outputB, outputC, PA, PB, PC):
     #
     responsethreshold = 2
     #
-    fheight = 15  # cm
-    fwidth = 20
+    fheight = 20  # cm
+    fwidth = 14
     #contourlims = (1.0,333.0)
     #ncontours = 27
     fhandle = plt.figure(figsize=(fwidth / 2.54, fheight / 2.54))#, dpi=600)
@@ -114,66 +114,12 @@ def plotres(outputA, outputB, outputC, PA, PB, PC):
     c_s = outputC[0][:, 1]
     c_t = outputC[0][:, 2]
     #
-    sp1 = plt.subplot(4,3,1)
-    sp1.set_xscale("log")
-    sp1.set_xticks((40, 50, 60, 70))
-    sp1.set_xticklabels((40, 50, 60, 70))
-    plt.errorbar(
-        PA["afreq"],
-        a_m,
-        yerr=a_s, 
-        #yerr=a_s / np.sqrt(PA["nreps"][0]-1),
-        marker="o",
-        markersize=4,
-        markerfacecolor="w",
-        color="k",
-    )
-    plt.xlabel("Mean Input Frequency (Hz)")
-    plt.ylabel("Mean Output APs (Count)")
-    plt.title("Apical only")
-    
-    #
-    sp2 = plt.subplot(4,3,2, sharey=sp1)
-    sp2.set_xscale("log")
-    sp2.set_xticks((100, 200, 300, 400))
-    sp2.set_xticklabels((100, 200, 300, 400))
-    plt.errorbar(
-        PB["bfreq"],
-        b_m,
-        yerr=b_s, 
-        #yerr=b_s / np.sqrt(PB["nreps"][0]-1),
-        marker="o",
-        markersize=4,
-        markerfacecolor="w",
-        color="k",
-    )
-    plt.xlabel("Mean Input Frequency (Hz)")
-    plt.ylabel("Mean Output APs (Count)")
-    plt.title("Basal only")
-    #
-    plt.subplot(4,3,3, sharey=sp1)
-    plt.plot(np.linspace(0,100,PC["N"]), a_m + b_m, "g-")
-    enh = np.vstack((a_m, b_m))
-    plt.plot(np.linspace(0,100,PC["N"]), np.max(enh, 0), "r-")
-    plt.errorbar(
-        np.linspace(0,100,PC["N"]), 
-        c_m, 
-        yerr=c_s,
-        #yerr=c_s / np.sqrt(PC["nreps"][0]-1)),
-        marker="o",
-        markersize=4,
-        markerfacecolor="w",
-        color="k",
-    )
-    plt.xlabel("Input Salience %")
-    plt.ylabel("Mean Output APs (Count)")
-    plt.title("Apical+Basal")
-    #
     dotcol = ((.1, .1, .1), (.5, .5, .5))
-    msize = 2
+    msize = 1
     dottype = ","
     #
-    sp3 = plt.subplot(4,3,(4,7))
+    sp1 = plt.subplot(5,3,(1,4))
+    plt.title("Apical only")
     plt.xlim((0,PA["dur"][0]))
     plt.plot((PA["astart"][0], PA["astart"][0] + PA["adur"][0]), (-1, -1), "g-")
     a_ttfsp = np.zeros((PA["N"],2))
@@ -191,12 +137,13 @@ def plotres(outputA, outputB, outputC, PA, PB, PC):
                 ttfsp[irep] = np.nan
         a_ttfsp[icond,0]=np.nanmean(ttfsp)
         a_ttfsp[icond,1]=np.nanstd(ttfsp)
-    sp3.set_yticks(np.arange(PA["N"])+0.5)
-    sp3.set_yticklabels(np.round(PA["afreq"],1))
+    sp1.set_yticks(np.arange(PA["N"])+0.5)
+    sp1.set_yticklabels(np.round(PA["afreq"],1))
     plt.xlabel("Time (ms)")
     plt.ylabel("Mean Input Frequency (Hz)")
     #
-    sp4 = plt.subplot(4,3,(5,8))
+    sp2 = plt.subplot(5,3,(2,5))
+    plt.title("Basal only")
     plt.xlim((0,PB["dur"][0]))
     plt.plot((PB["bstart"][0], PB["bstart"][0] + PB["bdur"][0]), (-1, -1), "g-")
     b_ttfsp = np.zeros((PB["N"],2))
@@ -214,12 +161,13 @@ def plotres(outputA, outputB, outputC, PA, PB, PC):
                 ttfsp[irep] = np.nan
         b_ttfsp[icond,0] = np.nanmean(ttfsp)
         b_ttfsp[icond,1] = np.nanstd(ttfsp)
-    sp4.set_yticks(np.arange(PB["N"])+0.5)
-    sp4.set_yticklabels(np.round(PB["bfreq"],1))
+    sp2.set_yticks(np.arange(PB["N"])+0.5)
+    sp2.set_yticklabels(np.round(PB["bfreq"]))
     plt.xlabel("Time (ms)")
     plt.ylabel("Mean Input Frequency (Hz)")
     #
-    sp5 = plt.subplot(4,3,(6,9))
+    sp3 = plt.subplot(5,3,(3,6))
+    plt.title("Apical+Basal")
     plt.xlim((0,PC["dur"][0]))
     plt.plot((PC["bstart"][0], PC["bstart"][0] + PC["bdur"][0]), (-1, -1), "g-")
     c_ttfsp = np.zeros((PC["N"],2))
@@ -237,14 +185,64 @@ def plotres(outputA, outputB, outputC, PA, PB, PC):
                 ttfsp[irep] = np.nan
         c_ttfsp[icond,0]=np.nanmean(ttfsp)
         c_ttfsp[icond,1]=np.nanstd(ttfsp)
-    sp5.set_yticks(np.arange(PC["N"])+0.5)
-    sp5.set_yticklabels(np.linspace(0,100,PC["N"]))
+    sp3.set_yticks(np.arange(PC["N"])+0.5)
+    sp3.set_yticklabels(np.round(np.linspace(0,100,PC["N"])))
     plt.xlabel("Time (ms)")
-    plt.ylabel("Salience %")
-    
-    
+    plt.ylabel(r"Input Salience $\%$")
     #
-    sp10 = plt.subplot(4,3,10)
+    sp7 = plt.subplot(5,3,7)
+    sp7.set_xscale("log")
+    sp7.set_xticks((40, 50, 60, 70))
+    sp7.set_xticklabels((40, 50, 60, 70))
+    plt.errorbar(
+        PA["afreq"],
+        a_m,
+        yerr=a_s, 
+        #yerr=a_s / np.sqrt(PA["nreps"][0]-1),
+        marker="o",
+        markersize=4,
+        markerfacecolor="w",
+        color="k",
+    )
+    plt.xlabel("Mean Input Frequency (Hz)")
+    plt.ylabel("Mean Output (APs)")
+    #
+    sp8 = plt.subplot(5,3,8, sharey=sp7)
+    sp8.set_xscale("log")
+    sp8.set_xticks((100, 200, 300, 400))
+    sp8.set_xticklabels((100, 200, 300, 400))
+    plt.errorbar(
+        PB["bfreq"],
+        b_m,
+        yerr=b_s, 
+        #yerr=b_s / np.sqrt(PB["nreps"][0]-1),
+        marker="o",
+        markersize=4,
+        markerfacecolor="w",
+        color="k",
+    )
+    plt.xlabel("Mean Input Frequency (Hz)")
+    plt.ylabel("Mean Output (APs)")
+
+    #
+    sp9 = plt.subplot(5,3,9, sharey=sp7)
+    plt.plot(np.linspace(0,100,PC["N"]), a_m + b_m, "g-")
+    enh = np.vstack((a_m, b_m))
+    plt.plot(np.linspace(0,100,PC["N"]), np.max(enh, 0), "r-")
+    plt.errorbar(
+        np.linspace(0,100,PC["N"]), 
+        c_m, 
+        yerr=c_s,
+        #yerr=c_s / np.sqrt(PC["nreps"][0]-1)),
+        marker="o",
+        markersize=4,
+        markerfacecolor="w",
+        color="k",
+    )
+    plt.xlabel(r"Input Salience $\%$")
+    plt.ylabel("Mean Output (APs)")
+    #
+    sp10 = plt.subplot(5,3,10)
     plt.errorbar(
         PA["afreq"],
         a_ttfsp[:,0], 
@@ -257,8 +255,10 @@ def plotres(outputA, outputB, outputC, PA, PB, PC):
     sp10.set_xscale("log")
     sp10.set_xticks((40, 50, 60, 70))
     sp10.set_xticklabels((40, 50, 60, 70))
+    plt.xlabel("Mean Input Frequency (Hz)")
+    plt.ylabel("Mean FSL (ms)")
     #
-    sp11 = plt.subplot(4,3,11, sharey=sp10)
+    sp11 = plt.subplot(5,3,11, sharey=sp10)
     plt.errorbar(
         PB["bfreq"],
         b_ttfsp[:,0], 
@@ -271,10 +271,13 @@ def plotres(outputA, outputB, outputC, PA, PB, PC):
     sp11.set_xscale("log")
     sp11.set_xticks((100, 200, 300, 400))
     sp11.set_xticklabels((100, 200, 300, 400))
+    plt.xlabel("Mean Input Frequency (Hz)")
+    plt.ylabel("Mean FSL (ms)")
     #
-    sp12 = plt.subplot(4,3,12, sharey=sp10)
+    sp12 = plt.subplot(5,3,12, sharey=sp10)
+    X = np.linspace(0,100,PC["N"])
     plt.errorbar(
-        np.linspace(0,100,PC["N"]),
+        X,
         c_ttfsp[:,0], 
         yerr=c_ttfsp[:,1],
         marker="o",
@@ -282,7 +285,62 @@ def plotres(outputA, outputB, outputC, PA, PB, PC):
         markerfacecolor="w",
         color="k",
         )
+    plt.plot(X,b_ttfsp[:,0],"b-")
+    plt.plot(X,a_ttfsp[:,0], "r-")
+    plt.xlabel(r"Input Salience $\%$")
+    plt.ylabel("Mean FSL (ms)")
+    #
+    sp14 = plt.subplot(5, 3, 14)
+    X = np.linspace(0,100,PC["N"])
+    Y = c_m - (a_m + b_m)
+    plt.errorbar(
+        X,
+        Y, 
+        yerr=c_s,
+        #yerr=c_s / np.sqrt(PC["nreps"][0]-1)),
+        marker="o",
+        markersize=4,
+        markerfacecolor="w",
+        color="k",
+    )
+    plt.plot(X[np.argmax(Y)], np.max(Y), "ro", markersize=10, markerfacecolor=None)
+    plt.plot((X[np.argmax(Y)], X[np.argmax(Y)]), (0, np.max(Y)), "r-")
+    plt.text(X[np.argmax(Y)]+1, 1, str(X[np.argmax(Y)]))
+    plt.xlabel(r"Input Salience $\%$")
+    plt.ylabel("AP Increase (AP) \n vs. sum")
+    #
+    #
+    sp15 = plt.subplot(5, 3, 15)
+    YA = a_m + b_m
+    YM = c_m
+    xx = []
+    yy = []
+    yys = []
+    for thisx in range(int(np.floor(X.size/2))):
+        xx.append(X[thisx])
+        X2 = np.argwhere(X==X[thisx]*2)
+        yy.append(YM[thisx]-YA[X2])
+        yys.append(c_s[thisx])
+    yy = np.array(yy).flatten()
+    plt.errorbar(
+        xx,
+        yy, 
+        yerr=yys,
+        #yerr=c_s / np.sqrt(PC["nreps"][0]-1)),
+        marker="o",
+        markersize=4,
+        markerfacecolor="w",
+        color="k",
+    )
+    plt.plot(xx[np.argmax(yy)], np.max(yy), "ro", markersize=10, markerfacecolor=None)
+    plt.plot((xx[np.argmax(yy)], xx[np.argmax(yy)]), (0, np.max(yy)), "r-")
+    plt.xlabel(r"Input Salience $\%$")
+    plt.ylabel("AP Increase (AP) \n vs. sum@2xsalience")
+    plt.text(xx[np.argmax(yy)]+1, 1, str(xx[np.argmax(yy)]))
     plt.tight_layout()
+    #
+    #
+    #
     return fhandle
 
 def getparams(
@@ -416,19 +474,12 @@ if __name__ == "__main__":
         np.save("./data/SCNv2_Saliencetests_PC.npy", PC, allow_pickle=True)
     #
     print("done")
-    plotres(outputA, outputB, outputC, PA, PB, PC)
-    plt.show()
-#    fhandle = plotres(
-#        output=output,
-#        P=P,
-#        x=np.unique(P["nsyn"]),
-#        y=np.unique(P["afreq"]),
-#        xlabs=u"N Synapses",
-#        ylabs=u"Mean Input Freq. (Hz)",
-#    )
-#    pp = PdfPages("./figures/SCNv2_Inputtests.pdf")
-#    pp.savefig()
-#    pp.close()
+    #plotres(outputA, outputB, outputC, PA, PB, PC)
+    #plt.show()
+    fhandle = plotres(outputA, outputB, outputC, PA, PB, PC)
+    pp = PdfPages("./figures/SCNv2_Figure2_new.pdf")
+    pp.savefig()
+    pp.close()
 
 
 
