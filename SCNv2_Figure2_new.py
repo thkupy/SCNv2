@@ -97,6 +97,9 @@ def plotres(outputA, outputB, outputC, PA, PB, PC):
     import scipy.ndimage as ndimage
     from scipy import stats
     #
+    import warnings
+    warnings.filterwarnings("ignore")
+    #
     responsethreshold = 2
     #
     fheight = 20  # cm
@@ -350,11 +353,11 @@ def getparams(
             aon=True,
             astart=0.0, 
             adur=125.0, 
-            afreqs=(15.0,70.0), #35/70 --> lower to get a wider view
+            afreqs=(25.0,70.0), #35/70 --> lower to get a wider view
             bon=False, 
             bstart=0.0, 
             bdur=125.0, 
-            bfreqs=(40.0,400.0),#75/400 --> lower to get a wider view
+            bfreqs=(65.0,400.0),#75/400 --> lower to get a wider view
             reallatency=True,
         ):
         #Some fixed Parameters, could be exposed to user later
