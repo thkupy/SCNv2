@@ -350,11 +350,11 @@ def getparams(
             aon=True,
             astart=0.0, 
             adur=125.0, 
-            afreqs=(35.0,70.0), #35/65
+            afreqs=(15.0,70.0), #35/70 --> lower to get a wider view
             bon=False, 
             bstart=0.0, 
             bdur=125.0, 
-            bfreqs=(75.0,400.0),
+            bfreqs=(40.0,400.0),#75/400 --> lower to get a wider view
             reallatency=True,
         ):
         #Some fixed Parameters, could be exposed to user later
