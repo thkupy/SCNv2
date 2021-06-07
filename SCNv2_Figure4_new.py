@@ -20,7 +20,7 @@ Revised:
 import sys
 import os
 import matplotlib
-#matplotlib.use("Agg")
+matplotlib.use("Agg")
 from matplotlib.backends.backend_pdf import PdfPages
 import matplotlib.pyplot as plt
 import numpy as np
