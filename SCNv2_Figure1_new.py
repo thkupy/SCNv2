@@ -12,6 +12,9 @@ Revised:
 """
 import sys
 import os
+import matplotlib
+#matplotlib.use("Agg")
+from matplotlib.backends.backend_pdf import PdfPages
 import matplotlib.pyplot as plt
 import numpy as np
 from progress.bar import ChargingBar
@@ -196,22 +199,24 @@ def make_plots(D):
     sh[0, 1].set_title("Basal only")
     sh[0, 2].set_xlabel("Time (ms)")
     sh[0, 2].set_ylabel("Vm (mV)")
-    sh[0, 2].set_title("Apical only, no NMDA")
+    sh[0, 2].set_title("Apical only,\n no NMDA")
     sh[1, 0].set_xlabel("Time (ms)")
     sh[1, 0].set_ylabel("Vm (mV)")
     sh[1, 0].set_title("Apical + Basal")
     sh[1, 1].set_xlabel("Time (ms)")
     sh[1, 1].set_ylabel("Vm (mV)")
-    sh[1, 1].set_title("Apical + Basal, no NMDA")
+    sh[1, 1].set_title("Apical + Basal,\n no NMDA")
     sh[1, 2].plot(percs, mxa, "b-")
     sh[1, 2].plot(percs, mxan, "b--")
     sh[1, 2].plot(percs, mxb, "r-")
     sh[1, 2].plot(percs, mxab, "k-")
     sh[1, 2].plot(percs, mxabn, "k--")
     sh[1, 2].set_xlabel("total g-syn (nS)")
-    sh[1, 2].set_ylabel("max Vm (mV)")
+    sh[1, 2].set_ylabel("max Vm (norm.)")
+    sh[1,2].set_xlim((3.5,6.5))
     plt.tight_layout()
-    plt.show()
+    #plt.show()
+    return fh
 
 if __name__ == "__main__":
     #Parse command-line arguments [first: whether to load or (re-)simulate]
@@ -231,4 +236,7 @@ if __name__ == "__main__":
     else:
         D = simulate_data(nconds, tstop, dt)
         np.save("./data/Figure1_new.npy", D, allow_pickle=True)
-    make_plots(D)
+    fhandle = make_plots(D)
+    pp = PdfPages("./figures/SCNv2_Figure1_new.pdf")
+    pp.savefig()
+    pp.close()

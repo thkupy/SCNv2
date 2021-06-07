@@ -436,12 +436,12 @@ if __name__ == "__main__":
         np.save("./data/SCNv2_Figure3A_P.npy", PA, allow_pickle=True)
     #
     print("done")
-    plotres(outputA, PA)
-    plt.show()
-    #fhandle = plotres(outputA, outputB, outputC, PA, PB, PC)
-    #pp = PdfPages("./figures/SCNv2_Figure2_new.pdf")
-    #pp.savefig()
-    #pp.close()
+    #plotres(outputA, PA)
+    #plt.show()
+    fhandle = plotres(outputA, PA)
+    pp = PdfPages("./figures/SCNv2_Figure3_new.pdf")
+    pp.savefig()
+    pp.close()
 
 
 
