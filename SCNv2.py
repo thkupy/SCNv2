@@ -151,6 +151,7 @@ def runmodel(
         pinputactivity=(0.0, 33.0, 0.0, 33.0),
         inputstop=(500.0, 500.0),
         hasnmda=True,
+        apicaltau=100.0,
         seed=32768,
         pNeurit_L=pNeuritdefault,
         pretime=100.0,
@@ -355,7 +356,7 @@ def runmodel(
     """
     risetaua = 3#3.84#estimated from 1/5 risetime
     risetaub = 1.2#estimated from 1/5 risetime
-    decaytaua = 100.0#130.0#measured by SW
+    decaytaua = apicaltau####100.0 (2021-06-07) ####130.0#measured by SW
     decaytaub = 20#30.0#measured by SW
     synw = 0.01#0.0086 is one side!
     """
