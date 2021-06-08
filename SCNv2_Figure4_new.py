@@ -188,7 +188,6 @@ def plotres(outputA, outputB, PA, PB):
     fwidth = 14
     #contourlims = (1.0,333.0)
     #ncontours = 27
-    fhandle = plt.figure(figsize=(fwidth / 2.54, fheight / 2.54))#, dpi=600)
     a_am = np.array(outputA[0][:, 0], dtype=float)
     a_as = np.array(outputA[0][:, 1], dtype=float)
     a_bm = np.array(outputA[0][:, 3], dtype=float)
@@ -212,13 +211,17 @@ def plotres(outputA, outputB, PA, PB):
     dottype = ","
     #
     nconds = np.unique(pnl).size
+    nfreqs = np.unique(freq).size
     X = np.linspace(0.0, 100.0, np.unique(freq).size)
     cola = plt.cm.Blues((np.linspace(0.3,1,nconds)))
     colb = plt.cm.Reds((np.linspace(0.3,1,nconds)))
     colab =  plt.cm.gray((np.linspace(0.0,0.7,nconds)))
     greens =  plt.cm.Greens((np.linspace(0.3,1,nconds)))
+    #
+    ###FIGURE VERSION 1 -line plots-
+    fhandle1 = plt.figure(figsize=(fwidth / 2.54, fheight / 2.54))#, dpi=600)
     for ncond, thisL in enumerate(np.unique(pnl)):
-        sp1 = plt.subplot(6,2,1)
+        sp1 = plt.subplot(5,2,1)
         sp1.set_title("pNeurite Length")
         plt.errorbar(
             X, 
@@ -228,7 +231,7 @@ def plotres(outputA, outputB, PA, PB):
             marker="o",
             markersize=4,
         )
-        sp2 = plt.subplot(6,2,3, sharey=sp1)
+        sp3 = plt.subplot(5,2,3, sharey=sp1)
         plt.errorbar(
             X, 
             a_bm[pnl==thisL],
@@ -237,7 +240,7 @@ def plotres(outputA, outputB, PA, PB):
             marker="o",
             markersize=4,
         )
-        sp3 = plt.subplot(6,2,5)
+        sp5 = plt.subplot(5,2,5)
         plt.errorbar(
             X, 
             a_abm[pnl==thisL],
@@ -246,9 +249,9 @@ def plotres(outputA, outputB, PA, PB):
             marker="o",
             markersize=4,
         )
-        sp4 = plt.subplot(6,2,7, sharey=sp3)
+        sp7 = plt.subplot(5,2,7, sharey=sp5)
         plt.plot(X,a_am[pnl==thisL] + a_bm[pnl==thisL],"-",color=greens[ncond])
-        sp5 = plt.subplot(6,2,9)
+        sp9 = plt.subplot(5,2,9)
         Y = a_abm[pnl==thisL] - (a_am[pnl==thisL] + a_bm[pnl==thisL])
         plt.errorbar(
             X,
@@ -258,15 +261,9 @@ def plotres(outputA, outputB, PA, PB):
             marker="o",
             markersize=4,
         )
-    spX = plt.subplot(6,2,11)
-    z = np.reshape(a_abm - (a_am + a_bm), (5,7))
-    c = spX.pcolormesh(z, cmap="seismic")
-    plt.colorbar(c, ax=spX)
-
-        
     for ncond, thist in enumerate(np.unique(tau)):
-        sp6 = plt.subplot(6,2,2)
-        sp6.set_title("NMDA component \n (apical tau-decay)")
+        sp2 = plt.subplot(5,2,2)
+        sp2.set_title("NMDA component \n (apical tau-decay)")
         plt.errorbar(
             X, 
             b_am[tau==thist],
@@ -275,7 +272,7 @@ def plotres(outputA, outputB, PA, PB):
             marker="o",
             markersize=4,
         )
-        sp7 = plt.subplot(6,2,4)
+        sp4 = plt.subplot(5,2,4)
         plt.errorbar(
             X, 
             b_bm[tau==thist],
@@ -284,7 +281,7 @@ def plotres(outputA, outputB, PA, PB):
             marker="o",
             markersize=4,
         )
-        sp8 = plt.subplot(6,2,6)
+        sp6 = plt.subplot(5,2,6)
         plt.errorbar(
             X, 
             b_abm[tau==thist],
@@ -293,9 +290,9 @@ def plotres(outputA, outputB, PA, PB):
             marker="o",
             markersize=4,
         )
-        sp9 = plt.subplot(6,2,8)
+        sp8 = plt.subplot(5,2,8)
         plt.plot(X,b_am[tau==thist] + b_bm[tau==thist],"-",color=greens[ncond])
-        sp10 = plt.subplot(6,2,10)
+        sp10 = plt.subplot(5,2,10)
         plt.errorbar(
             X, 
             b_abm[tau==thist] - (b_am[tau==thist] + b_bm[tau==thist]),
@@ -304,27 +301,88 @@ def plotres(outputA, outputB, PA, PB):
             marker="o",
             markersize=4,
         )
-    spY = plt.subplot(6,2,12)
-    z = np.reshape(b_abm - (b_am+b_bm), (5,7))
-    c = spY.pcolormesh(z, cmap="seismic")
-    plt.colorbar(c, ax=spY)
-        
-        
     sp1.set_ylabel("Apical only response (AP)")
-    sp1.legend(np.unique(pnl))
-    sp2.set_ylabel("Basal only response (AP)")
-    sp3.set_ylabel("Multimodal response (AP)")
-    sp4.set_ylabel("Sum of unimodal (AP)")
-    sp5.set_ylabel("Multimodal benefit (AP)")
-    sp5.set_ylabel("Input Power (\%)")
-    sp5.legend(np.unique(pnl))
-    sp6.legend(np.unique(tau))
-    sp10.legend(np.unique(tau))
+    sp3.set_ylabel("Basal only response (AP)")
+    sp5.set_ylabel("Multimodal response (AP)")
+    sp7.set_ylabel("Sum of unimodal (AP)")
+    sp9.set_ylabel("Multimodal benefit (AP)")
+    sp9.set_ylabel("Input Power (\%)")
     sp10.set_ylabel("Input Power (\%)")
-
+    #
     plt.tight_layout()
     #
-    return fhandle
+    ####FIGURE VERSION 2 -colormesh version-
+    fhandle2 = plt.figure(figsize=(fwidth / 2.54, fheight / 2.54))#, dpi=600)
+    Y1 = np.unique(pnl)
+    Y2 = np.unique(tau)
+    #
+    sp21 = plt.subplot(5,2,1)
+    sp21.set_title("pNeurite Length")
+    z21 = np.reshape(a_am, (nconds,nfreqs))
+    c21 = sp21.pcolormesh(X,Y1, z21, cmap="Blues", shading="auto", vmin=0, vmax=80)
+    plt.colorbar(c21, ax=sp21, extend="both")
+    sp21.set_ylabel("pNeuritL (µm)")
+    #
+    sp23 = plt.subplot(5,2,3)
+    z23 = np.reshape(a_bm, (nconds,nfreqs))
+    c23 = sp23.pcolormesh(X,Y1, z23, cmap="Reds", shading="auto", vmin=0, vmax=80)
+    plt.colorbar(c23, ax=sp23, extend="both")
+    sp23.set_ylabel("pNeuritL (µm)")
+    #
+    sp25 = plt.subplot(5,2,5)
+    z25 = np.reshape(a_abm, (nconds,nfreqs))
+    c25 = sp25.pcolormesh(X,Y1, z25, cmap="bone", shading="auto", vmin=0, vmax=80)
+    plt.colorbar(c25, ax=sp25, extend="both")
+    sp25.set_ylabel("pNeuritL (µm)")
+    #
+    sp27 = plt.subplot(5,2,7)
+    z27 = np.reshape((a_am + a_bm), (nconds,nfreqs))
+    c27 = sp27.pcolormesh(X,Y1, z27, cmap="Greens", shading="auto", vmin=0, vmax=80)
+    plt.colorbar(c27, ax=sp27, extend="both")
+    sp27.set_ylabel("pNeuritL (µm)")
+    #
+    sp29 = plt.subplot(5,2,9)
+    z29 = np.reshape(a_abm - (a_am + a_bm), (nconds,nfreqs))
+    c29 = sp29.pcolormesh(X,Y1, z29, cmap="seismic", shading="auto", vmin=-40, vmax=40)
+    plt.colorbar(c29, ax=sp29, extend="both")
+    sp29.set_ylabel("pNeuritL (µm)")
+    sp29.set_xlabel("Input Power (\%)")
+    #
+    sp22 = plt.subplot(5,2,2)
+    sp22.set_title("NMDA component \n (apical tau-decay)")
+    z22 = np.reshape(b_am, (nconds,nfreqs))
+    c22 = sp22.pcolormesh(X, Y2, z22, cmap="Blues", shading="auto")
+    plt.colorbar(c22, ax=sp22)
+    sp22.set_ylabel("Apical tau-decay (ms)")
+    #
+    sp24 = plt.subplot(5,2,4)
+    z24 = np.reshape(b_bm, (nconds,nfreqs))
+    c24 = sp24.pcolormesh(X, Y2, z24, cmap="Reds", shading="auto")
+    plt.colorbar(c24, ax=sp24)
+    sp24.set_ylabel("Apical tau-decay (ms)")
+    #
+    sp26 = plt.subplot(5,2,6)
+    z26 = np.reshape(b_abm, (nconds,nfreqs))
+    c26 = sp26.pcolormesh(X, Y2, z26, cmap="bone", shading="auto")
+    plt.colorbar(c26, ax=sp26)
+    sp26.set_ylabel("Apical tau-decay (ms)")
+    #
+    sp28 = plt.subplot(5,2,8)
+    z28 = np.reshape((b_am + b_bm), (nconds,nfreqs))
+    c28 = sp28.pcolormesh(X, Y2, z28, cmap="Greens", shading="auto")
+    plt.colorbar(c28, ax=sp28)
+    sp28.set_ylabel("Apical tau-decay (ms)")
+    #
+    sp210 = plt.subplot(5,2,10)
+    z210 = np.reshape(b_abm - (b_am + b_bm), (nconds,nfreqs))
+    c210 = sp210.pcolormesh(X, Y2, z210, cmap="seismic", shading="auto")
+    plt.colorbar(c210, ax=sp210)
+    sp210.set_ylabel("Apical tau-decay (ms)")
+    sp210.set_xlabel("Input Power (\%)")
+    #
+    plt.tight_layout()
+    #
+    return (fhandle1, fhandle2)
 
 
 def getparams(
@@ -376,14 +434,14 @@ def getparams(
         # Now define the variable parameters. The repeated = y, the tiled = x!!
         afreq = np.geomspace(25.0, 70.0, nfreqs)
         aitv = np.round(1000.0 / afreq, 1)
-        bfreq = np.geomspace(65.0, 400.0, nfreqs)
+        bfreq = np.geomspace(65.0, 400.0, nfreqs)#
         bitv = np.round(1000.0 / bfreq, 1)
         P["afreq"] = np.tile(afreq, nconds)
         P["aitv"] = np.tile(aitv, nconds)
         P["bfreq"] = np.tile(bfreq, nconds)
         P["bitv"] = np.tile(bitv, nconds)
         #
-        allL = np.linspace(0.5, 250.0, nconds)
+        allL = np.linspace(0.1, 120.0, nconds)
         alltau = np.linspace(20.0, 100.0, nconds)
         #
         if vary_neurite:
@@ -452,7 +510,7 @@ if __name__ == "__main__":
     print("done")
     #plotres(outputA, outputB, PA, PB)
     #plt.show()
-    fhandle = plotres(outputA, outputB, PA, PB)
+    fhandle1, fhandle2 = plotres(outputA, outputB, PA, PB)
     pp = PdfPages("./figures/SCNv2_Figure4_new.pdf")
     pp.savefig()
     pp.close()
