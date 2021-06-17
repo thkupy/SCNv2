@@ -224,14 +224,14 @@ def runmodel(
     aDend.diam = 2
     aDend.nseg = 21
     #
-    if pNeurit_L < pNeuritdefault:
-        wehaveextradend = True
-        extraDend = h.Section()
-        extraDend.L = pNeuritdefault - pNeurit_L
-        extraDend.diam = 2
-        extraDend.nseg = 6
-    else:
-        wehaveextradend = False
+    #if pNeurit_L < pNeuritdefault:
+    #    wehaveextradend = True
+    #    extraDend = h.Section()
+    #    extraDend.L = pNeuritdefault - pNeurit_L
+    #    extraDend.diam = 2
+    #    extraDend.nseg = 6
+    #else:
+    #    wehaveextradend = False
     #axial Resistance and cm
     for sec in h.allsec():
         sec.Ra = 150
@@ -283,10 +283,10 @@ def runmodel(
     aDend.insert("leak")
     aDend.g_leak = dend_l#[0.0001]
     aDend.erev_leak = -65
-    if wehaveextradend:
-        extraDend.insert("leak")
-        extraDend.g_leak = dend_l#[0.0001]
-        extraDend.erev_leak = -65
+    #if wehaveextradend:
+    #    extraDend.insert("leak")
+    #    extraDend.g_leak = dend_l#[0.0001]
+    #    extraDend.erev_leak = -65
     bDend.insert("leak")
     bDend.g_leak = dend_l
     bDend.erev_leak = -65
@@ -306,11 +306,12 @@ def runmodel(
     Node1.connect(Internode1(1))
     Internode1.connect(AxonInit(1))
     AxonInit.connect(pNeurit(1))
-    if wehaveextradend:
-        aDend.connect(extraDend(1))
-        extraDend.connect(pNeurit(1))
-    else:
-        aDend.connect(pNeurit(1))
+    #if wehaveextradend:
+    #    aDend.connect(extraDend(1))
+    #    extraDend.connect(pNeurit(1))
+    #else:
+    #    aDend.connect(pNeurit(1))
+    aDend.connect(pNeurit(1))
     pNeurit.connect(Soma(1))
     bproxDend.connect(Soma(0))
     bDend.connect(bproxDend(1))
