@@ -10,7 +10,7 @@ The command line args are:
     SCNv2_Figure2_new.py weload ncores nconds
 
 Created: 2021-05-27
-Revised: 
+Revised: 2021-06-21 (checking)
 @author: kuenzel(at)bio2.rwth-aachen.de
 """
 
@@ -353,11 +353,11 @@ def getparams(
             aon=True,
             astart=0.0, 
             adur=125.0, 
-            afreqs=(25.0,70.0), #35/70 --> lower to get a wider view
+            afreqs=(40.0,120.0), #35/70 changed 2021-06-21
             bon=False, 
             bstart=0.0, 
             bdur=125.0, 
-            bfreqs=(65.0,400.0),#75/400 --> lower to get a wider view
+            bfreqs=(60.0,250.0),#75/400 changed 2021-06-21
             reallatency=True,
         ):
         #Some fixed Parameters, could be exposed to user later
@@ -406,8 +406,8 @@ def getparams(
         P["bitv"] = bitv
         #
         P["hasffi"] = np.repeat(True, nconds)
-        P["inhw"] = np.repeat(0.00075, nconds)
-        P["inhtau"] = np.repeat(120.0, nconds)
+        P["inhw"] = np.repeat(0.001, nconds)##0.00075 changed 2021-06-21
+        P["inhtau"] = np.repeat(75.0, nconds)##120.0 changed 2021-06-21
         P["inhdelay"] = np.repeat(5.0, nconds)
         P["reallatency"] = np.repeat(reallatency, nconds)
         return P

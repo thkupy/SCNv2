@@ -144,11 +144,11 @@ def getparams(
             aon=True,
             astart=0.0, 
             adur=125.0, 
-            afreqs=(30.0,65.0), 
+            afreqs=(40.0,120.0),
             bon=False, 
             bstart=0.0, 
             bdur=125.0, 
-            bfreqs=(75.0,400.0),
+            bfreqs=(60.0,250.0),
         ):
         #Some fixed Parameters, could be exposed to user later
         apthr = -50.0

@@ -151,7 +151,7 @@ def runmodel(
         pinputactivity=(0.0, 33.0, 0.0, 33.0),
         inputstop=(500.0, 500.0),
         hasnmda=True,
-        apicaltau=100.0,
+        apicaltau=80.0,#new2021-06-21
         seed=32768,
         pNeurit_L=pNeuritdefault,
         pretime=100.0,
@@ -159,7 +159,7 @@ def runmodel(
         hasfbi=False,
         hasffi=True,
         inhw=0.001,
-        inhtau=100.0,
+        inhtau=75.0,#100.0
         inhdelay=5.0,
         noiseval=0.9,#0.5
         soma_na=0.2,#0.125
@@ -373,8 +373,9 @@ def runmodel(
     """
     risetaua = 3#3.84#estimated from 1/5 risetime
     risetaub = 1.2#estimated from 1/5 risetime
-    decaytaua = apicaltau####100.0 (2021-06-07) ####130.0#measured by SW
-    decaytaub = 20#30.0#measured by SW
+    decaytaua = apicaltau#80.ms(new2021-06-21)####100.0 (2021-06-07) ####130.0#measured by SW
+    decaytaub = 25.0#new2021-06-21#20#30.0#measured by SW
+    decaytaua_nonmda = 30.0##new2021-06-21
     synw = 0.01#0.0086 is one side!
     """
     in order for the experiments about enhancement to properly work we need to
@@ -403,12 +404,14 @@ def runmodel(
     btv = [] 
     for iasyn in range(nsyna):
         astim.append(h.NetStim())
-        asyn.append(h.ExpSyn(aDend((iasyn+1)*(1.0/nsyna))))#evenly distribute synapses
+        asyn.append(h.Exp2Syn(aDend((iasyn+1)*(1.0/nsyna))))#evenly distribute synapses
         atv.append(h.Vector())
         if hasnmda:#apical EPSC are longer due to more NMDA component
-            asyn[iasyn].tau = decaytaua
-        else:#NMDA "blocked" in this model run, now apical EPSC = basal EPSC
-            asyn[iasyn].tau = decaytaub
+            asyn[iasyn].tau1 = risetaua
+            asyn[iasyn].tau2 = decaytaua
+        else:#NMDA "blocked" in this model run, now apical EPSC faster
+            asyn[iasyn].tau1 = risetaub
+            asyn[iasyn].tau2 = decaytaua_nonmda#(new 2021-06-21)decaytaub
         asyn[iasyn].e = 0
         anc.append(h.NetCon(astim[iasyn], asyn[iasyn]))
         anc[iasyn].record(atv[iasyn])
@@ -446,9 +449,10 @@ def runmodel(
             anc[iasyn].weight[0] = 0.0 
     for ibsyn in range(nsynb):
         bstim.append(h.NetStim())
-        bsyn.append(h.ExpSyn(bDend((ibsyn+1)*(1.0/nsynb))))#evenly distribute synapses
+        bsyn.append(h.Exp2Syn(bDend((ibsyn+1)*(1.0/nsynb))))#evenly distribute synapses
         btv.append(h.Vector())
-        bsyn[ibsyn].tau = decaytaub
+        bsyn[ibsyn].tau1 = risetaub
+        bsyn[ibsyn].tau2 = decaytaub
         bsyn[ibsyn].e = 0
         bnc.append(h.NetCon(bstim[ibsyn], bsyn[ibsyn]))
         bnc[ibsyn].record(btv[ibsyn])

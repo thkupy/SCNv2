@@ -453,17 +453,17 @@ def getparams(
         P["bstart"] = np.repeat(0.0, P["TotalN"])
         P["bdur"] = np.repeat(125.0, P["TotalN"])
         P["hasffi"] = np.repeat(True, P["TotalN"])
-        P["inhw"] = np.repeat(0.00075, P["TotalN"])
-        P["inhtau"] = np.repeat(120.0, P["TotalN"])
+        P["inhw"] = np.repeat(0.001, P["TotalN"])## 0.00075 2021-06-21
+        P["inhtau"] = np.repeat(75.0, P["TotalN"])##120.0 2021-06-21
         P["inhdelay"] = np.repeat(5.0, P["TotalN"])
         P["reallatency"] = np.repeat(True, P["TotalN"])
         P["hasinputactivity"] = (True, True)
         ###########################################
         #
         # Now define the variable parameters. The repeated = y, the tiled = x!!
-        afreq = np.geomspace(25.0, 70.0, nfreqs)
+        afreq = np.geomspace(40.0, 120.0, nfreqs)##25/70 2021-06-21
         aitv = np.round(1000.0 / afreq, 1)
-        bfreq = np.geomspace(65.0, 400.0, nfreqs)#
+        bfreq = np.geomspace(60.0, 250.0, nfreqs)###65/400 2021-06-21
         bitv = np.round(1000.0 / bfreq, 1)
         P["afreq"] = np.tile(afreq, nconds)
         P["aitv"] = np.tile(aitv, nconds)
@@ -471,7 +471,7 @@ def getparams(
         P["bitv"] = np.tile(bitv, nconds)
         #
         allL = np.linspace(0.1, 120.0, nconds)
-        alltau = np.linspace(20.0, 100.0, nconds)
+        alltau = np.linspace(20.0, 120.0, nconds)##20/100 2021-06-21
         #
         if vary_neurite:
             P["pNeuritL"] = np.repeat(allL, nfreqs)
@@ -480,7 +480,7 @@ def getparams(
         if vary_nmda:
             P["apicaltau"] = np.repeat(alltau, nfreqs)
         else:
-            P["apicaltau"] = np.repeat(100.0, P["TotalN"])
+            P["apicaltau"] = np.repeat(80.0, P["TotalN"])##100.0 2021-06-21
         #
         return P
 

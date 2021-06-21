@@ -363,9 +363,9 @@ def getparams1d(
         P["nreps"] = np.repeat(nreps, P["TotalN"])
         P["noiseval"] = np.repeat(nv, P["TotalN"])
         ###########################################
-        afreqs = np.geomspace(25.0, 70.0, nconds)
-        aitvs = np.round(1000.0 / afreqs, 1)
-        bfreqs = np.geomspace(65.0, 400.0, nconds)
+        afreqs = np.geomspace(40.0, 120.0, nconds)##changed 2021-06-21
+        aitvs = np.round(1000.0 / afreqs, 1)##changed 2021-06-21
+        bfreqs = np.geomspace(60.0, 250.0, nconds)
         bitvs = np.round(1000.0 / bfreqs, 1)
         allsal = np.linspace(0.0, 100.0, nconds)
         salind = np.argmin(np.abs(allsal - salience))
@@ -384,8 +384,8 @@ def getparams1d(
         P["nsyna"] = np.repeat(10, nconds)
         P["nsynb"] = np.repeat(10, nconds)
         P["hasffi"] = np.repeat(True, nconds)
-        P["inhw"] = np.repeat(0.00075, nconds)
-        P["inhtau"] = np.repeat(120.0, nconds)
+        P["inhw"] = np.repeat(0.001, nconds)## 0.00075 changed 2021-06-21
+        P["inhtau"] = np.repeat(75.0, nconds)## 120.0 changed 2021-06-21
         P["inhdelay"] = np.repeat(5.0, nconds)
         P["reallatency"] = np.repeat(reallatency, nconds)
         #
