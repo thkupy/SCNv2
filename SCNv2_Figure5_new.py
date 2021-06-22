@@ -48,11 +48,11 @@ def runonecondition(x, P):
     else:
         thisseed = P["Seed"]
     xdel = P["dist"][x] * (1000.0 / 343.0)#1/343 extra s for every meter (in ms)
-    sab = []
+    fslab = np.zeros(P["nreps"][x])*np.nan
     spcab = np.zeros(P["nreps"][x])
-    sa = []
+    fsla = np.zeros(P["nreps"][x])*np.nan
     spca = np.zeros(P["nreps"][x])
-    sb = []
+    fslb = np.zeros(P["nreps"][x])*np.nan
     spcb = np.zeros(P["nreps"][x])
     for irep in range(P["nreps"][x]):
         thisRAB = SCNv2.runmodel(
@@ -82,6 +82,8 @@ def runonecondition(x, P):
             RM=10,
         )
         spcab[irep] = len(SAB["PeakT"])
+        if spcab[irep] > 0:
+            fslab[irep] = np.min(SAB["PeakT"])
         #
         thisRA = SCNv2.runmodel(
             tstop=P["dur"][x],
@@ -110,6 +112,8 @@ def runonecondition(x, P):
             RM=10,
         )
         spca[irep] = len(SA["PeakT"])
+        if spca[irep] > 0:
+            fsla[irep] = np.min(SA["PeakT"])
         #
         thisRB = SCNv2.runmodel(
             tstop=P["dur"][x],
@@ -138,6 +142,8 @@ def runonecondition(x, P):
             RM=10,
         )
         spcb[irep] = len(SB["PeakT"])
+        if spcb[irep] > 0:
+            fslb[irep] = np.min(SB["PeakT"])
         #
     print("x: " + str(x))
     return [
@@ -147,6 +153,12 @@ def runonecondition(x, P):
         np.std(spcb),
         np.mean(spcab),
         np.std(spcab),
+        np.nanmean(fsla),
+        np.nanstd(fsla),
+        np.nanmean(fslb),
+        np.nanstd(fslb),
+        np.nanmean(fslab),
+        np.nanstd(fslab),
         P["dist"][x],
         P["afreq"][x],
         P["bfreq"][x],
@@ -184,9 +196,15 @@ def plotres(outputA, PA):
     b_s = np.array(outputA[0][:, 3], dtype=float)
     ab_m = np.array(outputA[0][:, 4], dtype=float)
     ab_s = np.array(outputA[0][:, 5], dtype=float)
-    dist = np.array(outputA[0][:, 6], dtype=float)
-    afreq = np.array(outputA[0][:, 7], dtype=float)
-    bfreq = np.array(outputA[0][:, 8], dtype=float)
+    fa_m = np.array(outputA[0][:, 6], dtype=float)
+    fa_s = np.array(outputA[0][:, 7], dtype=float)
+    fb_m = np.array(outputA[0][:, 8], dtype=float)
+    fb_s = np.array(outputA[0][:, 9], dtype=float)
+    fab_m = np.array(outputA[0][:, 10], dtype=float)
+    fab_s = np.array(outputA[0][:, 11], dtype=float)
+    dist = np.array(outputA[0][:, 12], dtype=float)
+    afreq = np.array(outputA[0][:, 13], dtype=float)
+    bfreq = np.array(outputA[0][:, 14], dtype=float)
     alldist = np.unique(dist)
     ndists = np.unique(dist).size
     nfreqs = 4
@@ -196,6 +214,12 @@ def plotres(outputA, PA):
     b_s = np.reshape(b_s, (ndists, nfreqs)) 
     ab_m = np.reshape(ab_m, (ndists, nfreqs))
     ab_s = np.reshape(ab_s, (ndists, nfreqs)) 
+    fa_m = np.reshape(fa_m, (ndists, nfreqs))
+    fa_s = np.reshape(fa_s, (ndists, nfreqs)) 
+    fb_m = np.reshape(fb_m, (ndists, nfreqs))
+    fb_s = np.reshape(fb_s, (ndists, nfreqs)) 
+    fab_m = np.reshape(fab_m, (ndists, nfreqs))
+    fab_s = np.reshape(fab_s, (ndists, nfreqs)) 
     dist = np.reshape(dist, (ndists, nfreqs)) 
     afreq = np.reshape(afreq, (ndists, nfreqs)) 
     bfreq = np.reshape(bfreq, (ndists, nfreqs)) 
@@ -216,11 +240,44 @@ def plotres(outputA, PA):
     #
     ###FIGURE VERSION 1 -line plots-
     fhandle1 = plt.figure(figsize=(fwidth / 2.54, fheight / 2.54))#, dpi=600)
+    plt.subplot(2,2,1)
+    plt.errorbar(alldist, a_m[:,0], yerr=a_s[:,0], label="apical weak", marker="o", color=(.0, .0, .5))
+    plt.errorbar(alldist, a_m[:,2], yerr=a_s[:,2], label="apical strong", marker="o", color=(.0, .0, 1.0))
+    plt.errorbar(alldist, b_m[:,0], yerr=a_s[:,0], label="basal weak", marker="o", color=(.5, .0, .0))
+    plt.errorbar(alldist, b_m[:,1], yerr=a_s[:,2], label="basal strong", marker="o", color=(1.0, .0, .0))
+    plt.xlabel("Distance to sound/light source (m)")
+    plt.ylabel("Unimodal response (AP)")    
+    plt.legend()
+    #
+    plt.subplot(2,2,2)
     plt.errorbar(alldist, ab_m[:,0] - (a_m[:,0]+b_m[:,0]), yerr=ab_s[:,0], label="weak/weak")
     plt.errorbar(alldist, ab_m[:,1] - (a_m[:,1]+b_m[:,1]), yerr=ab_s[:,1], label="weak/strong")
     plt.errorbar(alldist, ab_m[:,2] - (a_m[:,2]+b_m[:,2]), yerr=ab_s[:,2], label="strong/weak")
     plt.errorbar(alldist, ab_m[:,3] - (a_m[:,3]+b_m[:,3]), yerr=ab_s[:,3], label="strong/strong")
     plt.legend()
+    plt.xlabel("Distance to sound/light source (m)")
+    plt.ylabel("Enhancement vs. sum of unimodal (AP diff)")
+    #
+    plt.subplot(2,2,3)
+    plt.errorbar(alldist, fa_m[:,0], yerr=fa_s[:,0], label="apical weak", marker="o", color=(.0, .0, .5))
+    plt.errorbar(alldist, fa_m[:,2], yerr=fa_s[:,2], label="apical strong", marker="o", color=(.0, .0, 1.0))
+    plt.errorbar(alldist, fb_m[:,0], yerr=fa_s[:,0], label="basal weak", marker="o", color=(.5, .0, .0))
+    plt.errorbar(alldist, fb_m[:,1], yerr=fa_s[:,2], label="basal strong", marker="o", color=(1.0, .0, .0))
+    plt.xlabel("Distance to sound/light source (m)")
+    plt.ylabel("Unimodal FSL (ms)")    
+    plt.legend()
+    #
+    plt.subplot(2,2,4)
+    plt.errorbar(alldist, fab_m[:,0] - fa_m[:,0], yerr=fab_s[:,0], label="weak/weak")
+    plt.errorbar(alldist, fab_m[:,1] - fa_m[:,1], yerr=fab_s[:,1], label="weak/strong")
+    plt.errorbar(alldist, fab_m[:,2] - fa_m[:,2], yerr=fab_s[:,2], label="strong/weak")
+    plt.errorbar(alldist, fab_m[:,3] - fa_m[:,3], yerr=fab_s[:,3], label="strong/strong")   
+    plt.legend()
+    plt.xlabel("Distance to sound/light source (m)")
+    plt.ylabel("FSL vs. visual only (ms diff)")
+
+
+
     plt.tight_layout()
     #
     return fhandle1
