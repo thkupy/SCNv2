@@ -446,10 +446,10 @@ def getparams(
         P["dt"] = np.repeat(dt, P["TotalN"])
         P["nreps"] = np.repeat(nreps, P["TotalN"])
         P["noiseval"] = np.repeat(nv, P["TotalN"])
-        P["nsyna"] = np.repeat(25, nconds)#10 changed 2021-06-22
+        P["nsyna"] = np.repeat(25, P["TotalN"])#10 changed 2021-06-22
         P["astart"] = np.repeat(0.0, P["TotalN"])
         P["adur"] = np.repeat(125.0, P["TotalN"])
-        P["nsynb"] = np.repeat(25, nconds)#10 changed 2021-06-22
+        P["nsynb"] = np.repeat(25, P["TotalN"])#10 changed 2021-06-22
         P["bstart"] = np.repeat(0.0, P["TotalN"])
         P["bdur"] = np.repeat(125.0, P["TotalN"])
         P["hasffi"] = np.repeat(True, P["TotalN"])
@@ -461,9 +461,9 @@ def getparams(
         ###########################################
         #
         # Now define the variable parameters. The repeated = y, the tiled = x!!
-        afreq = np.geomspace(35.0, 90.0, nconds)#(35.0,90.0), ###40/120#35/70 changed 2021-06-22
+        afreq = np.geomspace(35.0, 90.0, nfreqs)#(35.0,90.0), ###40/120#35/70 changed 2021-06-22
         aitv = np.round(1000.0 / afreq, 1)
-        bfreq = np.geomspace(75.0, 333.0, nconds)##(75.0,333.0),#60/250#75/400 changed 2021-06-22
+        bfreq = np.geomspace(75.0, 333.0, nfreqs)##(75.0,333.0),#60/250#75/400 changed 2021-06-22
         bitv = np.round(1000.0 / bfreq, 1)
         P["afreq"] = np.tile(afreq, nconds)
         P["aitv"] = np.tile(aitv, nconds)
