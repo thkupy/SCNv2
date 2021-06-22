@@ -345,7 +345,7 @@ def getparams1d(
         ):
         #Some fixed Parameters, could be exposed to user later
         apthr = -50.0
-        dt = 0.025
+        dt = 0.01#0.025
         dur = 1000.0
         nv = 0.9
         #ParametersA
@@ -363,9 +363,9 @@ def getparams1d(
         P["nreps"] = np.repeat(nreps, P["TotalN"])
         P["noiseval"] = np.repeat(nv, P["TotalN"])
         ###########################################
-        afreqs = np.geomspace(40.0, 120.0, nconds)##changed 2021-06-21
+        afreqs = np.geomspace(35.0, 90.0, nconds)#(35.0,90.0), ###40/120#35/70 changed 2021-06-22
         aitvs = np.round(1000.0 / afreqs, 1)##changed 2021-06-21
-        bfreqs = np.geomspace(60.0, 250.0, nconds)
+        bfreqs = np.geomspace(75.0, 333.0, nconds)##(75.0,333.0),#60/250#75/400 changed 2021-06-22
         bitvs = np.round(1000.0 / bfreqs, 1)
         allsal = np.linspace(0.0, 100.0, nconds)
         salind = np.argmin(np.abs(allsal - salience))
@@ -381,8 +381,8 @@ def getparams1d(
         P["bitv"] = np.repeat(bitvs[salind], nconds)
         P["bfreq_2x"] = np.repeat(bfreqs[salindx2], nconds)
         P["bitv_2x"] = np.repeat(bitvs[salindx2], nconds)
-        P["nsyna"] = np.repeat(10, nconds)
-        P["nsynb"] = np.repeat(10, nconds)
+        P["nsyna"] = np.repeat(25, nconds)#10 changed 2021-06-22
+        P["nsynb"] = np.repeat(25, nconds)#10 changed 2021-06-22
         P["hasffi"] = np.repeat(True, nconds)
         P["inhw"] = np.repeat(0.001, nconds)## 0.00075 changed 2021-06-21
         P["inhtau"] = np.repeat(75.0, nconds)## 120.0 changed 2021-06-21

@@ -343,8 +343,45 @@ def plotres(outputA, outputB, outputC, PA, PB, PC):
     plt.tight_layout()
     #
     #
+    #adding PSTH as per SW request
+    exI = (3, 6, 9)
+    fhandle2 = plt.figure(figsize=(fwidth / 2.54, fheight / 2.54))#, dpi=600)
+    mybins = np.linspace(0, PA["dur"][0], int(PA["dur"][0] / 10))
+    nrep = PA["nreps"][0]
     #
-    return fhandle
+    sp1 = plt.subplot(5,3,1)
+    plt.title("Apical only")
+    vals,bins = np.histogram(np.concatenate(a_t[exI[0]]), mybins)
+    plt.plot(bins[1:], vals / nrep, color=(0.0, 0.0, 0.5))
+    vals,bins = np.histogram(np.concatenate(a_t[exI[1]]), mybins)
+    plt.plot(bins[1:], vals / nrep, color=(0.0, 0.0, 0.7))
+    vals,bins = np.histogram(np.concatenate(a_t[exI[2]]), mybins)
+    plt.plot(bins[1:], vals / nrep, color=(0.0, 0.0, 1.0))
+    #
+    sp2 = plt.subplot(5,3,2, sharex=sp1, sharey=sp1)
+    plt.title("Basal only")
+    vals,bins = np.histogram(np.concatenate(b_t[exI[0]]), mybins)
+    plt.plot(bins[1:], vals / nrep, color=(0.5, 0.0, 0.0))
+    vals,bins = np.histogram(np.concatenate(b_t[exI[1]]), mybins)
+    plt.plot(bins[1:], vals / nrep, color=(0.7, 0.0, 0.0))
+    vals,bins = np.histogram(np.concatenate(b_t[exI[2]]), mybins)
+    plt.plot(bins[1:], vals / nrep, color=(1.0, 0.0, 0.0))
+    
+    sp3 = plt.subplot(5,3,3, sharex=sp1, sharey=sp1)
+    plt.title("Apical+Basal only")
+    vals,bins = np.histogram(np.concatenate(c_t[exI[0]]), mybins)
+    plt.plot(bins[1:], vals / nrep, color=(0.3, 0.3, 0.3))
+    vals,bins = np.histogram(np.concatenate(c_t[exI[1]]), mybins)
+    plt.plot(bins[1:], vals / nrep, color=(0.5, 0.5, 0.5))
+    vals,bins = np.histogram(np.concatenate(c_t[exI[2]]), mybins)
+    plt.plot(bins[1:], vals / nrep, color=(0.7, 0.7, 0.7))
+    #
+    sp1.set_ylabel("Mean AP/bin")
+    sp1.set_xlabel("Time (binned, ms)")
+    sp2.set_xlabel("Time (binned, ms)")
+    sp3.set_xlabel("Time (binned, ms)")
+    #
+    return (fhandle, fhandle2)
 
 def getparams(
             ncores = 4,
@@ -353,16 +390,16 @@ def getparams(
             aon=True,
             astart=0.0, 
             adur=125.0, 
-            afreqs=(40.0,120.0), #35/70 changed 2021-06-21
+            afreqs=(35.0,90.0), ###40/120#35/70 changed 2021-06-21
             bon=False, 
             bstart=0.0, 
             bdur=125.0, 
-            bfreqs=(60.0,250.0),#75/400 changed 2021-06-21
+            bfreqs=(75.0,333.0),#60/250#75/400 changed 2021-06-21
             reallatency=True,
         ):
         #Some fixed Parameters, could be exposed to user later
         apthr = -50.0
-        dt = 0.025
+        dt = 0.01#0.025
         dur = 500.0
         nv = 0.9
         #ParametersA
@@ -394,12 +431,12 @@ def getparams(
         else:
             bfreq = np.zeros(nconds)
             bitv =  np.zeros(nconds)
-        P["nsyna"] = np.repeat(10, nconds)
+        P["nsyna"] = np.repeat(25, nconds)#10 changed 2021-06-22
         P["astart"] = np.repeat(astart, nconds)
         P["adur"] = np.repeat(adur, nconds)
         P["afreq"] = afreq
         P["aitv"] = aitv
-        P["nsynb"] = np.repeat(10, nconds)
+        P["nsynb"] = np.repeat(25, nconds)#10 changed 2021-06-22
         P["bstart"] = np.repeat(bstart, nconds)
         P["bdur"] = np.repeat(bdur, nconds)
         P["bfreq"] = bfreq
@@ -479,9 +516,10 @@ if __name__ == "__main__":
     print("done")
     #plotres(outputA, outputB, outputC, PA, PB, PC)
     #plt.show()
-    fhandle = plotres(outputA, outputB, outputC, PA, PB, PC)
+    fhandle, fhandle2 = plotres(outputA, outputB, outputC, PA, PB, PC)
     pp = PdfPages("./figures/SCNv2_Figure2_new.pdf")
-    pp.savefig()
+    pp.savefig(fhandle)
+    pp.savefig(fhandle2)
     pp.close()
 
 
