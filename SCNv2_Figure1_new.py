@@ -7,6 +7,7 @@ This generates "Figure 1" which deals with deterministic inputs, i.e. simulated
 slice experiments. It shows the different thresholds for apical and basal and combined.
 
 Created: 2021-05-27
+Revised: 2021-06-23 (Phaseplaneplots etc)
 Revised: 2021-06-21 (checking)
 @author: kuenzel(at)bio2.rwth-aachen.de
 """

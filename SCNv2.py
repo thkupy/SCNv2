@@ -5,6 +5,7 @@ New version of the SCN model.
 This module contains the necessary function for all experiment programs.
 
 Created: Tuesday 23rd Feb 2021
+Revised: Wednesday 23rd Jun 2021 [changed default loc of ffi synapses to ~0.4]
 @author: kuenzel
 """
 #-----IMPORTS--------
