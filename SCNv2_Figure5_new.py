@@ -15,7 +15,7 @@ The command line args are:
     SCNv2_Figure5_new.py weload ncores nconds
 
 Created: 2021-06-07
-Revised: 
+Revised: 2021-06-23 (completion)
 @author: kuenzel(at)bio2.rwth-aachen.de
 """
 
