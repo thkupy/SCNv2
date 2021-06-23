@@ -168,6 +168,9 @@ def runmodel(
         soma_l=0.0001,#0.0001
         dend_l=0.00001,#0.0001
         reallatency=False,
+        axon_na=0.32,
+        axon_k=0.04,
+        axon_l=0.0001,
     ):
     """
     Creates and runs the second version of the SCN model.
@@ -257,13 +260,13 @@ def runmodel(
     pNeurit.gl_hh = soma_l#hh model has own leak channel representation!
     #
     Node1.insert("hh")
-    Node1.gnabar_hh = 0.32#0.36
-    Node1.gkbar_hh = 0.04#0.04
-    Node1.gl_hh = 0.0001#1e-6#hh model has own leak channel representation!
+    Node1.gnabar_hh = axon_na#0.32#0.36
+    Node1.gkbar_hh = axon_k#0.04#0.04
+    Node1.gl_hh = axon_l#0.0001#1e-6#hh model has own leak channel representation!
     Node2.insert("hh")
-    Node2.gnabar_hh = 0.32#0.36
-    Node2.gkbar_hh = 0.04#0.04
-    Node2.gl_hh = 0.0001#1e-6#hh model has own leak channel representation!
+    Node2.gnabar_hh = axon_na#0.32#0.36
+    Node2.gkbar_hh = axon_k#0.04#0.04
+    Node2.gl_hh = axon_l#0.0001#1e-6#hh model has own leak channel representation!
     #
     #kht
     Soma.insert("kht")
@@ -502,10 +505,10 @@ def runmodel(
         inc2.delay = 5.0
     if hasffi:
         if hasinputactivity[0]:
-            isynca = h.ExpSyn(aDend(0.01))
+            isynca = h.ExpSyn(aDend(0.41))#0.01
             isynca.tau = inhtau#50.0#5.0
             isynca.e = -85
-            isyncb = h.ExpSyn(bDend(0.01))
+            isyncb = h.ExpSyn(bDend(0.41))#0.01
             isyncb.tau = inhtau#50.0#5.0
             isyncb.e = -85
             inhstimc = h.NetStim()
@@ -526,10 +529,10 @@ def runmodel(
             inhconca.weight[0] = inhw
             inhconcb.weight[0] = inhw
         if hasinputactivity[1]:
-            isynda = h.ExpSyn(aDend(0.4))
+            isynda = h.ExpSyn(aDend(0.4))#0.4?
             isynda.tau = inhtau#50.0#5.0
             isynda.e = -85
-            isyndb = h.ExpSyn(bDend(0.4))
+            isyndb = h.ExpSyn(bDend(0.4))#0.4?
             isyndb.tau = inhtau#50.0#5.0
             isyndb.e = -85
             inhstimd = h.NetStim()
