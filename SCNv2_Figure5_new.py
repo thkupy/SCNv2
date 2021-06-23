@@ -329,8 +329,8 @@ def getparams(
         #45/115,65/200,85/300
         dists = np.round(np.linspace(0, 100.0, ndists))
         # Now define the variable parameters. The repeated = y, the tiled = x!!
-        afreq = np.array([45.0, 45.0, 85.0, 85.0])
-        bfreq = np.array([115.0, 300.0, 115.0, 300.0])
+        afreq = np.array([45.0, 45.0, 80.0, 80.0])#45/85
+        bfreq = np.array([150.0, 300.0, 150.0, 300.0])#/120/300
         aitv = np.round(1000.0 / afreq, 1)
         bitv = np.round(1000.0 / bfreq, 1)
         P["afreq"] = np.tile(afreq, ndists)
