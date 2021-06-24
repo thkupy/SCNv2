@@ -390,7 +390,7 @@ def getparams(
             aon=True,
             astart=0.0, 
             adur=125.0, 
-            afreqs=(35.0,90.0), ###40/120#35/70 changed 2021-06-21
+            afreqs=(35.0,75.0),#35/90 ###40/120#35/70 changed 2021-06-24
             bon=False, 
             bstart=0.0, 
             bdur=125.0, 
