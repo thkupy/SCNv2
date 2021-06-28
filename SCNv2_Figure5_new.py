@@ -162,6 +162,12 @@ def runonecondition(x, P):
         P["dist"][x],
         P["afreq"][x],
         P["bfreq"][x],
+        spca,
+        spcb,
+        spcab,
+        fsla,
+        fslb,
+        fslab,
     ]
 
 
@@ -175,6 +181,46 @@ def myMPhandler(P):
     return r
 
 
+def mymultitest(a,b,c,d, thr):
+    from scipy import stats
+    s1,p1 = stats.ttest_ind(a,b)
+    b1 = p1<(thr/6)
+    T = np.array((1, 2, s1, p1, b1))
+    s2,p2 = stats.ttest_ind(a,c)
+    b2 = p2<(thr/6)
+    T = np.vstack((T, np.array((1, 3, s2, p2, b2))))
+    s3,p3 = stats.ttest_ind(a,d)
+    b3 = p3<(thr/6)
+    T = np.vstack((T, np.array((1, 4, s3, p3, b3))))
+    s4,p4 = stats.ttest_ind(b,c)
+    b4 = p4<(thr/6)
+    T = np.vstack((T, np.array((2, 3, s4, p4, b4))))
+    s5,p5 = stats.ttest_ind(b,d)
+    b5 = p5<(thr/6)
+    T = np.vstack((T, np.array((2, 4, s5, p5, b5))))
+    s6,p6 = stats.ttest_ind(c,d)
+    b6 = p6<(thr/6)
+    T = np.vstack((T, np.array((3, 4, s6, p6, b6))))
+    return(T)
+
+
+def mymultitest2(a, b1, b2, b3, b4, thr):
+    from scipy import stats
+    s1,p1 = stats.ttest_ind(a,b1)
+    b1 = p1<(thr/4)
+    T = np.array((1, 2, s1, p1, b1))
+    s2,p2 = stats.ttest_ind(a,b2)
+    b2 = p2<(thr/4)
+    T = np.vstack((T, np.array((1, 3, s2, p2, b2))))
+    s3,p3 = stats.ttest_ind(a,b3)
+    b3 = p3<(thr/4)
+    T = np.vstack((T, np.array((1, 4, s3, p3, b3))))
+    s4,p4 = stats.ttest_ind(a,b4)
+    b4 = p4<(thr/4)
+    T = np.vstack((T, np.array((2, 3, s4, p4, b4))))
+    return(T)
+    
+    
 def plotres(outputA, PA):
     from matplotlib.ticker import ScalarFormatter, AutoMinorLocator, MaxNLocator
     import scipy.ndimage as ndimage
@@ -208,6 +254,14 @@ def plotres(outputA, PA):
     alldist = np.unique(dist)
     ndists = np.unique(dist).size
     nfreqs = 4
+    #
+    spa = np.vstack(outputA[0][:,15])
+    spb = np.vstack(outputA[0][:,16])
+    spab = np.vstack(outputA[0][:,17])
+    fsla = np.vstack(outputA[0][:,18])
+    fslb = np.vstack(outputA[0][:,19])
+    fslab = np.vstack(outputA[0][:,20])
+    #
     a_m = np.reshape(a_m, (ndists, nfreqs))
     a_s = np.reshape(a_s, (ndists, nfreqs)) 
     b_m = np.reshape(b_m, (ndists, nfreqs))
@@ -241,10 +295,10 @@ def plotres(outputA, PA):
     ###FIGURE VERSION 1 -line plots-
     fhandle1 = plt.figure(figsize=(fwidth / 2.54, fheight / 2.54))#, dpi=600)
     plt.subplot(2,2,1)
-    plt.errorbar(alldist, a_m[:,0], yerr=a_s[:,0], label="apical weak", marker="o", color=(.0, .0, .5))
-    plt.errorbar(alldist, a_m[:,2], yerr=a_s[:,2], label="apical strong", marker="o", color=(.0, .0, 1.0))
-    plt.errorbar(alldist, b_m[:,0], yerr=a_s[:,0], label="basal weak", marker="o", color=(.5, .0, .0))
-    plt.errorbar(alldist, b_m[:,1], yerr=a_s[:,2], label="basal strong", marker="o", color=(1.0, .0, .0))
+    plt.errorbar(alldist, a_m[:,0], yerr=a_s[:,0], label="apical weak", color=(.0, .0, .5))
+    plt.errorbar(alldist, a_m[:,2], yerr=a_s[:,2], label="apical strong", color=(.0, .0, 1.0))
+    plt.errorbar(alldist, b_m[:,0], yerr=a_s[:,0], label="basal weak", color=(.5, .0, .0))
+    plt.errorbar(alldist, b_m[:,1], yerr=a_s[:,2], label="basal strong", color=(1.0, .0, .0))
     plt.xlabel("Distance to sound/light source (m)")
     plt.ylabel("Unimodal response (AP)")    
     plt.legend()
@@ -258,11 +312,32 @@ def plotres(outputA, PA):
     plt.xlabel("Distance to sound/light source (m)")
     plt.ylabel("Enhancement vs. sum of unimodal (AP diff)")
     #
+    #Some Statistics... we are going to compare for each distance the 4 conditions
+    pthres = 0.01
+    for idist in range(ndists):
+        weak_weak = spab[(idist * 4)]-(spa[(idist * 4)] + spb[(idist * 4)])
+        weak_strong = spab[(idist * 4)+1]-(spa[(idist * 4)+1] + spb[(idist * 4)+1])
+        strong_weak = spab[(idist * 4)+2]-(spa[(idist * 4)+2] + spb[(idist * 4)+2])
+        strong_strong = spab[(idist * 4)+3]-(spa[(idist * 4)+3] + spb[(idist * 4)+3])
+        AN=stats.f_oneway(weak_weak, weak_strong, strong_weak, strong_strong)
+        print("Dist: " + str(alldist[idist]) + ":")
+        print(AN)
+        if AN.pvalue < pthres:
+            plt.plot(alldist[idist], 80, "k*", markersize=10)
+            T = mymultitest(weak_weak, weak_strong, strong_weak, strong_strong, pthres)
+            if T[2,4]:
+                plt.plot(alldist[idist], ab_m[idist,0] - (a_m[idist,0]+b_m[idist,0]), "bo")
+            if T[4,4]:
+                plt.plot(alldist[idist], ab_m[idist,1] - (a_m[idist,1]+b_m[idist,1]), "yo")
+            if T[5,4]:
+                plt.plot(alldist[idist], ab_m[idist,2] - (a_m[idist,2]+b_m[idist,2]), "go")
+            #3/5/6 is vs. strong_strong
+    #
     plt.subplot(2,2,3)
-    plt.errorbar(alldist, fa_m[:,0], yerr=fa_s[:,0], label="apical weak", marker="o", color=(.0, .0, .5))
-    plt.errorbar(alldist, fa_m[:,2], yerr=fa_s[:,2], label="apical strong", marker="o", color=(.0, .0, 1.0))
-    plt.errorbar(alldist, fb_m[:,0], yerr=fa_s[:,0], label="basal weak", marker="o", color=(.5, .0, .0))
-    plt.errorbar(alldist, fb_m[:,1], yerr=fa_s[:,2], label="basal strong", marker="o", color=(1.0, .0, .0))
+    plt.errorbar(alldist, fa_m[:,0], yerr=fa_s[:,0], label="apical weak", color=(.0, .0, .5))
+    plt.errorbar(alldist, fa_m[:,2], yerr=fa_s[:,2], label="apical strong", color=(.0, .0, 1.0))
+    plt.errorbar(alldist, fb_m[:,0], yerr=fa_s[:,0], label="basal weak", color=(.5, .0, .0))
+    plt.errorbar(alldist, fb_m[:,1], yerr=fa_s[:,2], label="basal strong", color=(1.0, .0, .0))
     plt.xlabel("Distance to sound/light source (m)")
     plt.ylabel("Unimodal FSL (ms)")    
     plt.legend()
@@ -275,6 +350,29 @@ def plotres(outputA, PA):
     plt.legend()
     plt.xlabel("Distance to sound/light source (m)")
     plt.ylabel("FSL vs. visual only (ms diff)")
+    #Some Statistics... we are going to compare for each distance the 4 conditions
+    pthres = 0.05
+    for idist in range(ndists):
+        apical_strong = fsla[(idist * 4)+3]
+        weak_weak = fslab[(idist * 4)]
+        weak_strong = fslab[(idist * 4)+1]
+        strong_weak = fslab[(idist * 4)+2]
+        strong_strong = fslab[(idist * 4)+3]
+        AN = stats.f_oneway(apical_strong, weak_weak, weak_strong, strong_weak, strong_strong)
+        print("Dist: " + str(alldist[idist]) + ":")
+        print(AN)
+        if AN.pvalue < pthres:
+            plt.plot(alldist[idist], 100, "k*", markersize=10)
+            T = mymultitest2(apical_strong, weak_weak, weak_strong, strong_weak, strong_strong, pthres)
+            if T[0,4]:
+                plt.plot(alldist[idist], fab_m[idist,0] - fa_m[idist,0],  "bo")
+            if T[1,4]:
+                plt.plot(alldist[idist], fab_m[idist,1] - fa_m[idist,1], "yo")
+            if T[2,4]:
+                plt.plot(alldist[idist], fab_m[idist,2] - fa_m[idist,2], "go")
+            if T[3,4]:
+                plt.plot(alldist[idist], fab_m[idist,3] - fa_m[idist,3], "ro")
+            #3/5/6 is vs. strong_strong
 
 
 
