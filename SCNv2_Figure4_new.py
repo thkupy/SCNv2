@@ -430,7 +430,7 @@ def getparams(
         #
         #Some fixed Parameters, could be exposed to user later
         apthr = -50.0
-        dt = 0.01#0.025
+        dt = 0.025
         dur = 500.0
         nv = 0.9
         #
@@ -463,7 +463,7 @@ def getparams(
         ###########################################
         #
         # Now define the variable parameters. The repeated = y, the tiled = x!!
-        afreq = np.geomspace(35.0, 90.0, nfreqs)#(35.0,90.0), ###40/120#35/70 changed 2021-06-22
+        afreq = np.geomspace(35.0, 70.0, nfreqs)#(35.0,90.0), ###40/120#35/70 changed 2021-06-28
         aitv = np.round(1000.0 / afreq, 1)
         bfreq = np.geomspace(75.0, 333.0, nfreqs)##(75.0,333.0),#60/250#75/400 changed 2021-06-22
         bitv = np.round(1000.0 / bfreq, 1)

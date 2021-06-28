@@ -390,7 +390,7 @@ def getparams(
             aon=True,
             astart=0.0, 
             adur=125.0, 
-            afreqs=(35.0,75.0),#35/90 ###40/120#35/70 changed 2021-06-24
+            afreqs=(35.0,70.0),#35/70#35/90 ###40/120#35/70 changed 2021-06-28
             bon=False, 
             bstart=0.0, 
             bdur=125.0, 
@@ -399,7 +399,7 @@ def getparams(
         ):
         #Some fixed Parameters, could be exposed to user later
         apthr = -50.0
-        dt = 0.01#0.025
+        dt = 0.025
         dur = 500.0
         nv = 0.9
         #ParametersA

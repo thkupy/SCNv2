@@ -388,7 +388,7 @@ def getparams(
         ):
         #Some fixed Parameters, could be exposed to user later
         apthr = -50.0
-        dt = 0.01#0.025
+        dt = 0.025
         dur = 500.0
         nv = 0.9
         nfreqs = 4

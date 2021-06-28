@@ -345,7 +345,7 @@ def getparams1d(
         ):
         #Some fixed Parameters, could be exposed to user later
         apthr = -50.0
-        dt = 0.01#0.025
+        dt = 0.025
         dur = 1000.0
         nv = 0.9
         #ParametersA
@@ -363,7 +363,7 @@ def getparams1d(
         P["nreps"] = np.repeat(nreps, P["TotalN"])
         P["noiseval"] = np.repeat(nv, P["TotalN"])
         ###########################################
-        afreqs = np.geomspace(35.0, 90.0, nconds)#(35.0,90.0), ###40/120#35/70 changed 2021-06-22
+        afreqs = np.geomspace(35.0, 70.0, nconds)#(35.0,90.0), ###40/120#35/70 changed 2021-06-28
         aitvs = np.round(1000.0 / afreqs, 1)##changed 2021-06-21
         bfreqs = np.geomspace(75.0, 333.0, nconds)##(75.0,333.0),#60/250#75/400 changed 2021-06-22
         bitvs = np.round(1000.0 / bfreqs, 1)
