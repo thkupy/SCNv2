@@ -23,14 +23,16 @@ import SCNv2
 
 # some global plot settings
 plt.ioff()
-plt.rc("font", family="serif", serif="Linux Libertine O")
-#plt.rcParams["pdf.fonttype"] = 42
-plt.rc("text", usetex=True)
+plt.rcParams["font.sans-serif"] = "Arial"
+plt.rcParams["font.family"] = "sans-serif"
+plt.rcParams["pdf.fonttype"] = 42
+plt.rcParams["ps.fonttype"] = 42
+plt.rcParams["svg.fonttype"] = "none"
+plt.rc("text", usetex=False)
 plt.rc("xtick", labelsize="x-small")
 plt.rc("ytick", labelsize="x-small")
 plt.rc("axes", labelsize="small")
-#new_rc_params = {"text.usetex": False, "svg.fonttype": "none"}
-#plt.rcParams.update(new_rc_params)
+
 
 def simulate_data(nconds, tstop, dt):
     bar = ChargingBar("Simulation running", max=nconds)
@@ -413,3 +415,4 @@ if __name__ == "__main__":
     pp = PdfPages("./figures/SCNv2_Figure1_new.pdf")
     pp.savefig(fh)
     pp.close()
+    fh.savefig("./figures/SCNv2_Figure1_new.svg")
