@@ -10,7 +10,7 @@ The command line args are:
     SCNv2_Figure3_new.py weload ncores nconds salience
 
 Created: 2021-06-06
-Revised: 
+Revised: 2021-07_06 (issues with rasterplots)
 @author: kuenzel(at)bio2.rwth-aachen.de
 """
 
@@ -36,6 +36,10 @@ plt.rc("text", usetex=False)
 plt.rc("xtick", labelsize="x-small")
 plt.rc("ytick", labelsize="x-small")
 plt.rc("axes", labelsize="small")
+
+
+#Decide whether we want full or sparse rasterplots (performance after export!)
+plotfullraster = False
 
 def runonecondition(x, P):
     ####GENERATE SPIKE INPUTS (the spiketimes are always the same to improve comparability)
@@ -207,8 +211,13 @@ def plotres(outputA, PA):
             yvals_a = np.ones(xvals_a.size) * ypos
             xvals_b = np.array(b_t[icond][irep])
             yvals_b = np.ones(xvals_b.size) * ypos
-            plt.plot(xvals_a, yvals_a, color="b", marker=dottype, markersize=msize, linestyle=" ")
-            plt.plot(xvals_b, yvals_b, color="r", marker=dottype, markersize=msize, linestyle=" ")
+            if plotfullraster:
+                plt.plot(xvals_a, yvals_a, color="b", marker=dottype, markersize=msize, linestyle=" ")
+                plt.plot(xvals_b, yvals_b, color="r", marker=dottype, markersize=msize, linestyle=" ")
+            else:#plot sparse raster, only every 10th rep
+                if irep % 10 == 0:
+                    plt.plot(xvals_a, yvals_a, color="b", marker=dottype, markersize=msize, linestyle=" ")
+                    plt.plot(xvals_b, yvals_b, color="r", marker=dottype, markersize=msize, linestyle=" ")
             if xvals_a.size > 0:
                 ttfspa[irep] = np.min(xvals_a)#no spontaneous activity!
             else:
@@ -240,7 +249,11 @@ def plotres(outputA, PA):
             ypos = icond + (irep / (PA["nreps"][0]))
             xvals_ab = np.array(ab_t[icond][irep])
             yvals_ab = np.ones(xvals_ab.size) * ypos
-            plt.plot(xvals_ab, yvals_ab, color=dotcol[icond%2], marker=dottype, markersize=msize, linestyle=" ")
+            if plotfullraster:
+                plt.plot(xvals_ab, yvals_ab, color=dotcol[icond%2], marker=dottype, markersize=msize, linestyle=" ")
+            else:#plot sparse raster, only every 10th rep
+                if irep % 10 == 0:
+                    plt.plot(xvals_ab, yvals_ab, color=dotcol[icond%2], marker=dottype, markersize=msize, linestyle=" ")
             if xvals_ab.size > 0:
                 ttfspab[irep] = np.min(xvals_ab)#no spontaneous activity!
             else:
@@ -273,9 +286,10 @@ def plotres(outputA, PA):
         markersize=4,
     )
     plt.plot(PA["bstart"],a_m + b_m,"g-")
-    sp5.set_xlim(0, PA["dur"][0])
+    #sp5.set_xlim(0, PA["dur"][0])
     plt.xlabel("Onset Time (ms)")
     plt.ylabel("Mean Output (APs)")
+    
     #
     sp6 = plt.subplot(4,2,6, sharex=sp5, sharey=sp5)
     plt.errorbar(
@@ -288,7 +302,7 @@ def plotres(outputA, PA):
         markersize=4,
     )
     plt.plot(PA["bstart"],a_m + b_m,"g-")
-    sp6.set_xlim(0, PA["dur"][0])
+    #sp6.set_xlim(0, PA["dur"][0])
     plt.legend(("sum of unimodal","multimodal"), fontsize=5)
     plt.xlabel("Onset Time (ms)")
     plt.ylabel("Mean Output (APs)")

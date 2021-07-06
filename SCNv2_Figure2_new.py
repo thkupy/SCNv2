@@ -10,6 +10,7 @@ The command line args are:
     SCNv2_Figure2_new.py weload ncores nconds
 
 Created: 2021-05-27
+Revised: 2021-07_06 (issues with rasterplots)
 Revised: 2021-06-21 (checking)
 @author: kuenzel(at)bio2.rwth-aachen.de
 """
@@ -36,6 +37,9 @@ plt.rc("text", usetex=False)
 plt.rc("xtick", labelsize="x-small")
 plt.rc("ytick", labelsize="x-small")
 plt.rc("axes", labelsize="small")
+
+#Decide whether we want full or sparse rasterplots (performance after export!)
+plotfullraster = False
 
 def runonecondition(x, P):
     ####GENERATE SPIKE INPUTS (the spiketimes are always the same to improve comparability)
@@ -134,7 +138,11 @@ def plotres(outputA, outputB, outputC, PA, PB, PC):
             ypos = icond + (irep / (PA["nreps"][0]))
             xvals = np.array(a_t[icond][irep])
             yvals = np.ones(xvals.size) * ypos
-            plt.plot(xvals, yvals, color=dotcol[icond%2], marker=dottype, markersize=msize, linestyle=" ")
+            if plotfullraster:
+                plt.plot(xvals, yvals, color=dotcol[icond%2], marker=dottype, markersize=msize, linestyle=" ")
+            else:#plot sparse raster, only every 10th rep
+                if irep % 10 == 0:
+                    plt.plot(xvals, yvals, color=dotcol[icond%2], marker=dottype, markersize=msize, linestyle=" ")
             if xvals.size > 0:
                 ttfsp[irep] = np.min(xvals)#no spontaneous activity!
             else:
@@ -158,7 +166,11 @@ def plotres(outputA, outputB, outputC, PA, PB, PC):
             ypos = icond + (irep / (PB["nreps"][0]))
             xvals = np.array(b_t[icond][irep])
             yvals = np.ones(xvals.size) * ypos
-            plt.plot(xvals, yvals, color=dotcol[icond%2], marker=dottype, markersize=msize, linestyle=" ")
+            if plotfullraster:
+                plt.plot(xvals, yvals, color=dotcol[icond%2], marker=dottype, markersize=msize, linestyle=" ")
+            else:#plot sparse raster, only every 10th rep
+                if irep % 10 == 0:
+                    plt.plot(xvals, yvals, color=dotcol[icond%2], marker=dottype, markersize=msize, linestyle=" ")
             if xvals.size > 0:
                 ttfsp[irep] = np.min(xvals)#no spontaneous activity!
             else:
@@ -182,7 +194,11 @@ def plotres(outputA, outputB, outputC, PA, PB, PC):
             ypos = icond + (irep / (PC["nreps"][0]))
             xvals = np.array(c_t[icond][irep])
             yvals = np.ones(xvals.size) * ypos
-            plt.plot(xvals, yvals, color=dotcol[icond%2], marker=dottype, markersize=msize, linestyle=" ")
+            if plotfullraster:
+                plt.plot(xvals, yvals, color=dotcol[icond%2], marker=dottype, markersize=msize, linestyle=" ")
+            else:#plot sparse raster, only every 10th rep
+                if irep % 10 == 0:
+                    plt.plot(xvals, yvals, color=dotcol[icond%2], marker=dottype, markersize=msize, linestyle=" ")
             if xvals.size > 0:
                 ttfsp[irep] = np.min(xvals)#no spontaneous activity!
             else:

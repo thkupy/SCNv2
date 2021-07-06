@@ -13,7 +13,7 @@ The command line args are:
     SCNv2_Figure4_new.py weload ncores nconds
 
 Created: 2021-06-07
-Revised: 
+Revised:
 @author: kuenzel(at)bio2.rwth-aachen.de
 """
 
@@ -39,6 +39,7 @@ plt.rc("text", usetex=False)
 plt.rc("xtick", labelsize="x-small")
 plt.rc("ytick", labelsize="x-small")
 plt.rc("axes", labelsize="small")
+
 
 def runonecondition(x, P):
     ####GENERATE SPIKE INPUTS (the spiketimes are always the same to improve comparability)
