@@ -292,20 +292,32 @@ def plotres(outputA, PA):
     
     #
     sp6 = plt.subplot(4,2,6, sharex=sp5, sharey=sp5)
+    X = PA["bstart"]-PA["astart"]
+    Y = ab_m - (a_m + b_m)
     plt.errorbar(
-        PA["bstart"],
-        ab_m,
+        X,
+        Y,
         yerr=ab_s,
         marker="o",
         color="k",
         markerfacecolor="w",
         markersize=4,
     )
-    plt.plot(PA["bstart"],a_m + b_m,"g-")
+    #plt.plot(PA["bstart"],a_m + b_m,"g-")
     #sp6.set_xlim(0, PA["dur"][0])
     plt.legend(("sum of unimodal","multimodal"), fontsize=5)
-    plt.xlabel("Onset Time (ms)")
-    plt.ylabel("Mean Output (APs)")
+    plt.xlabel("Basal Onset Time (ms)")
+    plt.ylabel("AP Increase (AP) \n vs. sum")
+    yl = plt.ylim()
+    xl = plt.xlim((-75, 475))
+    plt.plot((0,0), yl, "k-")
+    plt.plot(xl, (0,0), "k-")
+    mxy = np.max(Y)
+    mxx = X[np.argmax(Y)]
+    print(mxx)
+    print(mxy)
+    plt.plot((mxx,mxx), (0,mxy), "r-")
+    plt.text(mxx, 1, str(mxy))
     #
     sp7 = plt.subplot(4,2,7)
     plt.errorbar(

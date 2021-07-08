@@ -221,6 +221,9 @@ def mymultitest2(a, b1, b2, b3, b4, thr):
     return(T)
     
     
+
+    
+    
 def plotres(outputA, PA):
     from matplotlib.ticker import ScalarFormatter, AutoMinorLocator, MaxNLocator
     import scipy.ndimage as ndimage
@@ -232,8 +235,8 @@ def plotres(outputA, PA):
     #
     responsethreshold = 2
     #
-    fheight = 20  # cm
-    fwidth = 14
+    fheight = 8  # cm
+    fwidth = 8
     #contourlims = (1.0,333.0)
     #ncontours = 27
     a_m = np.array(outputA[0][:, 0], dtype=float)
@@ -262,24 +265,25 @@ def plotres(outputA, PA):
     fslb = np.vstack(outputA[0][:,19])
     fslab = np.vstack(outputA[0][:,20])
     #
-    a_m = np.reshape(a_m, (ndists, nfreqs))
-    a_s = np.reshape(a_s, (ndists, nfreqs)) 
-    b_m = np.reshape(b_m, (ndists, nfreqs))
-    b_s = np.reshape(b_s, (ndists, nfreqs)) 
-    ab_m = np.reshape(ab_m, (ndists, nfreqs))
-    ab_s = np.reshape(ab_s, (ndists, nfreqs)) 
-    fa_m = np.reshape(fa_m, (ndists, nfreqs))
-    fa_s = np.reshape(fa_s, (ndists, nfreqs)) 
-    fb_m = np.reshape(fb_m, (ndists, nfreqs))
-    fb_s = np.reshape(fb_s, (ndists, nfreqs)) 
-    fab_m = np.reshape(fab_m, (ndists, nfreqs))
-    fab_s = np.reshape(fab_s, (ndists, nfreqs)) 
+    filtsig = 1.33
+    a_m = ndimage.gaussian_filter1d(np.reshape(a_m, (ndists, nfreqs)), sigma=filtsig, axis=0)
+    a_s = ndimage.gaussian_filter1d(np.reshape(a_s, (ndists, nfreqs)), sigma=filtsig, axis=0) 
+    b_m = ndimage.gaussian_filter1d(np.reshape(b_m, (ndists, nfreqs)), sigma=filtsig, axis=0)
+    b_s = ndimage.gaussian_filter1d(np.reshape(b_s, (ndists, nfreqs)), sigma=filtsig, axis=0) 
+    ab_m = ndimage.gaussian_filter1d(np.reshape(ab_m, (ndists, nfreqs)), sigma=filtsig, axis=0)
+    ab_s = ndimage.gaussian_filter1d(np.reshape(ab_s, (ndists, nfreqs)), sigma=filtsig, axis=0)
+    fa_m = ndimage.gaussian_filter1d(np.reshape(fa_m, (ndists, nfreqs)), sigma=filtsig, axis=0)
+    fa_s = ndimage.gaussian_filter1d(np.reshape(fa_s, (ndists, nfreqs)), sigma=filtsig, axis=0)
+    fb_m = ndimage.gaussian_filter1d(np.reshape(fb_m, (ndists, nfreqs)), sigma=filtsig, axis=0)
+    fb_s = ndimage.gaussian_filter1d(np.reshape(fb_s, (ndists, nfreqs)), sigma=filtsig, axis=0)
+    fab_m = ndimage.gaussian_filter1d(np.reshape(fab_m, (ndists, nfreqs)), sigma=filtsig, axis=0)
+    fab_s = ndimage.gaussian_filter1d(np.reshape(fab_s, (ndists, nfreqs)), sigma=filtsig, axis=0)
     dist = np.reshape(dist, (ndists, nfreqs)) 
     afreq = np.reshape(afreq, (ndists, nfreqs)) 
     bfreq = np.reshape(bfreq, (ndists, nfreqs)) 
     #
     filtsig = 0.66
-    #a_am = ndimage.gaussian_filter(a_am, sigma=filtsig, order=0)
+    #a_am = ndimage.gaussian_filter1d(a_am, sigma=filtsig, order=0)
     #
     dotcol = ((.1, .1, .1), (.5, .5, .5))
     msize = 1
@@ -299,6 +303,10 @@ def plotres(outputA, PA):
     plt.errorbar(alldist, a_m[:,2], yerr=a_s[:,2], label="apical strong", color=(.0, .0, 1.0))
     plt.errorbar(alldist, b_m[:,0], yerr=a_s[:,0], label="basal weak", color=(.5, .0, .0))
     plt.errorbar(alldist, b_m[:,1], yerr=a_s[:,2], label="basal strong", color=(1.0, .0, .0))
+    plt.errorbar(alldist, ab_m[:,0], yerr=ab_s[:,0], label="weak/weak", color="b")
+    plt.errorbar(alldist, ab_m[:,1], yerr=ab_s[:,1], label="weak/strong", color="y")
+    plt.errorbar(alldist, ab_m[:,2], yerr=ab_s[:,2], label="strong/weak", color="g")
+    plt.errorbar(alldist, ab_m[:,3], yerr=ab_s[:,3], label="strong/strong", color="r")
     plt.xlabel("Distance to sound/light source (m)")
     plt.ylabel("Unimodal response (AP)")    
     plt.legend()
@@ -323,14 +331,14 @@ def plotres(outputA, PA):
         print("Dist: " + str(alldist[idist]) + ":")
         print(AN)
         if AN.pvalue < pthres:
-            plt.plot(alldist[idist], 80, "k*", markersize=10)
+            plt.plot(alldist[idist], 60, "k*", markersize=2)
             T = mymultitest(weak_weak, weak_strong, strong_weak, strong_strong, pthres)
             if T[2,4]:
-                plt.plot(alldist[idist], ab_m[idist,0] - (a_m[idist,0]+b_m[idist,0]), "bo")
+                plt.plot(alldist[idist], ab_m[idist,0] - (a_m[idist,0]+b_m[idist,0]), "bo", markersize=2)
             if T[4,4]:
-                plt.plot(alldist[idist], ab_m[idist,1] - (a_m[idist,1]+b_m[idist,1]), "yo")
+                plt.plot(alldist[idist], ab_m[idist,1] - (a_m[idist,1]+b_m[idist,1]), "yo", markersize=2)
             if T[5,4]:
-                plt.plot(alldist[idist], ab_m[idist,2] - (a_m[idist,2]+b_m[idist,2]), "go")
+                plt.plot(alldist[idist], ab_m[idist,2] - (a_m[idist,2]+b_m[idist,2]), "go", markersize=2)
             #3/5/6 is vs. strong_strong
     #
     plt.subplot(2,2,3)
@@ -351,27 +359,27 @@ def plotres(outputA, PA):
     plt.xlabel("Distance to sound/light source (m)")
     plt.ylabel("FSL vs. visual only (ms diff)")
     #Some Statistics... we are going to compare for each distance the 4 conditions
-    pthres = 0.05
+    pthres = 0.01
     for idist in range(ndists):
-        apical_strong = fsla[(idist * 4)+3]
-        weak_weak = fslab[(idist * 4)]
-        weak_strong = fslab[(idist * 4)+1]
-        strong_weak = fslab[(idist * 4)+2]
-        strong_strong = fslab[(idist * 4)+3]
+        apical_strong = fsla[(idist * 4)+3][np.isfinite(fsla[(idist * 4)+3])]
+        weak_weak = fslab[(idist * 4)][np.isfinite(fslab[(idist * 4)])]
+        weak_strong = fslab[(idist * 4)+1][np.isfinite(fslab[(idist * 4)+1])]
+        strong_weak = fslab[(idist * 4)+2][np.isfinite(fslab[(idist * 4)+2])]
+        strong_strong = fslab[(idist * 4)+3][np.isfinite(fslab[(idist * 4)+3])]
         AN = stats.f_oneway(apical_strong, weak_weak, weak_strong, strong_weak, strong_strong)
         print("Dist: " + str(alldist[idist]) + ":")
         print(AN)
         if AN.pvalue < pthres:
-            plt.plot(alldist[idist], 100, "k*", markersize=10)
+            plt.plot(alldist[idist], 80, "k*", markersize=2)
             T = mymultitest2(apical_strong, weak_weak, weak_strong, strong_weak, strong_strong, pthres)
             if T[0,4]:
-                plt.plot(alldist[idist], fab_m[idist,0] - fa_m[idist,0],  "bo")
+                plt.plot(alldist[idist], fab_m[idist,0] - fa_m[idist,0],  "bo", markersize=2)
             if T[1,4]:
-                plt.plot(alldist[idist], fab_m[idist,1] - fa_m[idist,1], "yo")
+                plt.plot(alldist[idist], fab_m[idist,1] - fa_m[idist,1], "yo", markersize=2)
             if T[2,4]:
-                plt.plot(alldist[idist], fab_m[idist,2] - fa_m[idist,2], "go")
+                plt.plot(alldist[idist], fab_m[idist,2] - fa_m[idist,2], "go", markersize=2)
             if T[3,4]:
-                plt.plot(alldist[idist], fab_m[idist,3] - fa_m[idist,3], "ro")
+                plt.plot(alldist[idist], fab_m[idist,3] - fa_m[idist,3], "ro", markersize=2)
             #3/5/6 is vs. strong_strong
 
 

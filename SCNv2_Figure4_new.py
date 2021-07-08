@@ -328,11 +328,13 @@ def plotres(outputA, outputB, PA, PB):
     Y1 = np.unique(pnl)
     Y2 = np.unique(tau)
     #
+    myshade = "nearest"#"flat"#"gouraud"
     mycontours= np.arange(11) * 10
     sp21 = plt.subplot(5,2,1)
     sp21.set_title("pNeurite Length")
     z21 = np.reshape(a_am, (nconds,nfreqs))
-    c21 = sp21.pcolormesh(X,Y1, z21, cmap="Blues", shading="gouraud", vmin=0, vmax=80)
+    c21 = sp21.pcolormesh(X,Y1, z21, cmap="Blues", shading=myshade, vmin=0, vmax=80, linewidth=0, rasterized=True)
+    c21.set_edgecolor("face")
     plt.colorbar(c21, ax=sp21, extend="both")
     sp21.set_ylabel("Apical only \n pNeuritL (µm)")
     cl21 = sp21.contour(X,Y1,z21,mycontours, colors="k", linewidths=0.5)
@@ -340,7 +342,8 @@ def plotres(outputA, outputB, PA, PB):
     #
     sp23 = plt.subplot(5,2,3)
     z23 = np.reshape(a_bm, (nconds,nfreqs))
-    c23 = sp23.pcolormesh(X,Y1, z23, cmap="Reds", shading="gouraud", vmin=0, vmax=80)
+    c23 = sp23.pcolormesh(X,Y1, z23, cmap="Reds", shading=myshade, vmin=0, vmax=80, linewidth=0, rasterized=True)
+    c23.set_edgecolor("face")
     plt.colorbar(c23, ax=sp23, extend="both")
     sp23.set_ylabel("Basal only \n pNeuritL (µm)")
     cl23 = sp23.contour(X,Y1,z23,mycontours, colors="k", linewidths=0.5)
@@ -348,7 +351,8 @@ def plotres(outputA, outputB, PA, PB):
     #
     sp25 = plt.subplot(5,2,5)
     z25 = np.reshape(a_abm, (nconds,nfreqs))
-    c25 = sp25.pcolormesh(X,Y1, z25, cmap="bone", shading="gouraud", vmin=0, vmax=100)
+    c25 = sp25.pcolormesh(X,Y1, z25, cmap="bone", shading=myshade, vmin=0, vmax=100, linewidth=0, rasterized=True)
+    c25.set_edgecolor("face")
     plt.colorbar(c25, ax=sp25, extend="both")
     sp25.set_ylabel("Multimodal \n pNeuritL (µm)")
     cl25 = sp25.contour(X,Y1,z25,mycontours, colors="k", linewidths=0.5)
@@ -356,7 +360,8 @@ def plotres(outputA, outputB, PA, PB):
     #
     sp27 = plt.subplot(5,2,7)
     z27 = np.reshape((a_am + a_bm), (nconds,nfreqs))
-    c27 = sp27.pcolormesh(X,Y1, z27, cmap="Greens", shading="gouraud", vmin=0, vmax=100)
+    c27 = sp27.pcolormesh(X,Y1, z27, cmap="Greens", shading=myshade, vmin=0, vmax=100, linewidth=0, rasterized=True)
+    c27.set_edgecolor("face")
     plt.colorbar(c27, ax=sp27, extend="both")
     sp27.set_ylabel("Sum of unimodal \n NeuritL (µm)")
     cl27 = sp27.contour(X,Y1,z27,mycontours, colors="k", linewidths=0.5)
@@ -364,7 +369,8 @@ def plotres(outputA, outputB, PA, PB):
     #
     sp29 = plt.subplot(5,2,9)
     z29 = np.reshape(a_abm - (a_am + a_bm), (nconds,nfreqs))
-    c29 = sp29.pcolormesh(X,Y1, z29, cmap="seismic", shading="gouraud", vmin=-70, vmax=70)
+    c29 = sp29.pcolormesh(X,Y1, z29, cmap="seismic", shading=myshade, vmin=-70, vmax=70, linewidth=0, rasterized=True)
+    c29.set_edgecolor("face")
     plt.colorbar(c29, ax=sp29, extend="both")
     sp29.set_ylabel("Multimodal enhancement \n pNeuritL (µm)")
     sp29.set_xlabel("Input Power (\%)")
@@ -374,7 +380,8 @@ def plotres(outputA, outputB, PA, PB):
     sp22 = plt.subplot(5,2,2)
     sp22.set_title("NMDA component \n (apical tau-decay)")
     z22 = np.reshape(b_am, (nconds,nfreqs))
-    c22 = sp22.pcolormesh(X, Y2, z22, cmap="Blues", shading="gouraud", vmin=0, vmax=80)
+    c22 = sp22.pcolormesh(X, Y2, z22, cmap="Blues", shading=myshade, vmin=0, vmax=80, linewidth=0, rasterized=True)
+    c22.set_edgecolor("face")
     plt.colorbar(c22, ax=sp22, extend="both")
     sp22.set_ylabel(" \n Apical tau-decay (ms)")
     cl22 = sp22.contour(X,Y2,z22,mycontours, colors="k", linewidths=0.5)
@@ -382,7 +389,8 @@ def plotres(outputA, outputB, PA, PB):
     #
     sp24 = plt.subplot(5,2,4)
     z24 = np.reshape(b_bm, (nconds,nfreqs))
-    c24 = sp24.pcolormesh(X, Y2, z24, cmap="Reds", shading="gouraud", vmin=0, vmax=80)
+    c24 = sp24.pcolormesh(X, Y2, z24, cmap="Reds", shading=myshade, vmin=0, vmax=80, linewidth=0, rasterized=True)
+    c24.set_edgecolor("face")
     plt.colorbar(c24, ax=sp24, extend="both")
     sp24.set_ylabel(" \n Apical tau-decay (ms)")
     cl24 = sp24.contour(X,Y2,z24,mycontours, colors="k", linewidths=0.5)
@@ -390,7 +398,8 @@ def plotres(outputA, outputB, PA, PB):
     #
     sp26 = plt.subplot(5,2,6)
     z26 = np.reshape(b_abm, (nconds,nfreqs))
-    c26 = sp26.pcolormesh(X, Y2, z26, cmap="bone", shading="gouraud", vmin=0, vmax=100)
+    c26 = sp26.pcolormesh(X, Y2, z26, cmap="bone", shading=myshade, vmin=0, vmax=100, linewidth=0, rasterized=True)
+    c26.set_edgecolor("face")
     plt.colorbar(c26, ax=sp26, extend="both")
     sp26.set_ylabel(" \n Apical tau-decay (ms)")
     cl26 = sp26.contour(X,Y2,z26,mycontours, colors="k", linewidths=0.5)
@@ -398,7 +407,8 @@ def plotres(outputA, outputB, PA, PB):
     #
     sp28 = plt.subplot(5,2,8)
     z28 = np.reshape((b_am + b_bm), (nconds,nfreqs))
-    c28 = sp28.pcolormesh(X, Y2, z28, cmap="Greens", shading="gouraud", vmin=0, vmax=100)
+    c28 = sp28.pcolormesh(X, Y2, z28, cmap="Greens", shading=myshade, vmin=0, vmax=100, linewidth=0, rasterized=True)
+    c28.set_edgecolor("face")
     plt.colorbar(c28, ax=sp28, extend="both")
     sp28.set_ylabel(" \n Apical tau-decay (ms)")
     cl28 = sp28.contour(X,Y2,z28,mycontours, colors="k", linewidths=0.5)
@@ -406,7 +416,8 @@ def plotres(outputA, outputB, PA, PB):
     #
     sp210 = plt.subplot(5,2,10)
     z210 = np.reshape(b_abm - (b_am + b_bm), (nconds,nfreqs))
-    c210 = sp210.pcolormesh(X, Y2, z210, cmap="seismic", shading="gouraud", vmin=-70, vmax=70)
+    c210 = sp210.pcolormesh(X, Y2, z210, cmap="seismic", shading=myshade, vmin=-70, vmax=70, linewidth=0, rasterized=True)
+    c210.set_edgecolor("face")
     plt.colorbar(c210, ax=sp210, extend="both")
     sp210.set_ylabel(" \n Apical tau-decay (ms)")
     sp210.set_xlabel("Input Power (\%)")
