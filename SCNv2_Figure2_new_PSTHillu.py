@@ -34,6 +34,127 @@ plt.rc("ytick", labelsize="x-small")
 plt.rc("axes", labelsize="small")
 
 
+def runonecondition(P):
+    ####GENERATE SPIKE INPUTS (the spiketimes are always the same to improve comparability)
+    thisR = SCNv2.runmodel(
+        tstop=P["dur"],
+        dt=P["dt"],
+        nsyna=int(P["nsyna"]),
+        nsynb=int(P["nsynb"]),
+        hasstimulation=(False, False),
+        hasinputactivity=P["hasinputactivity"],
+        pinputactivity=(P["astart"], P["aitv"], P["bstart"], P["bitv"]),
+        inputstop=(P["astart"] + P["adur"], P["bstart"] + P["bdur"]),
+        hasnmda=True,
+        seed=P["Seed"],
+        hasfbi=False,
+        hasffi=P["hasffi"],
+        inhw=P["inhw"],
+        inhtau=P["inhtau"],
+        inhdelay=P["inhdelay"],
+        noiseval=P["noiseval"],
+        reallatency=P["reallatency"],
+    )
+    S = SCNv2.SimpleDetectAP(
+        thisR["AVm"],
+        thr=P["thr"],
+        dt=P["dt"],
+        LM=-20,
+        RM=10,
+    )
+    return(thisR["AVm"], S)
+
+
+def getparams(
+            aon=True,
+            astart=0.0, 
+            adur=125.0, 
+            afreq=45.0,
+            bon=False, 
+            bstart=0.0, 
+            bdur=125.0, 
+            bfreq=130.0,
+            reallatency=True,
+            seed=53557,
+        ):
+        P = {}
+        P["N"] = 1
+        P["TotalN"] = 1
+        P["Number"] = np.arange(P["TotalN"],dtype=int)
+        P["mp"] = True
+        P["Seed"] = seed
+        P["AdvSeed"] = True
+        P["thr"]  = -50.0
+        P["dur"] = 500.0
+        P["dt"] = 0.025
+        P["noiseval"] = 0.9
+        ###########################################
+        P["hasinputactivity"] = (aon, bon)
+        P["nsyna"] = 25
+        P["astart"] = astart
+        P["adur"] = adur
+        P["afreq"] = afreq
+        P["aitv"] = 1000.0 / afreq
+        P["nsynb"] = 25
+        P["bstart"] = bstart
+        P["bdur"] = bdur
+        P["bfreq"] = bfreq
+        P["bitv"] = 1000.0 / bfreq
+        #
+        P["hasffi"] = True
+        P["inhw"] = 0.001
+        P["inhtau"] = 75.0
+        P["inhdelay"] = 5.0
+        P["reallatency"] = reallatency
+        return P
+
+
+def mk_exampletraces(icond=6):
+    seed=23359
+    PA = getparams(
+        aon=True,
+        bon=False,
+        seed=seed,
+        afreq=44.0,
+        bfreq=135.0,
+    )
+    PB = getparams(
+        aon=False,
+        bon=True,
+        seed=seed,
+        afreq=44.0,
+        bfreq=135.0,
+    )
+    PC = getparams(
+        aon=True,
+        bon=True,
+        seed=seed,
+        afreq=44.0,
+        bfreq=135.0,
+    )
+    tx = np.linspace(0, PA["dur"] - PA["dt"], int(PA["dur"] / PA["dt"]))
+    RA, SA = runonecondition(PA)
+    RB, SB = runonecondition(PB)
+    RC, SC = runonecondition(PC)
+    fh = plt.figure(figsize=(9.0 / 2.54, 10.0 / 2.54))
+    sp1 = plt.subplot(3,1,1)
+    plt.plot(tx, RA)
+    plt.plot(SA["PeakT"], SA["PeakV"], "go", markersize=4)
+    plt.subplot(3,1,2, sharex=sp1, sharey=sp1)
+    plt.xlabel("Time (ms)")
+    plt.ylabel("Vm (mV)")
+    plt.plot(tx, RB)
+    plt.plot(SB["PeakT"], SB["PeakV"], "go", markersize=4)
+    plt.xlabel("Time (ms)")
+    plt.ylabel("Vm (mV)")
+    plt.subplot(3,1,3, sharex=sp1, sharey=sp1)
+    plt.plot(tx, RC)
+    plt.plot(SC["PeakT"], SC["PeakV"], "go", markersize=4)
+    plt.xlabel("Time (ms)")
+    plt.ylabel("Vm (mV)")
+    plt.tight_layout()
+    return fh
+
 def plotres(outputA, outputB, outputC, PA, PB, PC):
     from matplotlib.ticker import ScalarFormatter, AutoMinorLocator, MaxNLocator
     import scipy.ndimage as ndimage
@@ -140,7 +261,9 @@ if __name__ == "__main__":
     pp.savefig(fhandle)
     pp.close()
     fhandle.savefig("./figures/SCNv2_Figure2_PSTHillu.svg")
-
+    #
+    fh = mk_exampletraces()
+    fh.savefig("./figures/SCNv2_Figure2_traces.svg")
 
 
 
