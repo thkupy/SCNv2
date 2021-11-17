@@ -453,8 +453,15 @@ def getparams(
         #45/115,65/200,85/300
         dists = np.round(np.linspace(0, 100.0, ndists))
         # Now define the variable parameters. The repeated = y, the tiled = x!!
-        afreq = np.array([45.0, 45.0, 60.0, 60.0])#45/80#45/85
-        bfreq = np.array([150.0, 300.0, 150.0, 300.0])#/120/300
+        # 2021-11-17: the reviewer2 of the J Neurosci submission raised the issue
+        #  about the difference between these results (weak/weak) here and those 
+        #  in Figure 8e (-->SCNv3_Figure3_new.py)... the latter were calculated
+        #  "at 20% input power" (->21.4% for 15 conds), which corresponds to a
+        #  afreq of 41 and a bfreq of 103, which explains the differences.
+        #  A revised version of this figure will be recalculated with these new
+        #  weak/weak values.
+        afreq = np.array([41.0, 41.0, 60.0, 60.0])#45/60#45/80#45/85
+        bfreq = np.array([103.0, 300.0, 103.0, 300.0])#150/300#120/300
         aitv = np.round(1000.0 / afreq, 1)
         bitv = np.round(1000.0 / bfreq, 1)
         P["afreq"] = np.tile(afreq, ndists)

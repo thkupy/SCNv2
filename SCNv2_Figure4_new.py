@@ -351,11 +351,11 @@ def plotres(outputA, outputB, PA, PB):
     #
     sp25 = plt.subplot(5,2,5)
     z25 = np.reshape(a_abm, (nconds,nfreqs))
-    c25 = sp25.pcolormesh(X,Y1, z25, cmap="bone", shading=myshade, vmin=0, vmax=100, linewidth=0, rasterized=True)
+    c25 = sp25.pcolormesh(X,Y1, z25, cmap="binary", shading=myshade, vmin=0, vmax=100, linewidth=0, rasterized=True)#2021-11-17 (was "bone")
     c25.set_edgecolor("face")
     plt.colorbar(c25, ax=sp25, extend="both")
     sp25.set_ylabel("Multimodal \n pNeuritL (µm)")
-    cl25 = sp25.contour(X,Y1,z25,mycontours, colors="k", linewidths=0.5)
+    cl25 = sp25.contour(X,Y1,z25,mycontours, colors="w", linewidths=0.5)#2021-11-17 (was "k")
     sp25.clabel(cl25, cl25.levels, fmt="%1.0f", fontsize=6)
     #
     sp27 = plt.subplot(5,2,7)
@@ -373,7 +373,7 @@ def plotres(outputA, outputB, PA, PB):
     c29.set_edgecolor("face")
     plt.colorbar(c29, ax=sp29, extend="both")
     sp29.set_ylabel("Multimodal enhancement \n pNeuritL (µm)")
-    sp29.set_xlabel("Input Power (\%)")
+    sp29.set_xlabel("Input Power (%)")
     cl29 = sp29.contour(X,Y1,z29,(-10,0,10,20,30,40,50,60,70), colors="k", linewidths=0.5)
     sp29.clabel(cl29, cl29.levels, fmt="%1.0f", fontsize=6)
     #
@@ -398,11 +398,11 @@ def plotres(outputA, outputB, PA, PB):
     #
     sp26 = plt.subplot(5,2,6)
     z26 = np.reshape(b_abm, (nconds,nfreqs))
-    c26 = sp26.pcolormesh(X, Y2, z26, cmap="bone", shading=myshade, vmin=0, vmax=100, linewidth=0, rasterized=True)
+    c26 = sp26.pcolormesh(X, Y2, z26, cmap="binary", shading=myshade, vmin=0, vmax=100, linewidth=0, rasterized=True)#2021-11-17 (was "bone")
     c26.set_edgecolor("face")
     plt.colorbar(c26, ax=sp26, extend="both")
     sp26.set_ylabel(" \n Apical tau-decay (ms)")
-    cl26 = sp26.contour(X,Y2,z26,mycontours, colors="k", linewidths=0.5)
+    cl26 = sp26.contour(X,Y2,z26,mycontours, colors="w", linewidths=0.5)#2021-11-17 (was "k")
     sp26.clabel(cl26, cl26.levels, fmt="%1.0f", fontsize=6)
     #
     sp28 = plt.subplot(5,2,8)
@@ -420,7 +420,7 @@ def plotres(outputA, outputB, PA, PB):
     c210.set_edgecolor("face")
     plt.colorbar(c210, ax=sp210, extend="both")
     sp210.set_ylabel(" \n Apical tau-decay (ms)")
-    sp210.set_xlabel("Input Power (\%)")
+    sp210.set_xlabel("Input Power (%)")
     cl210 = sp210.contour(X,Y2,z210,(-10, 0, 10,20,30,40,50,60,70), colors="k", linewidths=0.5)
     sp210.clabel(cl210, cl210.levels, fmt="%1.0f", fontsize=6)
     #

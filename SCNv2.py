@@ -5,15 +5,17 @@ New version of the SCN model.
 This module contains the necessary function for all experiment programs.
 
 Created: Tuesday 23rd Feb 2021
+Revised: 2021-11-17 [J Neuroscience revision: added the "allapical" input parameter]
 Revised: Wednesday 23rd Jun 2021 [changed default loc of ffi synapses to ~0.4]
 @author: kuenzel
 """
+
 #-----IMPORTS--------
 from neuron import h
 import numpy as np
 #
 pNeuritdefault = 60.0#µm
-#
+
 
 def runonce(x, P):
     ####hard coded settings, rarely change these:
@@ -172,6 +174,7 @@ def runmodel(
         axon_na=0.32,
         axon_k=0.04,
         axon_l=0.0001,
+        allapical=False,#2021-11-17 [J Neurosci revision]
     ):
     """
     Creates and runs the second version of the SCN model.
@@ -453,7 +456,14 @@ def runmodel(
             anc[iasyn].weight[0] = 0.0 
     for ibsyn in range(nsynb):
         bstim.append(h.NetStim())
-        bsyn.append(h.Exp2Syn(bDend((ibsyn+1)*(1.0/nsynb))))#evenly distribute synapses
+        if allapical:#2021-11-17, J Neurosci revision
+            if nsynb < 100:
+                smalloffset = 0.01#this is so a and b synapses do not overlap
+            else:
+                smalloffset = 1.0 / nsynb#this is so a and b synapses do not overlap
+            bsyn.append(h.Exp2Syn(aDend(((ibsyn+1)*(1.0/nsynb)) - smalloffset )))
+        else:
+            bsyn.append(h.Exp2Syn(bDend((ibsyn+1)*(1.0/nsynb))))#evenly distribute synapses
         btv.append(h.Vector())
         bsyn[ibsyn].tau1 = risetaub
         bsyn[ibsyn].tau2 = decaytaub
@@ -504,7 +514,7 @@ def runmodel(
         inc2.threshold = -35.0
         inc2.weight[0] = 0.005#0.02#0.01
         inc2.delay = 5.0
-    if hasffi:
+    if hasffi:#not changed by "allapical"
         if hasinputactivity[0]:
             isynca = h.ExpSyn(aDend(0.41))#0.01
             isynca.tau = inhtau#50.0#5.0
