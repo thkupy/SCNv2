@@ -262,7 +262,7 @@ def plotres(outputA, outputB, outputC, PA, PB, PC):
     plt.xlabel(r"Input Salience $\%$")
     plt.ylabel("Mean Output (APs)")
     #
-    sp10 = plt.subplot(5,3,10)
+    sp10 = plt.subplot(5,3,10, sharex=sp7)
     plt.errorbar(
         PA["afreq"],
         a_ttfsp[:,0], 
@@ -278,7 +278,7 @@ def plotres(outputA, outputB, outputC, PA, PB, PC):
     plt.xlabel("Mean Input Frequency (Hz)")
     plt.ylabel("Mean FSL (ms)")
     #
-    sp11 = plt.subplot(5,3,11, sharey=sp10)
+    sp11 = plt.subplot(5,3,11, sharex=sp8, sharey=sp10)
     plt.errorbar(
         PB["bfreq"],
         b_ttfsp[:,0], 
@@ -294,7 +294,7 @@ def plotres(outputA, outputB, outputC, PA, PB, PC):
     plt.xlabel("Mean Input Frequency (Hz)")
     plt.ylabel("Mean FSL (ms)")
     #
-    sp12 = plt.subplot(5,3,12, sharey=sp10)
+    sp12 = plt.subplot(5,3,12, sharex=sp9, sharey=sp10)
     X = np.linspace(0,100,PC["N"])
     plt.errorbar(
         X,

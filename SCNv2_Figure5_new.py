@@ -415,7 +415,7 @@ def getparams(
         #Some fixed Parameters, could be exposed to user later
         apthr = -50.0
         dt = 0.025
-        dur = 500.0
+        dur = 1000.0#500.0
         nv = 0.9
         nfreqs = 4
         #
@@ -426,7 +426,7 @@ def getparams(
         P["TotalN"] = int(P["N"])#2d Experiment
         P["Number"] = np.arange(P["TotalN"],dtype=int)
         P["mp"] = True
-        P["Seed"] = 3786562
+        P["Seed"] = 77253#3786562
         P["AdvSeed"] = True
         P["thr"]  = np.repeat(apthr, P["TotalN"]) 
         P["dur"] = np.repeat(dur, P["TotalN"])
