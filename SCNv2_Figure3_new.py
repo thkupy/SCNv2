@@ -90,7 +90,7 @@ def runonecondition(x, P):
             nsynb=int(P["nsynb"][x]),
             hasstimulation=(False, False),
             hasinputactivity=(True, False),
-            pinputactivity=(P["astart"][x], P["aitv_2x"][x], P["bstart"][x], P["bitv"][x]),
+            pinputactivity=(P["astart"][x], P["aitv"][x], P["bstart"][x], P["bitv"][x]),
             inputstop=(P["astart"][x] + P["adur"][x], P["bstart"][x] + P["bdur"][x]),
             hasnmda=True,
             seed=thisseed+irep,
@@ -119,7 +119,7 @@ def runonecondition(x, P):
             nsynb=int(P["nsynb"][x]),
             hasstimulation=(False, False),
             hasinputactivity=(False, True),
-            pinputactivity=(P["astart"][x], P["aitv"][x], P["bstart"][x], P["bitv_2x"][x]),
+            pinputactivity=(P["astart"][x], P["aitv"][x], P["bstart"][x], P["bitv"][x]),
             inputstop=(P["astart"][x] + P["adur"][x], P["bstart"][x] + P["bdur"][x]),
             hasnmda=True,
             seed=thisseed+irep,
@@ -195,7 +195,7 @@ def plotres(outputA, PA):
     dottype = ","
     #
     sp1 = plt.subplot(4,2,(1,3))
-    plt.title("Unimodal, \n Salience x2")
+    plt.title("Unimodal")
     plt.xlim((0,PA["dur"][0]))
     plt.plot(PA["astart"], np.ones(PA["astart"].size) * -1, "bo")
     plt.plot(PA["bstart"], np.ones(PA["bstart"].size) * -2, "ro")
