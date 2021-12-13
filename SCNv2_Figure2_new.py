@@ -262,7 +262,7 @@ def plotres(outputA, outputB, outputC, PA, PB, PC):
     plt.xlabel(r"Input Salience $\%$")
     plt.ylabel("Mean Output (APs)")
     #
-    sp10 = plt.subplot(5,3,10, sharex=sp7)
+    sp10 = plt.subplot(5,3,10)
     plt.errorbar(
         PA["afreq"],
         a_ttfsp[:,0], 
@@ -278,7 +278,7 @@ def plotres(outputA, outputB, outputC, PA, PB, PC):
     plt.xlabel("Mean Input Frequency (Hz)")
     plt.ylabel("Mean FSL (ms)")
     #
-    sp11 = plt.subplot(5,3,11, sharex=sp8, sharey=sp10)
+    sp11 = plt.subplot(5,3,11, sharey=sp10)
     plt.errorbar(
         PB["bfreq"],
         b_ttfsp[:,0], 
@@ -294,7 +294,7 @@ def plotres(outputA, outputB, outputC, PA, PB, PC):
     plt.xlabel("Mean Input Frequency (Hz)")
     plt.ylabel("Mean FSL (ms)")
     #
-    sp12 = plt.subplot(5,3,12, sharex=sp9, sharey=sp10)
+    sp12 = plt.subplot(5,3,12, sharey=sp10)
     X = np.linspace(0,100,PC["N"])
     plt.errorbar(
         X,
@@ -534,12 +534,13 @@ if __name__ == "__main__":
     #plotres(outputA, outputB, outputC, PA, PB, PC)
     #plt.show()
     fhandle, fhandle2 = plotres(outputA, outputB, outputC, PA, PB, PC)
-    pp = PdfPages("./figures/SCNv2_Figure2_new.pdf")
-    pp.savefig(fhandle)
-    pp.savefig(fhandle2)
-    pp.close()
-    fhandle.savefig("./figures/SCNv2_Figure2_new_p1.svg")
-    fhandle2.savefig("./figures/SCNv2_Figure2_new_p2.svg")
+    plt.show()
+    #pp = PdfPages("./figures/SCNv2_Figure2_new.pdf")
+    #pp.savefig(fhandle)
+    #pp.savefig(fhandle2)
+    #pp.close()
+    #fhandle.savefig("./figures/SCNv2_Figure2_new_p1.svg")
+    #fhandle2.savefig("./figures/SCNv2_Figure2_new_p2.svg")
 
 
 

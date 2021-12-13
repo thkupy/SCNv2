@@ -736,14 +736,15 @@ if __name__ == "__main__":
     #plt.show()
     fhandle, fhandle2 = plotres(outputA, outputB, outputC, PA, PB, PC)
     fhandle3 = plotres_comparison()
-    pp = PdfPages("./figures/SCNv2_Figure2_new_multiapical.pdf")
-    pp.savefig(fhandle)
-    pp.savefig(fhandle2)
-    pp.savefig(fhandle3)
-    pp.close()
-    fhandle.savefig("./figures/SCNv2_Figure2_new_multiapical_p1.svg")
-    fhandle2.savefig("./figures/SCNv2_Figure2_new_multiapical_p2.svg")
-    fhandle3.savefig("./figures/SCNv2_Figure2_new_multiapical_p3.svg")
+    plt.show()
+    #pp = PdfPages("./figures/SCNv2_Figure2_new_multiapical.pdf")
+    #pp.savefig(fhandle)
+    #pp.savefig(fhandle2)
+    #pp.savefig(fhandle3)
+    #pp.close()
+    #fhandle.savefig("./figures/SCNv2_Figure2_new_multiapical_p1.svg")
+    #fhandle2.savefig("./figures/SCNv2_Figure2_new_multiapical_p2.svg")
+    #fhandle3.savefig("./figures/SCNv2_Figure2_new_multiapical_p3.svg")
 
 
 
